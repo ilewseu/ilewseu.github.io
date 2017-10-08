@@ -2,11 +2,11 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>记录思考</title>
   
-  
+  <subtitle>ML、DL、NLP</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://ilewseu.github.io/"/>
-  <updated>2017-10-08T02:08:17.000Z</updated>
+  <updated>2017-10-08T02:26:59.000Z</updated>
   <id>https://ilewseu.github.io/</id>
   
   <author>
@@ -17,16 +17,22 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>categoriesTest</title>
-    <link href="https://ilewseu.github.io/2017/10/08/categoriesTest/"/>
-    <id>https://ilewseu.github.io/2017/10/08/categoriesTest/</id>
-    <published>2017-10-08T02:07:27.000Z</published>
-    <updated>2017-10-08T02:08:17.000Z</updated>
+    <title>Test</title>
+    <link href="https://ilewseu.github.io/2017/10/08/Test/"/>
+    <id>https://ilewseu.github.io/2017/10/08/Test/</id>
+    <published>2017-10-08T02:25:31.000Z</published>
+    <updated>2017-10-08T02:26:59.000Z</updated>
     
     <summary type="html">
     
     </summary>
     
+      <category term="Machine Learning" scheme="https://ilewseu.github.io/categories/Machine-Learning/"/>
+    
+    
+      <category term="ML" scheme="https://ilewseu.github.io/tags/ML/"/>
+    
+      <category term="DL" scheme="https://ilewseu.github.io/tags/DL/"/>
     
   </entry>
   

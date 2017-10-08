@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[categoriesTest]]></title>
-    <url>%2F2017%2F10%2F08%2FcategoriesTest%2F</url>
+    <title><![CDATA[Test]]></title>
+    <url>%2F2017%2F10%2F08%2FTest%2F</url>
     <content type="text"></content>
+      <categories>
+        <category>Machine Learning</category>
+      </categories>
+      <tags>
+        <tag>ML</tag>
+        <tag>DL</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[Hello World]]></title>
