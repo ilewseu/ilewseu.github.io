@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="读书笔记,c++," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="记录思考" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="6.1 函数基础一个典型的函数定义包括以下部分：返回类型、函数名字、由0个或多个形参组成的列表以及函数体。其中，形参以逗号隔开，形参的列表位于一对括号之内。 调用函数 函数的调用完成两项工作：一是用实参初始化函数对应的形参，二是将控制权转移给被调函数。此时，主调函数的执行被暂时中断，被调函数开始执行。">
+<meta name="keywords" content="读书笔记,c++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第6章 函数">
+<meta property="og:url" content="https://ilewseu.github.io/2017/10/10/第6章-函数/index.html">
+<meta property="og:site_name" content="记录思考">
+<meta property="og:description" content="6.1 函数基础一个典型的函数定义包括以下部分：返回类型、函数名字、由0个或多个形参组成的列表以及函数体。其中，形参以逗号隔开，形参的列表位于一对括号之内。 调用函数 函数的调用完成两项工作：一是用实参初始化函数对应的形参，二是将控制权转移给被调函数。此时，主调函数的执行被暂时中断，被调函数开始执行。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171003/4LeAHlkj51.jpg?imageslim">
+<meta property="og:updated_time" content="2017-10-10T15:42:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第6章 函数">
+<meta name="twitter:description" content="6.1 函数基础一个典型的函数定义包括以下部分：返回类型、函数名字、由0个或多个形参组成的列表以及函数体。其中，形参以逗号隔开，形参的列表位于一对括号之内。 调用函数 函数的调用完成两项工作：一是用实参初始化函数对应的形参，二是将控制权转移给被调函数。此时，主调函数的执行被暂时中断，被调函数开始执行。">
+<meta name="twitter:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171003/4LeAHlkj51.jpg?imageslim">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ilewseu.github.io/2017/10/10/第6章-函数/"/>
+
+
+
+
+
+  <title>第6章 函数 | 记录思考</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7d771b3a7c8a49da8ba4db85e1e6ead7";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">记录思考</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">ML、DL、NLP</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ilewseu.github.io/2017/10/10/第6章-函数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="luerwei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="记录思考">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">第6章 函数</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-10T23:16:10+08:00">
+                2017-10-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/c/" itemprop="url" rel="index">
+                    <span itemprop="name">c++</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+             <span id="/2017/10/10/第6章-函数/" class="leancloud_visitors" data-flag-title="第6章 函数">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="6-1-函数基础"><a href="#6-1-函数基础" class="headerlink" title="6.1 函数基础"></a>6.1 函数基础</h2><p>一个典型的函数定义包括以下部分：返回类型、函数名字、由0个或多个形参组成的列表以及函数体。其中，形参以逗号隔开，形参的列表位于一对括号之内。</p>
+<p><strong>调用函数</strong></p>
+<p>函数的调用完成两项工作：一是用实参初始化函数对应的形参，二是将控制权转移给被调函数。此时，主调函数的执行被暂时中断，被调函数开始执行。<br><a id="more"></a><br><strong>形参和实参</strong></p>
+<p>实参是形参的初始值。第一个实参初始化第一个形参，第二个实参初始化第二个形参，以此类推。尽管实参和形参存在对应关系，但是并没有规定实参的求值顺序。实参的类型必须与对应的形参类型匹配，这一点与之前的规则是一致的。函数有几个形参，我们就必须提供相同数量的实参。</p>
+<p><strong>函数的形参列表</strong></p>
+<p>函数的形参列表可以为空，但是不能省略。想要定义一个不带形参的函数，最常用的办法是书写一个空的形参列表。不过为了与C语言兼容，也可以使用关键字void表示函数没有形参：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f1</span><span class="params">()</span></span>&#123;<span class="comment">/*...*/</span>&#125; <span class="comment">//隐式地定义空形参列表</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">f2</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;<span class="comment">/*...*/</span>&#125; <span class="comment">//显示地定义空形参列表</span></div></pre></td></tr></table></figure></p>
+<p>任意两个形参都不能同名，而且函数最外层作用域中的局部变量也不能使用与函数形参一样的名字。</p>
+<h3 id="6-1-1-局部对象"><a href="#6-1-1-局部对象" class="headerlink" title="6.1.1 局部对象"></a>6.1.1 局部对象</h3><p>在c++语言中，名字有作用域，对象有声明周期。理解这两个概念非常重要。</p>
+<ul>
+<li>名字的作用域是程序文本的一部分，名字在其中可见。</li>
+<li>对象的生命周期是程序执行过程中该对象存在的一段时间。<br>形参和函数体内部定义的变量统称为局部变量。</li>
+</ul>
+<p><strong>自动对象</strong></p>
+<p>对于普通局部变量对应的对象来说，当函数的控制路径经过变量定义语句时创建该对象，当到达定义所在的块末尾时销毁它。我们把只存在于块执行期间的对象称为自动对象。当块的执行结束之后，块中创建的自动对象的值就变成未定义的了。<br>形参是一种自动对象。函数开始时为形参申请存储空间，因为形参定义在函数体作用域之内，所以一旦函数终止，形参页就被销毁。</p>
+<p><strong>局部静态对象</strong></p>
+<p>某些时候，有必要令局部变量的声明周期贯穿函数调用及之后的时间。可以将局部变量定义成static类型从而获得这样的对象。局部静态对象在程序的执行路径第一次经过对象定义语句时初始化，并且直到程序终止才被销毁，在此期间即使对象所在的函数结束执行也不会对它有影响。</p>
+<h3 id="6-1-2-函数声明"><a href="#6-1-2-函数声明" class="headerlink" title="6.1.2 函数声明"></a>6.1.2 函数声明</h3><p>函数的声明和函数的定义非常类似，唯一的区别是函数声明无须函数体，用一个分号替代即可。</p>
+<h3 id="6-1-3-分离式编译"><a href="#6-1-3-分离式编译" class="headerlink" title="6.1.3 分离式编译"></a>6.1.3 分离式编译</h3><p>随着程序越来越复杂，我们希望把程序的各个部分分别存储在不同的文件中。为了允许编写程序时按照逻辑关系将其划分开来，C++语言支持分离式编译，分离式编译允许我们把程序分割到几个文件中去，每个文件独立编译。</p>
+<h2 id="6-2-参数传递"><a href="#6-2-参数传递" class="headerlink" title="6.2 参数传递"></a>6.2 参数传递</h2><p>和其他变量一样，形参的类型决定了形参和实参交互的方式。如果形参是引用类型，它将绑定到对应的实参上；否则，将实参的值拷贝后赋值给形参。<br>当形参是引用类型时，我们说它对应的实参被引用传递或者函数被传引用调用。当实参的值被拷贝给形参时，形参和实参是两个相互独立的对象。我们说这样的实参被值传递或者函数被传值调用。</p>
+<p><strong>指针形参</strong></p>
+<p>指针的行为和其他引用类型一样。当执行指针拷贝操作时，拷贝的是指针的值，拷贝后，两个指针是不同的指针。因为指针使我们可以间接地访问它所指的对象，所以通过指针可以修改它所指对象的值。</p>
+<p><strong>使用引用避免拷贝</strong></p>
+<p>拷贝大的类类型对象或者容器对象比较低效，甚至有的类类型根本就不支持拷贝操作。当某种类型不支持拷贝操作时，函数只能通过引用形参访问该类型的对象。</p>
+<blockquote>
+<p>如果函数无须改变引用形参的值，最好将其声明为常量引用。</p>
+</blockquote>
+<h3 id="6-2-3-const形参和实参"><a href="#6-2-3-const形参和实参" class="headerlink" title="6.2.3 const形参和实参"></a>6.2.3 const形参和实参</h3><p>顶层const作用于对象本身：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> ci = <span class="number">42</span>; <span class="comment">//不能改变ci，const是顶层的</span></div><div class="line"><span class="keyword">int</span> i = ci； <span class="comment">//正确：当拷贝ci时，忽略了它的顶层const</span></div><div class="line"><span class="keyword">int</span> * <span class="keyword">const</span> p = &amp;i; <span class="comment">//const是顶层的，不能给p赋值</span></div><div class="line">*p = <span class="number">0</span>； <span class="comment">//正确：通过p改变对象的内容是允许的，现在i变成了0</span></div></pre></td></tr></table></figure></p>
+<p>和其他初始化过程一样，当用实参初始化形参时会忽略掉顶层的const。换句话说，形参的顶层const被忽略掉了。当形参有顶层const时，传给它常量对象或者非常量对象都是可以的。<br>想要调用引用版本的reset函数，只能使用int类型的对象，而不能使用字面值、求值结果为int的表达式、需要转换的对象或者const int类型的对象。类似的，要想调用指针版的reset只能使用int*。另一方面，我们能传递一个字符串字面值作为find_char的第一个实参，这是因为该函数的引用形参是常量引用，而c++允许我们用字面值初始化常量引用。</p>
+<h3 id="6-2-4-数组形参"><a href="#6-2-4-数组形参" class="headerlink" title="6.2.4 数组形参"></a>6.2.4 数组形参</h3><p>数组的两个特殊性质对我们定义和使用作用在数组上的函数有影响。这两个性质分别是：不允许拷贝数组以及使用数组时会将其转换成指针，所以当我们为函数传递一个数组时，实际上传递的是指向数组元素的指针。尽管不能以值传递的方式传递数组，但是我们可以把形参写成类似数组的形式：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//尽管形式不同，但这三个print函数是等价的，每个函数都有一个const int* 类型的形参</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span> *)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span> [])</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span>[<span class="number">10</span>])</span></span>;</div></pre></td></tr></table></figure></p>
+<p>因为数组是以指针的形式传递给函数的，所有一开始函数并不知道数组的确切尺寸，调用者应该为此提供一些额外的信息。管理指针形参有三种常用的技术。</p>
+<p><strong>使用标记指定数组长度</strong><br>管理数组实参的第一种方法是要求数组本身包含一个结束标记，使用这种方法的典型示例是C风格字符串。</p>
+<p><strong>使用标准库规范</strong><br>管理数组实参的第二种技术是传递指向数组首元素和尾元素的指针。</p>
+<p><strong>显示传递一个表示数组大小的形参</strong><br>第三种管理数组实参的方法是专门定义第一个表示数组大小的形参。</p>
+<p><strong>数组引用形参</strong></p>
+<p>C++语言允许将变量定义成数组的引用，基于同样的道理，形参也可以是数组的引用。此时，引用形参绑定到对应的实参上，也就是绑定到数组上：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//正确：形参是数组的引用，维度是类型的一部分</span></div><div class="line">void print(int (&amp;arr)[10])</div><div class="line">&#123;</div><div class="line">  <span class="keyword">for</span>(<span class="keyword">auto</span> elem: arr)</div><div class="line">  		<span class="built_in">cout</span> &lt;&lt;elem&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>传递多维数组</strong></p>
+<p>C++中实际上没有真正的多维数组，所谓的多维数组其实就是数组的数组。和所有数组一样，将多维数组传递给函数时，真正传递的是指向数组首元素的指针。因为我们处理的是数组的数组，所以首元素本身就是一个数组，指针就是一个指向数组的指针。数组第二维（以及后面的所有维度）的大小都是数组类型的一部分，不能省略。</p>
+<p>###6.2.6 含有可变形参的函数</p>
+<p>为了编写能处理不同数量实参的函数，C++11新标准提供了两种主要的方法：如果所有的实参类型相同，可以传递一个名为initializer_list的标准库类型；如果实参的类型不同，我们可以编写一种特殊的函数，也就是所谓的可变参数模板。<br>C++还有一种特殊的形参类型（即省略符），可以用它传递可变数量的实参。</p>
+<p><strong>initializer_list形参</strong></p>
+<p>如果函数的实参数量未知，但是全部实参的类型都相同，我们可以使用initializer_list类型的形参。initializer_list是一种标准库类型，用于表示某种特定类型的值的数组。initializer_list类型定义在同名头文件中，它提供的操作如表6.1所示：<br><img src="http://of6h3n8h0.bkt.clouddn.com/blog/171003/4LeAHlkj51.jpg?imageslim" alt="mark"></p>
+<p><strong>省略形参</strong></p>
+<p>省略形参是为了便于C++程序访问某些特殊的C代码而设置的，这些代码使用了名为varargs的C标准库功能。通常，省略符形参不应用于其他目的。<br>省略符形参只能出现在形参列表的最后一个位置，它的形式无外乎一下两种：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">(param_listm, ...)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">(...)</span></span>;</div></pre></td></tr></table></figure></p>
+<p>第一种形式指定了foo函数的部分形参的类型，对应于这些形参的实参将会执行正常的类型检查。省略符形参对应的实参无须类型检查。在第一种形式中，形参声明后面的逗号是可选的。</p>
+<h2 id="6-3-返回类型和return语句"><a href="#6-3-返回类型和return语句" class="headerlink" title="6.3 返回类型和return语句"></a>6.3 返回类型和return语句</h2><p>return语句终止当前正在执行的函数并将控制权返回到调用该函数的地方。return语句有两种形式：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> ;</div><div class="line"><span class="keyword">return</span> expression;</div></pre></td></tr></table></figure></p>
+<h3 id="6-3-1-无返回值函数"><a href="#6-3-1-无返回值函数" class="headerlink" title="6.3.1 无返回值函数"></a>6.3.1 无返回值函数</h3><p>没有返回值的return语句只能用在返回类型是void的函数中。返回void的函数不要求非得有return语句，因为在这类函数的最后一句后面会隐式地执行return。<br>一个返回类型的void的函数也能使用return语句的第二种形式，不过此时return语句的expression必须是另一个返回的void函数。强行令void函数返回其他类型的表达式将产生编译错误。</p>
+<h3 id="6-3-2-有返回值函数"><a href="#6-3-2-有返回值函数" class="headerlink" title="6.3.2 有返回值函数"></a>6.3.2 有返回值函数</h3><p>return语句的第二种形式提供了函数的结果，只要函数的返回类型不是void，则该函数内的每条return语句必须返回一个值。return语句的返回值的类型必须与函数的返回类型相同，或者能隐式地转换成函数的返回类型。</p>
+<p><strong>不要返回局部对象的引用或指针</strong><br>函数完成之后，它所占用的存储空间也随之被释放掉，因此，函数终止意味着局部变量的引用将指向不再有效的内存区域。</p>
+<p><strong>返回类类型的函数和调用运算符</strong></p>
+<p>和其他运算符一样，调用运算符也有优先级和结合律，调用运算符的优先级与点运算符和箭头运算符相同，并且也符合左结合律。因此，<strong>如果函数返回指针、引用或类的对象，我们就能够适应函数调用的结果访问结果的对象的成员</strong>。</p>
+<p><strong>引用返回左值</strong></p>
+<p>函数的返回类型决定函数调用是否是左值，调用一个返回引用的函数得到左值，其他返回类型得到右值。可以像使用其他左值那样来使用返回引用的函数的调用，特别是，我们能为返回类型是非常量引用的得结果赋值。</p>
+<p><strong>列表初始化返回值</strong></p>
+<p>C++11新标准规定，函数可以返回花括号包围的值的列表。类似于其他返回结果，此处的列表页用来对表示函数返回的临时量进行初始化。如果列表为空，临时量执行值初始化；否则，返回的值由函数的返回类型决定。</p>
+<h3 id="6-3-3-返回函数指针"><a href="#6-3-3-返回函数指针" class="headerlink" title="6.3.3 返回函数指针"></a>6.3.3 返回函数指针</h3><p>因为数组不能被拷贝，所以函数不能返回数组。不过，函数可以返回数组的指针或引用。虽然从语法上来说，要想定义一个返回数组的指针或引用的函数比较繁琐，但是有一些方法可以简化这一任务，其中最直接的方法是使用类型别名：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> arrT[<span class="number">10</span>]; <span class="comment">//arrT是一个类型别名，它表示类型是含有10个整数的数组</span></div><div class="line"><span class="keyword">using</span> arrT = <span class="keyword">int</span>[<span class="number">10</span>]; <span class="comment">//arrT的等价声明</span></div><div class="line"><span class="function">arrT* <span class="title">fun</span><span class="params">(<span class="keyword">int</span> i)</span></span>;     <span class="comment">//func 返回一个指向含有10个整数的数组的指针</span></div></pre></td></tr></table></figure></p>
+<p>返回数组指针的函数的形式如下所示：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Type (*function(parameter_list))[dimension]</div></pre></td></tr></table></figure></p>
+<p>例如，下面这个func函数的声明没有使用类型别名：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> (*func(<span class="keyword">int</span> i)) [<span class="number">10</span>];</div></pre></td></tr></table></figure></p>
+<p>可以按照以下的顺序来逐层理解该声明的含义：</p>
+<ul>
+<li>func(int i) 表示调用func函数时需要一个int类型的实参。</li>
+<li>(* func(int i)) 意味着我们可以对函数调用的结果执行解引用操作。</li>
+<li>(*func(int i))[10] 表示解引用func的调用将得到一个大小是10的数组。</li>
+<li>int (* func(int i))[10] 表示数组中的元素类型是int类型。</li>
+</ul>
+<p><strong>使用尾置返回类型</strong></p>
+<p>在C++11新标准种还有一种可以简化上述func声明的方法，就是使用<strong>使用尾置返回类型</strong>。任何函数的定义都能使用尾置返回，但这种形式对于返回类型比较复杂的函数比较有效。比如，返回类型是数组的指针或者数组的引用。尾置返回类型跟在形参列表后面并以一个-&gt;符号开头。为了表示函数真正的返回类型跟在形参列表之后，我们在本该出现返回类型的地方放置一个auto：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//func接受一个int类型的实参，返回一个指针，该指针指向含有10个整数的数组</span></div><div class="line">auto func(int i) -&gt; int(*)[10];</div></pre></td></tr></table></figure></p>
+<h2 id="6-4-函数重载"><a href="#6-4-函数重载" class="headerlink" title="6.4 函数重载"></a>6.4 函数重载</h2><p>如果同一作用域内的几个函数名字相同但形参列表不同，我们称之为<strong>重载（overload）函数</strong>。这些函数接收的形参类型不一样，但是执行出的操作非常相似。当调用这些函数时，编译器会根据传递的实参类型推断想要的是哪个函数。<br>函数的名字仅仅是让编译器知道它调用的是哪个函数，而函数重载可以在一定程度上减轻程序员起名字、记名字的负担。</p>
+<blockquote>
+<p>main函数不能重载</p>
+</blockquote>
+<p>对于重载函数来说，它们应该在形参数量或形参类型上有所不同。不允许两个函数除了返回类型外，其他的所有要素都相同。</p>
+<p><strong>重载和const形参</strong><br>顶层const不影响传入函数的对象。一个拥有顶层const的形参无法和另外一个没有顶层const的形参区分开来：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(Phone)</span></span>;</div><div class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(<span class="keyword">const</span> Phone)</span></span>; <span class="comment">//重复声明了Record lookup（Phone）</span></div><div class="line"></div><div class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(Phone *)</span></span>;</div><div class="line"><span class="function">Recode <span class="title">lookup</span><span class="params">(Phone* <span class="keyword">const</span>)</span></span>; <span class="comment">//重复声明了Record lookup（Phone *）</span></div></pre></td></tr></table></figure></p>
+<p>另一方面，如果形参是某种类型的指针或引用，则通过区分其指向的常量对象还是非常量对象可以实现函数重载，此时的const是底层的：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(Account &amp;)</span></span>;</div><div class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(<span class="keyword">const</span> Account&amp;)</span></span>; <span class="comment">//新函数，作用于常量引用</span></div><div class="line"></div><div class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(Account *)</span></span>;  <span class="comment">//新函数，作用于指向Account的指针</span></div><div class="line"><span class="function">Record <span class="title">lookup</span><span class="params">(<span class="keyword">const</span> Account *)</span></span>; <span class="comment">//新函数，作用于指向常量的指针</span></div></pre></td></tr></table></figure></p>
+<p><strong>调用重载的函数</strong></p>
+<p><strong>函数匹配</strong>是指一个过程，在这个过程，我们把函数调用与一组重载函数中的某一个关联起来，函数匹配也叫做<strong>重载确定</strong>。编译器首先将调用的实参与重载集合中每一个函数的形参进行比较，然后根据比较的结果决定到底调用哪个函数。<br>当调用重载函数时有三种可能的结果：</p>
+<ul>
+<li>编译器找到一个与实参最佳匹配的函数，并生成调用该函数的代码。</li>
+<li>找不到任何一个函数与调用的实参匹配，此时编译器发出无匹配的错误信息。</li>
+<li>有多个一个函数可以匹配，但是每一个都不是明显的最佳选择。此时，也将发生错误，称为二义性调用。</li>
+</ul>
+<h2 id="6-5-特殊用途语言特性"><a href="#6-5-特殊用途语言特性" class="headerlink" title="6.5 特殊用途语言特性"></a>6.5 特殊用途语言特性</h2><h3 id="6-5-1-默认实参"><a href="#6-5-1-默认实参" class="headerlink" title="6.5.1 默认实参"></a>6.5.1 默认实参</h3><p>某些函数有这样一种形参，在函数的很多次调用中它们都被赋予一个相同的值，此时，我们把这个反复出现的值称为函数的<strong>默认实参</strong>。调用含有默认实参的函数时，可以包含该实参，也可以省略该实参。在定义函数时，我们可以为一个或多个形参定义默认值，不过需要注意的是，一旦某个形参被赋予了默认值，它后面的所有形参都必须有默认值。<strong>当设计含有默认实参的函数时，其中一项任务是合理设置形参的顺序，尽量让不怎么使用默认值的形参出现在前面，而让那些经常使用默认值的形参出现在后面</strong>。</p>
+<p><strong>默认实参声明</strong></p>
+<p>对于函数的声明来说，通常的习惯是将其放在头文件中，并且一个函数只声明一次，但是多次声明同一个函数也是合法的。不过有一点需要注意的是，在给定的作用域中一个形参只能被赋予一次默认实参。换句话说，函数的后续声明只能为那些没有默认值的形参添加默认实参，而且该形参右侧的所有形参必须都有默认值。</p>
+<h3 id="6-5-2-内联函数和constexpr函数"><a href="#6-5-2-内联函数和constexpr函数" class="headerlink" title="6.5.2 内联函数和constexpr函数"></a>6.5.2 内联函数和constexpr函数</h3><p><strong>内联函数可以避免函数调用的开销</strong><br>将函数指定为内联函数（inline），通常就是将它再每个调用点上“内联地”展开。一般来说，内联机制用于优化规模较小、流程直接、频繁调用的函数。</p>
+<p><strong>constexpr函数</strong><br>constexpr函数是指能用于常量表达式的函数。定义constexpr函数的方法与其他函数类似，不过要遵循几项约定：函数的返回类型及所有形参的类型都得是字面值类型，而且函数体中必须有且只有一条return语句：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">constexpr</span> <span class="keyword">int</span> <span class="title">new_sz</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> <span class="number">42</span>;&#125;</div><div class="line"><span class="keyword">constexpr</span> <span class="keyword">int</span> foo = new_sz(); <span class="comment">//正确：foo是一个常量表达式</span></div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>constexpr 函数不一定返回常量表达式</p>
+</blockquote>
+<p><strong>把内联函数和constexpr函数放在头文件内</strong></p>
+<p>和其他函数不一样，内联函数和constexpr函数可以在程序中多次定义。毕竟编译器想要展开函数仅有函数声明是不够的，还需要函数的定义。不过，对于某个给定的内联函数或者constexpr函数来说，它的多个定义必须完全一致。基于这个原因，<strong>内联函数和constexpr函数通常定义在头文件</strong>。</p>
+<h2 id="6-6-函数匹配"><a href="#6-6-函数匹配" class="headerlink" title="6.6 函数匹配"></a>6.6 函数匹配</h2><p><strong>确定候选函数和可行函数</strong></p>
+<p>函数匹配的第一步就是选定本次调用对应的重载函数集，集合中的函数称为<strong>候选函数</strong>。候选函数具备两个特征：一是与被调用的函数同名，二是其声明在调用点可见。<br>第二步是考察本次调用提供的实参，然后从候选函数中选出能被这组实参调用的函数，这些新选出的函数称为“可行函数”。可行函数也有两个特征：一是其形参数量与本次调用提供的实参数量相等，二是每个实参的类型与对应的形参类型相同，或者能够转换成形参的类型。</p>
+<p><strong>寻找最佳匹配</strong></p>
+<p>函数匹配的第三步是从可行函数中选择与本次调用最匹配的函数。在这一过程中，逐一检查函数调用提供的实参，寻找形参类型与实参类型最匹配的那个可行的函数。基本思想是，实参类型与形参类型越接近，它们匹配得越好。</p>
+<p>为了确定最佳匹配，编译器将实参类型到形参类型的转换划分为几个等级，具体排序如下所示：</p>
+<ol>
+<li>精确匹配，包括以下情况：<ul>
+<li>实参类型和形参类型相同。</li>
+<li>实参从数组类型或函数类型转换成对应的指针类型。</li>
+<li>向实参添加顶层const或者从实参中删除顶层const。</li>
+</ul>
+</li>
+<li>通过const转换实现的匹配。</li>
+<li>通过类型提升实现的匹配。</li>
+<li>通过算术类型转换或者指针转换实现的匹配。</li>
+<li>通过类类型转换实现的匹配。</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作!</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="luerwei 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpeg" alt="luerwei 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/读书笔记/" rel="tag"># 读书笔记</a>
+          
+            <a href="/tags/c/" rel="tag"># c++</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/10/第3章-字符串、向量和数组/" rel="next" title="第3章 字符串、向量和数组">
+                <i class="fa fa-chevron-left"></i> 第3章 字符串、向量和数组
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/10/第9章-顺序容器/" rel="prev" title="第9章 顺序容器">
+                第9章 顺序容器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="luerwei" />
+            
+              <p class="site-author-name" itemprop="name">luerwei</p>
+              <p class="site-description motion-element" itemprop="description">Stay hungry. Stay foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/ilewseu" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:18801628065@163.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://www.zhihu.com/people/erweilu" target="_blank" title="zhihu">
+                    
+                      <i class="fa fa-fw fa-globe"></i>zhihu</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://chengjin.li" title="MJ's Learning Notes" target="_blank">MJ's Learning Notes</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-函数基础"><span class="nav-number">1.</span> <span class="nav-text">6.1 函数基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-1-局部对象"><span class="nav-number">1.1.</span> <span class="nav-text">6.1.1 局部对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-2-函数声明"><span class="nav-number">1.2.</span> <span class="nav-text">6.1.2 函数声明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-3-分离式编译"><span class="nav-number">1.3.</span> <span class="nav-text">6.1.3 分离式编译</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-参数传递"><span class="nav-number">2.</span> <span class="nav-text">6.2 参数传递</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-3-const形参和实参"><span class="nav-number">2.1.</span> <span class="nav-text">6.2.3 const形参和实参</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-4-数组形参"><span class="nav-number">2.2.</span> <span class="nav-text">6.2.4 数组形参</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-3-返回类型和return语句"><span class="nav-number">3.</span> <span class="nav-text">6.3 返回类型和return语句</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-1-无返回值函数"><span class="nav-number">3.1.</span> <span class="nav-text">6.3.1 无返回值函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-2-有返回值函数"><span class="nav-number">3.2.</span> <span class="nav-text">6.3.2 有返回值函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-3-返回函数指针"><span class="nav-number">3.3.</span> <span class="nav-text">6.3.3 返回函数指针</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-4-函数重载"><span class="nav-number">4.</span> <span class="nav-text">6.4 函数重载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-5-特殊用途语言特性"><span class="nav-number">5.</span> <span class="nav-text">6.5 特殊用途语言特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-5-1-默认实参"><span class="nav-number">5.1.</span> <span class="nav-text">6.5.1 默认实参</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-5-2-内联函数和constexpr函数"><span class="nav-number">5.2.</span> <span class="nav-text">6.5.2 内联函数和constexpr函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-6-函数匹配"><span class="nav-number">6.</span> <span class="nav-text">6.6 函数匹配</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">luerwei</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://author.disqus.com/count.js" async></script>
+    
+
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("mlAQjx22Lupo4XTQgrjDqowe-gzGzoHsz", "gUyOWXuoKewzNnKp2uFpEz0V");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

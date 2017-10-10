@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo ,NexT" />
+  <meta name="keywords" content="Linux Shell,读书笔记," />
 
 
 
@@ -81,17 +81,20 @@
 
 
 
-<meta name="description" content="Stay hungry. Stay foolish">
-<meta property="og:type" content="website">
-<meta property="og:title" content="标签">
-<meta property="og:url" content="https://ilewseu.github.io/tags/index.html">
+<meta name="description" content="1、Shell通配符的使用Shell中支持使用通配符，常用的通配符如下：  ？：表示任意的单个字符。 *：表示任意长度的任意字符串 []：表示匹配放在[]中的字符集中的任意一个字符。 {}：将大括号中的字符串以及前导字符串和后继字符串作为匹配条件在查找文件时，大括号是经常使用的统配符，其基本格式如下：">
+<meta name="keywords" content="Linux Shell,读书笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Shell 基本语法">
+<meta property="og:url" content="https://ilewseu.github.io/2017/10/10/Shell-基本语法/index.html">
 <meta property="og:site_name" content="记录思考">
-<meta property="og:description" content="Stay hungry. Stay foolish">
+<meta property="og:description" content="1、Shell通配符的使用Shell中支持使用通配符，常用的通配符如下：  ？：表示任意的单个字符。 *：表示任意长度的任意字符串 []：表示匹配放在[]中的字符集中的任意一个字符。 {}：将大括号中的字符串以及前导字符串和后继字符串作为匹配条件在查找文件时，大括号是经常使用的统配符，其基本格式如下：">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-08T02:56:46.000Z">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171002/DhmAm6Aaem.jpg?imageslim">
+<meta property="og:updated_time" content="2017-10-10T15:43:19.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="标签">
-<meta name="twitter:description" content="Stay hungry. Stay foolish">
+<meta name="twitter:title" content="Shell 基本语法">
+<meta name="twitter:description" content="1、Shell通配符的使用Shell中支持使用通配符，常用的通配符如下：  ？：表示任意的单个字符。 *：表示任意长度的任意字符串 []：表示匹配放在[]中的字符集中的任意一个字符。 {}：将大括号中的字符串以及前导字符串和后继字符串作为匹配条件在查找文件时，大括号是经常使用的统配符，其基本格式如下：">
+<meta name="twitter:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171002/DhmAm6Aaem.jpg?imageslim">
 
 
 
@@ -121,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="https://ilewseu.github.io/tags/"/>
+  <link rel="canonical" href="https://ilewseu.github.io/2017/10/10/Shell-基本语法/"/>
 
 
 
 
 
-  <title>标签 | 记录思考</title>
+  <title>Shell 基本语法 | 记录思考</title>
   
 
 
@@ -296,40 +299,282 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ilewseu.github.io/2017/10/10/Shell-基本语法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="luerwei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="记录思考">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">标签</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <div class="tag-cloud">
-            <div class="tag-cloud-title">
-                目前共计 6 个标签
-            </div>
-            <div class="tag-cloud-tags">
-              <a href="/tags/Linux/" style="font-size: 12px; color: #ccc">Linux</a> <a href="/tags/Linux-Shell/" style="font-size: 18px; color: #8e8e8e">Linux Shell</a> <a href="/tags/c/" style="font-size: 24px; color: #4f4f4f">c++</a> <a href="/tags/工具使用/" style="font-size: 12px; color: #ccc">工具使用</a> <a href="/tags/程序猿的自我修养/" style="font-size: 12px; color: #ccc">程序猿的自我修养</a> <a href="/tags/读书笔记/" style="font-size: 30px; color: #111">读书笔记</a>
-            </div>
-          </div>
+          <h1 class="post-title" itemprop="name headline">Shell 基本语法</h1>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-10T23:17:35+08:00">
+                2017-10-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux-Shell/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux Shell</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+             <span id="/2017/10/10/Shell-基本语法/" class="leancloud_visitors" data-flag-title="Shell 基本语法">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <h2 id="1、Shell通配符的使用"><a href="#1、Shell通配符的使用" class="headerlink" title="1、Shell通配符的使用"></a>1、Shell通配符的使用</h2><p>Shell中支持使用通配符，常用的通配符如下：</p>
+<ul>
+<li>？：表示任意的单个字符。</li>
+<li>*：表示任意长度的任意字符串</li>
+<li>[]：表示匹配放在[]中的字符集中的任意一个字符。</li>
+<li>{}：将大括号中的字符串以及前导字符串和后继字符串作为匹配条件<br>在查找文件时，大括号是经常使用的统配符，其基本格式如下：<a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">前导字符串 &#123;字符串1，字符串2，...&#125;后继字符串</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>例如，查找文件bear.txt和bean.txt，命令如下：<br><img src="http://of6h3n8h0.bkt.clouddn.com/blog/171002/DhmAm6Aaem.jpg?imageslim" alt="mark"></p>
+<h2 id="2、IO重定向"><a href="#2、IO重定向" class="headerlink" title="2、IO重定向"></a>2、IO重定向</h2><p>在Linux系统中，数据流可以分为三类：<strong>数据输入、数据输出和错误输出</strong>。相应地，每个进程都有三个特殊的文件描述指针：标准输入（stdin，文件描述指针为0）、标准输出（stdout，文件描述指针为1）和标准错误输出（stderr，文件描述指针为2）。<br>有两种基本的方法可以用来重定向标准输入、输出和标准错误：（1）管道；（2）重定向。常用输入输出重定向命令格式说明：</p>
+<table>
+<thead>
+<tr>
+<th>命令行</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>命令1 &gt; 文件1</td>
+<td>将命令1的输出结果重定向到文件1</td>
+</tr>
+<tr>
+<td>命令1 &amp;&gt; 文件1</td>
+<td>将命令1的输出结果和标准错误输出一起重定向到文件1</td>
+</tr>
+<tr>
+<td>命令1 &gt;&gt; 文件1</td>
+<td>将命令1的输出结果追加到文件1中</td>
+</tr>
+<tr>
+<td>命令1 2 &gt; 文件1</td>
+<td>将命令1的 标准错误输出的结果重定向到文件1中</td>
+</tr>
+<tr>
+<td>命令1 &lt;  文件1</td>
+<td>将文件1作为命令1的标准输入</td>
+</tr>
+<tr>
+<td>命令1 &lt;&lt; 字符串1</td>
+<td>允许连续输入数据，直到接收到字符串1</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>注意：Ctrl+C组合键用于结束一个程序，Ctrl+D组合键用于结束终端输入。建议使用Ctrl+D组合键结束终端输入</p>
+</blockquote>
+<h2 id="3、管道"><a href="#3、管道" class="headerlink" title="3、管道"></a>3、管道</h2><p>在Linux系统中，管道主要功能是将其他程序的输出结果直接导出到另一个程序来当成输入数据，即将前一个程序的输出作为后一个程序的输入，管道操作符是|。管道语法格式为：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">命令1 | 命令2 [ | 命令3 ...]</div></pre></td></tr></table></figure></p>
+<p>可以将标准错误输出一起送入管道，命令格式为：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">命令1 |&amp; 命令2 [|&amp; 命令3 ...]</div></pre></td></tr></table></figure></p>
+<h2 id="4、前台与后台执行程序"><a href="#4、前台与后台执行程序" class="headerlink" title="4、前台与后台执行程序"></a>4、前台与后台执行程序</h2><p>一个程序在运行时可以采用两种方式运行，一种是在前台运行，另一种是在后台运行，其区别如下：</p>
+<ul>
+<li>前台运行：Shell命令要等待命令（进程）结束，才恢复自身的运行，即回到操作系统的提示符。即下一条命令只有等待当前命令执行完毕才能输入。</li>
+<li>后台运行：Shell不必等待命令（进程）结束，就恢复自身的运行，即回到操作系统的提示符。用户可以直接输入执行下一条命令、</li>
+</ul>
+<h2 id="5、Shell中3种引号的用法"><a href="#5、Shell中3种引号的用法" class="headerlink" title="5、Shell中3种引号的用法"></a>5、Shell中3种引号的用法</h2><p>Shell中有三种引号：双引号、单引号和反引号。其具体的含义如下：</p>
+<ul>
+<li>双引号（“ ”）：在双引号中的字符，除了$，“，`和\以外的字符都解释成字符本身。</li>
+<li>单引号（‘’）：在单引号中的所有特殊字符(如$、“和)都是失去意义，而成为普通字符。</li>
+<li>反引号（<code>`）：在反引号中的字符被解释成命令，例如，</code>cmd`会被解释成命令cmd执行。</li>
+</ul>
+<h2 id="6、运行脚本"><a href="#6、运行脚本" class="headerlink" title="6、运行脚本"></a>6、运行脚本</h2><p>运行Shell脚本有3种方法：</p>
+<ul>
+<li><p>通过chmod命令把文件的权限设置为可读、可执行，然后直接执行该可执行文件，格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">#chmod u+x 脚本文件名</div><div class="line">#./脚本文件名及其参数</div></pre></td></tr></table></figure>
+</li>
+<li><p>直接使用Shell的启动命令，来执行脚本。使用bash命令执行脚本的格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">#bash 脚本文件名及其参数</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用bash内部命令source或.，格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">#source 脚本文件名及其参数</div><div class="line">#. 脚本文件名及其参数</div></pre></td></tr></table></figure>
+</li>
+</ul>
+
       
     </div>
     
     
     
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作!</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="luerwei 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpeg" alt="luerwei 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux-Shell/" rel="tag"># Linux Shell</a>
+          
+            <a href="/tags/读书笔记/" rel="tag"># 读书笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/10/Linux-shell命令学习/" rel="next" title="Linux shell命令学习">
+                <i class="fa fa-chevron-left"></i> Linux shell命令学习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/10/Vi编辑器使用/" rel="prev" title="Vi编辑器使用">
+                Vi编辑器使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -358,8 +603,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -466,6 +720,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、Shell通配符的使用"><span class="nav-number">1.</span> <span class="nav-text">1、Shell通配符的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、IO重定向"><span class="nav-number">2.</span> <span class="nav-text">2、IO重定向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、管道"><span class="nav-number">3.</span> <span class="nav-text">3、管道</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4、前台与后台执行程序"><span class="nav-number">4.</span> <span class="nav-text">4、前台与后台执行程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5、Shell中3种引号的用法"><span class="nav-number">5.</span> <span class="nav-text">5、Shell中3种引号的用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6、运行脚本"><span class="nav-number">6.</span> <span class="nav-text">6、运行脚本</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
