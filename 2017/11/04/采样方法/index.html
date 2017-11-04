@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="记录思考">
 <meta property="og:description" content="在前两周组内的技术分享中，分享了采样方法。之前在研究生阶段就对采样方法很是疑惑，特别是在看LDA时，用到的Gibbs采样，很多次尝试去学习这一知识点，但都一知半解。所以，借这个机会认真学习一下采样方法相关的知识。本文主要是记录一下自己在学习采样方法时，对不同采样方法原理的理解，主要包括蒙特卡洛方法介绍和5中不同的采样方法。  蒙特卡洛方法首先说一下蒙特卡洛方法，Monte Carlo方法，又称为">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-04T15:08:46.000Z">
+<meta property="og:updated_time" content="2017-11-04T15:34:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="采样方法学习">
 <meta name="twitter:description" content="在前两周组内的技术分享中，分享了采样方法。之前在研究生阶段就对采样方法很是疑惑，特别是在看LDA时，用到的Gibbs采样，很多次尝试去学习这一知识点，但都一知半解。所以，借这个机会认真学习一下采样方法相关的知识。本文主要是记录一下自己在学习采样方法时，对不同采样方法原理的理解，主要包括蒙特卡洛方法介绍和5中不同的采样方法。  蒙特卡洛方法首先说一下蒙特卡洛方法，Monte Carlo方法，又称为">
@@ -419,9 +419,7 @@
 - 随机的向正方形内打点，打的点在圆内的概率等于圆与正方形的面积之比0.25Π
 - 随机产生M个点(x,y)，其中，x和y都是区间[0,1]内的符合均匀分布的随机数
 - 假设落在圆内的点有N个，当M足够大时，根据大数定理，频率等于概率，就有：$$\frac {N} {M} = 0.25Π$$，$$Π=\frac {4N} {M}$$
-<div align="center">
   ![mark](http://of6h3n8h0.bkt.clouddn.com/blog/171028/8JHAhdHFAe.jpg?imageslim)
-</div>
 实际用代码去模拟一下，得出的圆周率的值为：3.143748，和3.1415926非常接近。
   <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">samplePI</span><span class="params">(maxCnt = <span class="number">1000000</span>)</span>:</span></div><div class="line">accCnt = <span class="number">0</span></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(maxCnt):</div><div class="line">	x = np.random.random()</div><div class="line">	y = np.random.random()</div><div class="line">	<span class="keyword">if</span> np.sqrt(x**<span class="number">2</span> + y**<span class="number">2</span>) &lt; <span class="number">1</span>:</div><div class="line">		accCnt += <span class="number">1</span></div><div class="line"><span class="keyword">print</span> <span class="string">"PI="</span>, float(accCnt) / maxCnt *<span class="number">4</span></div></pre></td></tr></table></figure>
 
