@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="1、vi编辑器概述1.1 启动vi编辑器启动vi编辑器的方式如下：    命令 说明     vi filename，vim filename 从filename文件的第1行开始编辑，即光标默认停留在文件的第1行第一个字符处。   vi/vim + n filename 从filename文件的第n行开始编辑，即光标默认停留在文件的第n行的第一个字符处   vi/vim + filename 从f">
+<meta name="description" content="1、vi编辑器概述1.1 启动vi编辑器启动vi编辑器的方式如下：     命令 说明     vi filename，vim filename 从filename文件的第1行开始编辑，即光标默认停留在文件的第1行第一个字符处。   vi/vim + n filename 从filename文件的第n行开始编辑，即光标默认停留在文件的第n行的第一个字符处   vi/vim + filename 从">
 <meta name="keywords" content="Linux,工具使用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vi编辑器使用">
 <meta property="og:url" content="https://ilewseu.github.io/2017/10/10/Vi编辑器使用/index.html">
 <meta property="og:site_name" content="记录思考">
-<meta property="og:description" content="1、vi编辑器概述1.1 启动vi编辑器启动vi编辑器的方式如下：    命令 说明     vi filename，vim filename 从filename文件的第1行开始编辑，即光标默认停留在文件的第1行第一个字符处。   vi/vim + n filename 从filename文件的第n行开始编辑，即光标默认停留在文件的第n行的第一个字符处   vi/vim + filename 从f">
+<meta property="og:description" content="1、vi编辑器概述1.1 启动vi编辑器启动vi编辑器的方式如下：     命令 说明     vi filename，vim filename 从filename文件的第1行开始编辑，即光标默认停留在文件的第1行第一个字符处。   vi/vim + n filename 从filename文件的第n行开始编辑，即光标默认停留在文件的第n行的第一个字符处   vi/vim + filename 从">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2017-10-10T15:43:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Vi编辑器使用">
-<meta name="twitter:description" content="1、vi编辑器概述1.1 启动vi编辑器启动vi编辑器的方式如下：    命令 说明     vi filename，vim filename 从filename文件的第1行开始编辑，即光标默认停留在文件的第1行第一个字符处。   vi/vim + n filename 从filename文件的第n行开始编辑，即光标默认停留在文件的第n行的第一个字符处   vi/vim + filename 从f">
+<meta name="twitter:description" content="1、vi编辑器概述1.1 启动vi编辑器启动vi编辑器的方式如下：     命令 说明     vi filename，vim filename 从filename文件的第1行开始编辑，即光标默认停留在文件的第1行第一个字符处。   vi/vim + n filename 从filename文件的第n行开始编辑，即光标默认停留在文件的第n行的第一个字符处   vi/vim + filename 从">
 
 
 
@@ -408,6 +408,7 @@
 
       
         <h2 id="1、vi编辑器概述"><a href="#1、vi编辑器概述" class="headerlink" title="1、vi编辑器概述"></a>1、vi编辑器概述</h2><h3 id="1-1-启动vi编辑器"><a href="#1-1-启动vi编辑器" class="headerlink" title="1.1 启动vi编辑器"></a>1.1 启动vi编辑器</h3><p>启动vi编辑器的方式如下：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -442,6 +443,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <a id="more"></a>
 <p>当用vim打开并编辑一个文件时，该文件会被自动锁定。如果此时另一用户也希望打开该文件进行编辑将会出现一些提醒：</p>
 <ul>
@@ -452,6 +454,7 @@
 </ul>
 <h3 id="1-2退出vi"><a href="#1-2退出vi" class="headerlink" title="1.2退出vi"></a>1.2退出vi</h3><p>退出vi可按下Esc键，然后输入q即可退出vi，返回Shell提示符。</p>
 <h3 id="1-3-命令模式"><a href="#1-3-命令模式" class="headerlink" title="1.3 命令模式"></a>1.3 命令模式</h3><p>用户可以输入命令，通过命令实现移动光标、删除或修改部分文本以及如复制、粘贴、退出等操作。命令一经输入就立即执行，不需要按回车键。不管在什么模式下，只要按一下Esc键，即可将vi切换到命令模式下：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -486,8 +489,10 @@
 </tr>
 </tbody>
 </table>
+</div>
 <h3 id="1-4-末行模式"><a href="#1-4-末行模式" class="headerlink" title="1.4 末行模式"></a>1.4 末行模式</h3><p>在命令模式下按下冒号键即可切换到末行模式。此时光标停留在最后一行上，并等待用户输入所需执行的末行命令。当用户输入命令后，按回车键，命令即可被执行。例如，输入命令set number并按回车键后，使得光标跳到指定的行。</p>
 <h2 id="1-2-vi中常用命令"><a href="#1-2-vi中常用命令" class="headerlink" title="1.2 vi中常用命令"></a>1.2 vi中常用命令</h2><h3 id="1-2-1-插入命令：i和I"><a href="#1-2-1-插入命令：i和I" class="headerlink" title="1.2.1 插入命令：i和I"></a>1.2.1 插入命令：i和I</h3><h3 id="1-2-2-附加文本命令：a和A"><a href="#1-2-2-附加文本命令：a和A" class="headerlink" title="1.2.2 附加文本命令：a和A"></a>1.2.2 附加文本命令：a和A</h3><h3 id="1-2-3-字符与块删除命令"><a href="#1-2-3-字符与块删除命令" class="headerlink" title="1.2.3 字符与块删除命令"></a>1.2.3 字符与块删除命令</h3><p>在命令行模式下，删除命令分两种，一种是字符删除命令，一种是块删除命令<br>删除字符使用x/X命令，x命令可以删除当前字符，X命令可以删除当前光标左侧字符。如果在使用命令前指定了重复的次数，可连续删除多个字符。例如，命令3w表示删除从当前光标位置开始向后的3个字符，命令3W表示删除当前光标之前的3个字符。<br>命令d/D可以把指定的文本块从工作缓冲区中删除。命令D表示删除从当前光标开始到本行未尾一段字符。命令d还需配合其他命令组合来确定删除文本块的大小。具体的使用如下：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -542,6 +547,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <h3 id="1-2-4-行合并命令：J"><a href="#1-2-4-行合并命令：J" class="headerlink" title="1.2.4 行合并命令：J"></a>1.2.4 行合并命令：J</h3><p>在命令行模式 下，合并命令可将当前行的末尾与下一行连接起来，并在两行之间插入一个空格，合并后光标定位到该空格处。如果当前行以句号结束，则会在两行之间插入两个空格。</p>
 <h3 id="1-2-5-文本替换命名"><a href="#1-2-5-文本替换命名" class="headerlink" title="1.2.5 文本替换命名"></a>1.2.5 文本替换命名</h3><p>在命令行模式下，替换命令s/S可以删除指定的文本，并使vi进行插入模式。命令s只替换当前字符，即删除当前光标所在位置的字符并切换到插入模式。命令S与命令cc类似，可以删除当前行并切换到插入模式。编辑完文本后，按esc键可以切换到命令模式，完成替换操作。<br>在命令s前加入数字可以指定要替换字符的数目。例如，3s表示删除从当前光标所在字符开始的3个字符，并且切换到插入模式。如果指定的数目超出了当前行的行尾，则删除到行尾结束。</p>
 <h3 id="1-2-6-句点命令"><a href="#1-2-6-句点命令" class="headerlink" title="1.2.6 句点命令"></a>1.2.6 句点命令</h3><p>在命令行模式下，句点命令将重复执行最近一次的修改命令。例如，如果刚刚用命令dd删除了当前一行，那么命令.将会继续删除接下来的一行。</p>
@@ -557,6 +563,7 @@
 <blockquote>
 <p>分隔符可以使用除字母、数字、空白符和反斜杠之外的任意其他字符，但应保持search前后的分隔符相同。</p>
 </blockquote>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -603,6 +610,8 @@
 </tr>
 </tbody>
 </table>
+</div>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -649,10 +658,12 @@
 </tr>
 </tbody>
 </table>
+</div>
 <h3 id="1-3-3-更改大小写的命令"><a href="#1-3-3-更改大小写的命令" class="headerlink" title="1.3.3 更改大小写的命令"></a>1.3.3 更改大小写的命令</h3><p>在命令模式下，代字符（~）可以用来更改字母的大小写，可以将小写字母改为大写，也可以将大写字母改为小写。</p>
 <h3 id="1-3-4-定位到指定行命令"><a href="#1-3-4-定位到指定行命令" class="headerlink" title="1.3.4 定位到指定行命令"></a>1.3.4 定位到指定行命令</h3><p>在命令模式下，输入命令“行号+G”可以将当前光标定位到缓冲区中指定的行， 如果没有指定行号，默认将光标定位到缓冲区的最后一行。命令G不需要缓冲区显式地给出行号，即即使不显示行号，也可以定位到指定的行。例如，在命令行模式下，输入3G可以将光标定位到缓冲区第3行。</p>
 <h3 id="1-3-5-显示状态信息命令"><a href="#1-3-5-显示状态信息命令" class="headerlink" title="1.3.5 显示状态信息命令"></a>1.3.5 显示状态信息命令</h3><p>显示文件状态信息通常有 两种方式：在命令模式下，按ctrl+G组合键和在末行模式下使用命令f</p>
-<h3 id="1-3-6-保存和退出命令"><a href="#1-3-6-保存和退出命令" class="headerlink" title="1.3.6 保存和退出命令"></a>1.3.6 保存和退出命令</h3><table>
+<h3 id="1-3-6-保存和退出命令"><a href="#1-3-6-保存和退出命令" class="headerlink" title="1.3.6 保存和退出命令"></a>1.3.6 保存和退出命令</h3><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>命令</th>
@@ -686,12 +697,14 @@
 </tr>
 </tbody>
 </table>
+</div>
 <h2 id="1-4-窗口操作"><a href="#1-4-窗口操作" class="headerlink" title="1.4 窗口操作"></a>1.4 窗口操作</h2><h3 id="1-4-1-窗口操作的快捷方式"><a href="#1-4-1-窗口操作的快捷方式" class="headerlink" title="1.4.1 窗口操作的快捷方式"></a>1.4.1 窗口操作的快捷方式</h3><ul>
 <li>组合键ctrl+W+S：用于打开编辑同一个文件的另一个窗口，即用于实现窗口的水平切分。</li>
 <li>组合键ctrl+W+N：可以用于打开一个新的窗口编辑一个新的文件。</li>
 <li>组合键Ctrl+W+W：可以实现多个窗口之间的切换。</li>
 </ul>
 <h3 id="1-4-2-窗口垂直拆分：vsplit"><a href="#1-4-2-窗口垂直拆分：vsplit" class="headerlink" title="1.4.2 窗口垂直拆分：vsplit"></a>1.4.2 窗口垂直拆分：vsplit</h3><h3 id="1-4-3-窗口水平拆分：split"><a href="#1-4-3-窗口水平拆分：split" class="headerlink" title="1.4.3 窗口水平拆分：split"></a>1.4.3 窗口水平拆分：split</h3><h3 id="1-4-4-屏幕滚动"><a href="#1-4-4-屏幕滚动" class="headerlink" title="1.4.4 屏幕滚动"></a>1.4.4 屏幕滚动</h3><p>当一个文件的行数超出了屏幕所能显示的最大行数时，需要上下滚动文本才能观察到全部内容。滚动的方向是相对文本而言的，不是相对屏幕。向下滚动意味着向文件的结尾处移动。具体滚动命令如下：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -726,6 +739,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 
       
     </div>
