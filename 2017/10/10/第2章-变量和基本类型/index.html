@@ -410,7 +410,6 @@
         <h2 id="2-1-基本内置类型"><a href="#2-1-基本内置类型" class="headerlink" title="2.1 基本内置类型"></a>2.1 基本内置类型</h2><p> C++提供了一套包括算术类型和空类型在内的基本数据类型。其中，算术类型包括字符、整型数、布尔值和浮点数。空类型不对应具体的值，仅用于一些特殊的场合。</p>
 <a id="more"></a>
 <h3 id="2-1-1-算术类型"><a href="#2-1-1-算术类型" class="headerlink" title="2.1.1 算术类型"></a>2.1.1 <strong>算术类型</strong></h3><p>算术类型分为两类：整型（包括字符和布尔类型）和浮点型。C++算数类型如下表所示：</p>
-<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -482,7 +481,6 @@
 </tr>
 </tbody>
 </table>
-</div>
 <p>除去布尔型和扩展的字符型之外，其他整型可以划分为<strong>带符号的（singed）</strong>和<strong>无符号（unsigned）</strong>的两种。带符号类型可以表示正数、负数和0，无符号的类型仅能表示大于等于0的值。int、short、long和long long都是带符号的，通过在这些类型前添加unsigned就可以得到无符号类型。<strong>与其他整型不同，字符型被分为了三种：char、signed char和unsigned char</strong>。尽管字符型有三种，但是字符型的表现形式只有两种：带符号的和无符号的。</p>
 <p><strong>如何选择合适的类型</strong></p>
 <ul>
@@ -491,7 +489,7 @@
 <li>在算术表达式中不要使用char或bool，只有在存放字符或布尔值时才使用他们。因为类型char在一些机器上是由符号的，而在另一些机器上又是无符号的，所有如果使用char进行运算特别容易出现问题。如果使用的整数为一个不大的整数，那么明确指定它的类型是singed char或unsigned char。</li>
 <li>执行浮点数运算选用double，因为float通常精度不够而且双精度浮点数和单精度浮点数的计算代价相差无几。</li>
 </ul>
-<h3 id="2-1-2-类型转换"><a href="#2-1-2-类型转换" class="headerlink" title="2.1.2 类型转换"></a>2.1.2 类型转换</h3><p>C++类型转换时的处理操作：</p>
+<p>###2.1.2 类型转换<br>C++类型转换时的处理操作：</p>
 <ul>
 <li>将非布尔类型的算术值赋值给布尔类型时，初始值为0则结果为false，否则结果为true。</li>
 <li>将布尔值赋给非布尔类型时，初始值为false结果为0，初始值为true结果为1。</li>
@@ -815,7 +813,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-基本内置类型"><span class="nav-number">1.</span> <span class="nav-text">2.1 基本内置类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-算术类型"><span class="nav-number">1.1.</span> <span class="nav-text">2.1.1 算术类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-类型转换"><span class="nav-number">1.2.</span> <span class="nav-text">2.1.2 类型转换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-变量"><span class="nav-number">2.</span> <span class="nav-text">2.2 变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-复合类型"><span class="nav-number">3.</span> <span class="nav-text">2.3 复合类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-引用"><span class="nav-number">3.1.</span> <span class="nav-text">2.3.1 引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-指针"><span class="nav-number">3.2.</span> <span class="nav-text">2.3.2 指针</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-const限定符"><span class="nav-number">4.</span> <span class="nav-text">2.4 const限定符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-1-const的引用"><span class="nav-number">4.1.</span> <span class="nav-text">2.4.1 const的引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-2-指针和const"><span class="nav-number">4.2.</span> <span class="nav-text">2.4.2 指针和const</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-处理类型"><span class="nav-number">5.</span> <span class="nav-text">2.5 处理类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-1-类型别名"><span class="nav-number">5.1.</span> <span class="nav-text">2.5.1 类型别名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-2-auto类型说明符"><span class="nav-number">5.2.</span> <span class="nav-text">2.5.2 auto类型说明符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-3-decltype类型指示符"><span class="nav-number">5.3.</span> <span class="nav-text">2.5.3 decltype类型指示符</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-基本内置类型"><span class="nav-number">1.</span> <span class="nav-text">2.1 基本内置类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-算术类型"><span class="nav-number">1.1.</span> <span class="nav-text">2.1.1 算术类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-变量"><span class="nav-number">2.</span> <span class="nav-text">2.2 变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-复合类型"><span class="nav-number">3.</span> <span class="nav-text">2.3 复合类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-引用"><span class="nav-number">3.1.</span> <span class="nav-text">2.3.1 引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-指针"><span class="nav-number">3.2.</span> <span class="nav-text">2.3.2 指针</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-const限定符"><span class="nav-number">4.</span> <span class="nav-text">2.4 const限定符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-1-const的引用"><span class="nav-number">4.1.</span> <span class="nav-text">2.4.1 const的引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-2-指针和const"><span class="nav-number">4.2.</span> <span class="nav-text">2.4.2 指针和const</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-处理类型"><span class="nav-number">5.</span> <span class="nav-text">2.5 处理类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-1-类型别名"><span class="nav-number">5.1.</span> <span class="nav-text">2.5.1 类型别名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-2-auto类型说明符"><span class="nav-number">5.2.</span> <span class="nav-text">2.5.2 auto类型说明符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-3-decltype类型指示符"><span class="nav-number">5.3.</span> <span class="nav-text">2.5.3 decltype类型指示符</span></a></li></ol></li></ol></div>
             
 
           </div>

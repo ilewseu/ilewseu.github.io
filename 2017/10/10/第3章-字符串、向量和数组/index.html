@@ -419,8 +419,7 @@
 <li>头文件不应包含using声明</li>
 </ul>
 <h2 id="3-2-标准库类型string"><a href="#3-2-标准库类型string" class="headerlink" title="3.2 标准库类型string"></a>3.2 标准库类型string</h2><p>标准库类型string表示可变长的字符序列，使用string类型必须首先包含string头文件。作为标准库的一部分，string定义在命名空间std中。包含头文件的代码如下：<br><a id="more"></a><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">string</span>;</div></pre></td></tr></table></figure></p>
-<h3 id="3-2-1-定义和初始化string对象"><a href="#3-2-1-定义和初始化string对象" class="headerlink" title="3.2.1 定义和初始化string对象"></a>3.2.1 定义和初始化string对象</h3><div class="table-container">
-<table>
+<h3 id="3-2-1-定义和初始化string对象"><a href="#3-2-1-定义和初始化string对象" class="headerlink" title="3.2.1 定义和初始化string对象"></a>3.2.1 定义和初始化string对象</h3><table>
 <thead>
 <tr>
 <th><strong>初始string对象的方式</strong></th>
@@ -444,7 +443,6 @@
 </tr>
 </tbody>
 </table>
-</div>
 <p><strong>直接初始化和拷贝初始化</strong></p>
 <p>c++语言有几种不同的初始化方式，通过string我们可以清楚地看到在这些初始化方式之间到底有什么区别和联系。如果使用等号（=）初始化一个变量，实际上执行的是<strong>拷贝初始化</strong>，编译器把等号右侧的初始值拷贝到新创建的对象中去。与之相反，如果不使用等号，则执行的是<strong>直接初始化</strong>。</p>
 <h3 id="3-2-2-string对象上的操作"><a href="#3-2-2-string对象上的操作" class="headerlink" title="3.2.2 string对象上的操作"></a>3.2.2 string对象上的操作</h3><p>string对象上的操作如下图所示：</p>
@@ -467,7 +465,6 @@
 <h3 id="3-3-2-向vector对象中添加元素"><a href="#3-3-2-向vector对象中添加元素" class="headerlink" title="3.3.2 向vector对象中添加元素"></a>3.3.2 向vector对象中添加元素</h3><p>使用push_back()方法可以向vector对象中添加元素。</p>
 <h3 id="3-3-3-vector的其他操作"><a href="#3-3-3-vector的其他操作" class="headerlink" title="3.3.3 vector的其他操作"></a>3.3.3 vector的其他操作</h3><p><img src="http://of6h3n8h0.bkt.clouddn.com/blog/171003/geBICKJIal.jpg?imageslim" alt="mark"></p>
 <h2 id="3-4-迭代器介绍"><a href="#3-4-迭代器介绍" class="headerlink" title="3.4 迭代器介绍"></a>3.4 迭代器介绍</h2><p><strong>迭代器的运算符</strong><br>下表列举了迭代器支持的一些运算。使用==和!=来比较两个合适的迭代器是否相等，如果两个迭代器指向的元素相同或者都是同一个容器的尾后迭代器，则他们相等；否则就说两个迭代器不相等。</p>
-<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -485,7 +482,7 @@
 <td>++iter                    令iter指示容器中的下一个元素</td>
 </tr>
 <tr>
-<td>—iter                       令iter指示容器的上一个元素</td>
+<td>–iter                       令iter指示容器的上一个元素</td>
 </tr>
 <tr>
 <td>iter1 == iter2          判断两个迭代器是否相等，如果两个迭代器指示的同一个元素</td>
@@ -495,7 +492,6 @@
 </tr>
 </tbody>
 </table>
-</div>
 <p><strong>begin和end运算符</strong></p>
 <p>begin和end返回的具体类型由对象是否是常量决定，如果对象是常量，begin和end返回const_iterator；如果对象不是常量，返回iterator；</p>
 <p><strong>结合解引用和成员访问操作</strong></p>
