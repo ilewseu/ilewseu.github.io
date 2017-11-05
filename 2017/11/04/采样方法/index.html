@@ -100,7 +100,7 @@
 <meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171104/0abfm4cm48.png?imageslim">
 <meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171104/D6l5b55I3g.png?imageslim">
 <meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171104/3kkJia7CKA.png?imageslim">
-<meta property="og:updated_time" content="2017-11-05T08:45:08.000Z">
+<meta property="og:updated_time" content="2017-11-05T08:48:07.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="采样方法">
 <meta name="twitter:description" content="在前两周组内的技术分享中，分享了采样方法。之前在研究生阶段就对采样方法很是疑惑，特别是在看LDA时，用到的Gibbs采样，很多次尝试去学习这一知识点，但都一知半解。所以，借这个机会认真学习一下采样方法相关的知识。本文主要是记录一下自己在学习采样方法时，对不同采样方法原理的理解，主要包括蒙特卡洛方法介绍和5中不同的采样方法。  蒙特卡洛方法首先说一下蒙特卡洛方法，Monte Carlo方法，又称为">
@@ -470,7 +470,7 @@
 </ol>
 <p><strong>解释一下上面的从条件概率分布$P(x|x_t)$中采样出样本为$x_{t+1}$。为什么要从$P(x|x_t)$中进行采样？</strong><br><strong>因为，当前的状态为$x_t$，从当前状态$x_t$进行转移，可转移到的状态为状态空间集合，所以要以当前状态为条件向其他状态进行转移，所以要从$P(x|x_t)$中进行采样。例如，人口分布的例子，假设当前的状态是农村，那么从农村转移到农村、城镇和城市的概率分别为0.5、0.4和0.1，即$P(x|x_t)=[0.5,0.4,0.1]$，转移时要按照这个分布进行转移，即采样时要按照这个分布进行采样，使用均匀分布可以很容易实现。而状态转移为连续的情况，则$P(x|x_t)$则是一个具体的连续分布，通过对$P(x|x_t)$的采样，实现转移。</strong></p>
 <p>可以看出，我们要采样的目标分布为$\pi(x)$,如果我们能够构建一个状态转移矩阵P，使得其马氏链上的平稳分布是$\pi(x)$，那么初始化一个状态，按照状态转移矩阵P进行转移，经过n次后收敛，第n+1次后的样本都是符合$\pi(x)$分布的。所以，<strong>MCMC采样方法的关键是构建状态转移矩阵P。如何构建这个状态转移矩阵P呢？首先看一下马尔科夫链的细致平稳条件</strong>：<br><strong>如果一个非周期的马尔科夫链状态转移矩阵为P和概率分布$\pi(x)$，对于所有的i，j满足：$$<br>\pi(i)P(i,j)=\pi(j)P(j,i)$$</strong>其中，P(i,j)表示状态i转移到状态j的概率,则称$\pi(x)$是状态转移矩阵P的平稳分布。<br><strong>证明：</strong>$$<br>\sum_{i=1}^\infty \pi(i)P(i,j)=\sum_{i=1}^\infty \pi(j)P(j,i)=\pi(j)\sum_{i=1}^\infty P(j,i) = \pi(j)<br>$$写成矩阵的形式，即：$$\pi P=\pi$$由于$\pi$是$\pi P=\pi$的解，所以$\pi$是一个平稳分布。上式被称为细致平稳条件(detailed balance condition)。 </p>
-<p>其实这个定理是显而易见的，因为细致平稳条件的物理含义就是对于任何两个状态i,j 从i转移出去到j而丢失的概率质量，恰好会被从j转移回i的概率质量补充回来，所以状态i上的概率质量$\pi(i)$是稳定的，从而$\pi(x)$是马尔科夫链的平稳分布。从细致平稳条件可以看出，只要找到可以使概率分布$\pi(x)$满足细致平稳分布的矩阵P即可。<br>假设在进行采样之前已经存在一个状态转移矩阵Q，Q(i,j)表示从状态i转移到状态q的概率，也可以表示为Q(j|i),通常情况下：<br>$$<br>\pi(i)Q(i,j)\neq \pi(j)Q(j,i)<br>$$<br>也就是说不满足细致平稳条件。不过可以对其进行改造，使其满足细致平稳条件。具体的是引入$\alpha$使得上面的公式成立，即：<br>$$\pi(i)Q(i,j)\alpha(i,j)=\pi(j)Q(j,i)\alpha(j,i)$$<br>什么样的$\alpha$能够使上式成立呢？最简单的，按照对称性，可以取如下的值：<br>$$<br>\alpha(i,j)=\pi(j)Q(j,i)\\\\<br>\alpha(j,i)=\pi(i)Q(j,i)<br>$$<br>在改造Q的过程中，引入的$\alpha(i,j)$称为接受率，取值在[0,1]之间，物理意义可以理解为在原来的马尔科夫链上，从状态i以Q(i,j)的概率转跳转到状态j的时候，我们以$\alpha(i,j)$的概率接受这个转移。这样就可以得到新的马尔科夫链的转移概率为$\Q(i,j)\alpha(i,j)$。通过这种改造，就能够进行采样了。MCMC采样过程如下：</p>
+<p>其实这个定理是显而易见的，因为细致平稳条件的物理含义就是对于任何两个状态i,j 从i转移出去到j而丢失的概率质量，恰好会被从j转移回i的概率质量补充回来，所以状态i上的概率质量$\pi(i)$是稳定的，从而$\pi(x)$是马尔科夫链的平稳分布。从细致平稳条件可以看出，只要找到可以使概率分布$\pi(x)$满足细致平稳分布的矩阵P即可。<br>假设在进行采样之前已经存在一个状态转移矩阵Q，Q(i,j)表示从状态i转移到状态q的概率，也可以表示为Q(j|i),通常情况下：<br>$$<br>\pi(i)Q(i,j)\neq \pi(j)Q(j,i)<br>$$<br>也就是说不满足细致平稳条件。不过可以对其进行改造，使其满足细致平稳条件。具体的是引入$\alpha$使得上面的公式成立，即：<br>$$\pi(i)Q(i,j)\alpha(i,j)=\pi(j)Q(j,i)\alpha(j,i)$$<br>什么样的$\alpha$能够使上式成立呢？最简单的，按照对称性，可以取如下的值：<br>$$<br>\alpha(i,j)=\pi(j)Q(j,i)\\\\<br>\alpha(j,i)=\pi(i)Q(j,i)<br>$$<br>在改造Q的过程中，引入的$\alpha(i,j)$称为接受率，取值在[0,1]之间，物理意义可以理解为在原来的马尔科夫链上，从状态i以Q(i,j)的概率转跳转到状态j的时候，我们以$\alpha(i,j)$的概率接受这个转移。这样就可以得到新的马尔科夫链的转移概率为$Q(i,j)\alpha(i,j)$。通过这种改造，就能够进行采样了。MCMC采样过程如下：</p>
 <p><strong>MCMC采样算法</strong></p>
 <ol>
 <li>初始化马尔科夫链初始状态$X_0=x_0$</li>
