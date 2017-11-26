@@ -100,7 +100,7 @@
 <meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171104/0abfm4cm48.png?imageslim">
 <meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171104/D6l5b55I3g.png?imageslim">
 <meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171104/3kkJia7CKA.png?imageslim">
-<meta property="og:updated_time" content="2017-11-26T12:23:59.850Z">
+<meta property="og:updated_time" content="2017-11-26T12:26:18.870Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="采样方法">
 <meta name="twitter:description" content="在前两周组内的技术分享中，分享了采样方法。之前在研究生阶段就对采样方法很是疑惑，特别是在看LDA时，用到的Gibbs采样，很多次尝试去学习这一知识点，但都一知半解。所以，借这个机会认真学习一下采样方法相关的知识。本文主要是记录一下自己在学习采样方法时，对不同采样方法原理的理解，主要包括蒙特卡洛方法介绍和5中不同的采样方法。  蒙特卡洛方法首先说一下蒙特卡洛方法，Monte Carlo方法，又称为">
@@ -514,7 +514,7 @@
 <p>上面的MCMC采样算法已经能够很好的工作了，但是它存在一个缺陷:<strong>马氏链在转移的过程中的接受率$\alpha(i,j)$可能偏小，这样采样过程中，马氏链不容易转移，一直处于原地，导致收敛到平稳分布的速度偏慢</strong>。假设$\alpha(i,j)=0.1,\alpha(j,i)=0.2$，假设在此时满足细致平稳条件，于是有：<br>$$\pi(i)Q(i,j).0.1 = \pi(j)\alpha(j,i).0.2$$将上式两边同时扩大5倍，等式变为：<br>$$\pi(i)Q(i,j).0.5 = \pi(j)\alpha(j,i).1$$<br>可以看到细致平稳条件并没有被打破，而接受率变大了。因此，我们可以把细致平稳条件中的$\alpha(i,j)$和$\alpha(j,i)$同比例放大，使得两个数中较大的那个放大到1，这样就提高了采样中的跳转的接受率。于是$\alpha(i,j)$可以取下面的值:$$<br>\alpha(i,j) = min{\frac {\pi(j)Q(j,i)} {\pi(i)Q(i,j)},1}<br>$$<br>这样，就完成了对MCMC采样算法的改造，这就是Metropolis-Hastings采样算法，其采样过程如下：<br><strong>Metropolis-Hastings采样算法</strong></p>
 <ol>
 <li>初始化马尔科夫链初始状态$X_0=x_0$</li>
-<li>fo t=0,1,2,… do:<br>2.1 在t时刻马尔科夫链状态为$X_t=x_t$，从$Q(x|x_t)$中采样出一个样本y<br>2.2 从均匀分布中采样出u~Uniform(0,1)<br>2.3 如果$u&lt;\alpha(x_t,y)=min{\frac {\pi(y)Q(y,x_t)} {\pi(x_t)Q(x_t,y)},1}$，则接受转移$x_{t+1}=y$<br>2.4 否则，不接受转移，$x_{t+1}=x_t$</li>
+<li>for t=0,1,2,… do:<br>2.1 在t时刻马尔科夫链状态为$X_t=x_t$，从$Q(x|x_t)$中采样出一个样本y<br>2.2 从均匀分布中采样出u~Uniform(0,1)<br>2.3 如果$u&lt;\alpha(x_t,y)=min{\frac {\pi(y)Q(y,x_t)} {\pi(x_t)Q(x_t,y)},1}$，则接受转移$x_{t+1}=y$<br>2.4 否则，不接受转移，$x_{t+1}=x_t$</li>
 </ol>
 <h2 id="Gibbs-Sampling"><a href="#Gibbs-Sampling" class="headerlink" title="Gibbs Sampling"></a>Gibbs Sampling</h2><p>虽然MCMC采样和Metropolis-Hasting采样算法已经能够解决蒙特卡罗方法中需要的任意概率分布的样本的问题。但是还是存在一定的缺陷，首先是采样过程中要计算接受率，在高维时，计算量大，可能存在辛辛苦苦计算出的接受率，最终被拒绝，不跳转。并且由于接受率的原因导致算法的收敛时间变长。其次是，对于高维空间，状态的条件概率分布好求解，但是联合分布不好求。针对这一问题，对于高维空间的数据采样，Stuart Geman和Donald Geman这两兄弟于1984年提出来了Gibbs Sampling算法。Gibbs Sampling算法思想是通过构建状态转移矩阵，使得接受率为1，从而提升了接受的效率。对于二维情形，假设存在一个概率分布P(x,y)，对于x坐标相同的两个点$A(x_1,y_1),B(x_1,y_2)$可以得到如下公式：<br>$$<br>p(x_1,y_1)p(y_2|x_1) = p(x_1)p(y_1|x_1)p(y_2|x_1)\\\\<br>p(x_1,y2)p(y_1|x_1)=p(x_1)p(y_2|x_1)p(y_1|x_1)<br>$$<br>上面的转换是利用乘法公式进行转换的。于是可以得到：<br>$$<br>p(x_1,y_1)p(y_2|x_1) = p(x_1,y_2)p(y_1,x_1)\\\\<br>p(A)p(y_2|x_1) = p(B)p(y_1|x_1)<br>$$<br>可以看到，在$x=x_1$这条直线上，如果使用条件概率分布$p(y|x_1)$作为任意两点转移概率，那么任何两点之间的转移概率满足细致平稳条件。同样，在$y=y_1$这条直线上任取两点$A(x_1,y_1),C(x_2,y_1)$，同样有：<br>$$p(A)p(x_2|y_1)=p(C)p(x_1|y_1)$$<br>于是可以构造平面上任意两点之间的转移概率矩阵Q:<br>$$<br>Q(A-&gt;B)=p(y_B|x_1), if x_A=x_B=x_1\\\\<br>Q(A-&gt;C)=P(x_C|y_1), if y_A=y_C=y_1\\\\<br>Q(A-&gt;D)=0，其他<br>$$<br>则对于平面上任意两点X,Y,很容易验证是否满足细致平稳条件：<br>$$p(X)Q(X-&gt;Y)=P(Y)Q(Y-&gt;X)$$<br>于是二维的Gibbs Sampling采样算法，采样过程如下：</p>
 <ol>
@@ -524,8 +524,9 @@
 <p>对于多维的情况，算法也是成立的。例如，一个n维的概率分布$\pi(x_1,x_2,…,x_n)$，可以通过在n个坐标轴上轮换进行采样，得到新的样本集。对于轮换到的任意一个坐标轴$x_i$上的转移，马尔科夫链的状态转移概率为$p(x_i|x_1,x_2,…,x_{i-1},x_{i+1},…,x_n)$。即固定n-1个坐标轴，在某一个坐标轴上移动，同样是满足细致平稳条件。多维的Gibbs Sampling算法采样过程如下：</p>
 <ol>
 <li>随机初始化${x_i:i=1,…,n}$</li>
-<li>对于t=0,1,2,…循环采样：<br>2.1 $X_{1}^{t+1} ~p(x_1|x_{2}^{(t)},x_{3}^{(t)},…,x_n^{(t)}$<br>2.2 $X_{2}^{t+1} ~p(x_2|x_{1}^{(t+1)},x_{3}^{(t)},…,x_n^{(t)}$<br>2.3 …<br>2.4 $X_{j}^{t+1} ~p(x_j|x_{1}^{(t+1)},x_{2}^{(t+1)},…,x_{j-1}^{(t+1)},x_{j+1}^{(t)},…,x_n^{(t)}$<br>2.5 …<br>2.5 $X_{n}^{t+1} ~p(x_1|x_{1}^{(t+1)},x_{2}^{(t+1)},…,x_{n-1}^{(t+1)}$<br>同样的，轮换坐标轴不是必须的，可以随机选择某一个坐标轴进行状态转移，只不过常用的Gibbs采样的实现都是基于坐标轴轮换的。</li>
+<li>对于t=0,1,2,…循环采样：<br>2.1 $X_{1}^{t+1} ~p(x_1|x_{2}^{(t)},x_{3}^{(t)},…,x_n^{(t)}$<br>2.2 $X_{2}^{t+1} ~p(x_2|x_{1}^{(t+1)},x_{3}^{(t)},…,x_n^{(t)}$<br>2.3 …<br>2.4 $X_{j}^{t+1} ~p(x_j|x_{1}^{(t+1)},x_{2}^{(t+1)},…,x_{j-1}^{(t+1)},x_{j+1}^{(t)},…,x_n^{(t)}$<br>2.5 …<br>2.5 $X_{n}^{t+1} ~p(x_1|x_{1}^{(t+1)},x_{2}^{(t+1)},…,x_{n-1}^{(t+1)}$</li>
 </ol>
+<p>同样的，轮换坐标轴不是必须的，可以随机选择某一个坐标轴进行状态转移，只不过常用的Gibbs采样的实现都是基于坐标轴轮换的。</p>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
 <li>Pattern Recognition and Machine Learning， Christopher Bishop，Chapter 11</li>
 <li>LDA数学八卦</li>
