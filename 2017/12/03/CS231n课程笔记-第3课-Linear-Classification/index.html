@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="DeepLearning,cs231n," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="记录思考" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="本文转自：https://zhuanlan.zhihu.com/p/20918580?refer=intelligentunit，原文：http://cs231n.github.io/linear-classify/，并进行一定修改。  本节课主要介绍线性分类器相关的知识，并将其用于图像分类。 线性分类器简介评分函数（score function):它是原始图像数据到类别分值的映射。损失函数（l">
+<meta name="keywords" content="DeepLearning,cs231n">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS231n课程笔记(3)  线性分类器">
+<meta property="og:url" content="https://ilewseu.github.io/2017/12/03/CS231n课程笔记-第3课-Linear-Classification/index.html">
+<meta property="og:site_name" content="记录思考">
+<meta property="og:description" content="本文转自：https://zhuanlan.zhihu.com/p/20918580?refer=intelligentunit，原文：http://cs231n.github.io/linear-classify/，并进行一定修改。  本节课主要介绍线性分类器相关的知识，并将其用于图像分类。 线性分类器简介评分函数（score function):它是原始图像数据到类别分值的映射。损失函数（l">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171129/I8Di490iHf.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171129/Gg03C99b1C.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171130/4FKLFI5ki6.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171201/f8I73cDDJi.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171201/9kiELFfDg3.jpg?imageslim">
+<meta property="og:updated_time" content="2017-12-16T16:05:44.987Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CS231n课程笔记(3)  线性分类器">
+<meta name="twitter:description" content="本文转自：https://zhuanlan.zhihu.com/p/20918580?refer=intelligentunit，原文：http://cs231n.github.io/linear-classify/，并进行一定修改。  本节课主要介绍线性分类器相关的知识，并将其用于图像分类。 线性分类器简介评分函数（score function):它是原始图像数据到类别分值的映射。损失函数（l">
+<meta name="twitter:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171129/I8Di490iHf.jpg?imageslim">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ilewseu.github.io/2017/12/03/CS231n课程笔记-第3课-Linear-Classification/"/>
+
+
+
+
+
+  <title>CS231n课程笔记(3)  线性分类器 | 记录思考</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7d771b3a7c8a49da8ba4db85e1e6ead7";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">记录思考</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">ML、DL、NLP</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ilewseu.github.io/2017/12/03/CS231n课程笔记-第3课-Linear-Classification/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="luerwei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="记录思考">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CS231n课程笔记(3)  线性分类器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-03T22:17:23+08:00">
+                2017-12-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/课程笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">课程笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+             <span id="/2017/12/03/CS231n课程笔记-第3课-Linear-Classification/" class="leancloud_visitors" data-flag-title="CS231n课程笔记(3)  线性分类器">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本文转自：<a href="https://zhuanlan.zhihu.com/p/20918580?refer=intelligentunit，原文：http://cs231n.github.io/linear-classify/，并进行一定修改。" target="_blank" rel="external">https://zhuanlan.zhihu.com/p/20918580?refer=intelligentunit，原文：http://cs231n.github.io/linear-classify/，并进行一定修改。</a></p>
+</blockquote>
+<p>本节课主要介绍线性分类器相关的知识，并将其用于图像分类。</p>
+<h2 id="线性分类器简介"><a href="#线性分类器简介" class="headerlink" title="线性分类器简介"></a>线性分类器简介</h2><p><strong>评分函数（score function)</strong>:它是原始图像数据到类别分值的映射。<br><strong>损失函数（loss function）</strong>：它是用来量化预测分类标签的得分与真实值之间的一致性。<br><a id="more"></a></p>
+<h3 id="从图像到标签分值的参数化映射"><a href="#从图像到标签分值的参数化映射" class="headerlink" title="从图像到标签分值的参数化映射"></a>从图像到标签分值的参数化映射</h3><p>该方法的第一步就是定义一个评分函数，这个函数将图像的像素值映射为各个类别的得分，得分的高低代表图像属于该类别的可能性高低。假设一个包含很多图像的训练集$x_i \in R^D，i=1,..,N$，每个图像都对应一个分类标签$y_i，i=1,…,K$。在CIFAR-10中，N=50000的训练集，每个图像有D=32*32*3=3072像素，而K=10。因为，图片被分为10个不同的类别。定义评分函数：$f:R^D\rightarrow R^K$，该函数是原始图像像素得到分类分值的映射。<br><strong>线性分类器</strong>定义一个线性映射：$$<br>f(x_i,W,b)=Wx_i+b<br>$$<br>其中，参数W称为权重，b称为偏差向量，这是因为它影响输出数值，但是并不和原始数据$x_i$产生关联。同时，需要注意以下几点：</p>
+<ul>
+<li>一个单独的矩阵乘法$Wx_i$就可以高效并行评估10个不同的分类器（每个分类器针对一个分类），其中每个类的分类器就是W的一个行向量。</li>
+<li>注意我们认为输入数据$(x_i,y_i)$是给定且不可改变的，但参数W和b是可控制改变的。我们通过设置这些参数，使得计算出的分类分值情况和训练集中图像数据的真实类别标签相符。</li>
+<li>该方法的一个优势是训练数据是用来学习到参数W和b的，一旦训练完成，训练数据就可以丢弃，留下学习到的参数即可。</li>
+<li>意只需要做一个矩阵乘法和一个矩阵加法就能对一个测试数据分类，这比k-NN中将测试图像和所有训练数据做比较的方法快多了。</li>
+</ul>
+<h3 id="理解线性分类器"><a href="#理解线性分类器" class="headerlink" title="理解线性分类器"></a>理解线性分类器</h3><p>线性分类器计算图像中3个颜色通道中所有像素的值与权重的矩阵乘，从而得到分类分值。根据我们对权重设置的值，对于图像中的某些位置的某些颜色，函数表现出喜好或者厌恶（根据每个权重的符号而定）。举个例子，可以想象“船”分类就是被大量的蓝色所包围（对应的就是水）。那么“船”分类器在蓝色通道上的权重就有很多的正权重（它们的出现提高了“船”分类的分值），而在绿色和红色通道上的权重为负的就比较多（它们的出现降低了“船”分类的分值）。</p>
+<p><strong>将图像看做高维度的点</strong>：既然图像被伸展成为一个高维度的列向量，那么我们可以把图像看做这个高维度空间的一个点。整个数据集就是一个点的集合，每个点都带有1个分类标签。既然定义每个分类类别的分值是权重和图像的矩阵乘法，那么每个分类类别的分数就是这个空间中的一个线性函数的函数值。我们没办法可视化3072维空间中的线性函数，但假设把这些维度挤压到二维，那么就可以看出线性分类器在做什么了：</p>
+<div align="center"><br>    <img src="http://of6h3n8h0.bkt.clouddn.com/blog/171129/I8Di490iHf.jpg?imageslim" alt="mark"><br></div><br>在上图中，每个图像是一个点，有3个分类器，以红色的汽车分类器为例，红线表示空间中汽车分类分数为0的点的集合，红色的箭头表示分值上升的方向。所有红线右边的点的分数值均为正，且线性升高。红线左边的点分值为负，且线性降低。从上面可以看到，W的每一行都是一个分类类别的分类器。对于这些数字的几何解释是：如果改变其中一行的数字，会看见分类器在空间中对应的直线开始向着不同方向旋转。而偏差b，则允许分类器对应的直线平移。需要注意的是，如果没有偏差，无论权重如何，在$x_i=0$时分类分值始终为0。这样所有分类器的线都不得不穿过原点。<br><strong>偏差和权重的合并技巧</strong>：之前评分函数定义为：$$<br>f(x_i,W,b)=Wx_i+b<br>$$<br>分开处理这两个参数有点笨拙，一般常用的方法是把两个参数放到同一个矩阵中，同时$x_i$向量就要增加一个维度，这个维度的数值是常量1，这就是默认的偏差维度的权重。这样新的公式就简化成下面这样：<br>$f(x_i,W)=Wx_i$<br>如下图所示，左边是先做矩阵乘法然后做加法，右边是将所有输入向量的维度增加1个含常量1的维度，并且在权重矩阵中增加一个偏差列，最后做一个矩阵乘法即可。左右是等价的，通过右边这样做，我们只需要学习一个权重矩阵，而不用去学习两个分别装着权重和偏差的矩阵。<br><div align="center"><br>    <img src="http://of6h3n8h0.bkt.clouddn.com/blog/171129/Gg03C99b1C.jpg?imageslim" alt="mark"><br></div>
+
+<p><strong>图像数据处理</strong>：在图像分类的例子中，图像上的每个像素可以看做一个特征，在实践中，对每个特征减去平均值来中心化数据是非常重要的。在这些图片的例子中，该步骤意味着根据训练集中所有的图像计算出一个平均图像值，然后每个图像都减去这个平均值，这样图像的像素值就大约分布在[-127, 127]之间了。下一个常见步骤是，让所有数值分布的区间变为[-1, 1]。零均值的中心化是很重要的。</p>
+<h2 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h2><p>损失函数的具体形式多种多样。首先，介绍常用的多类支持向量机（SVM）损失函数。SVM的损失函数想要SVM在正确分类上的得分始终比不正确分类上的得分高出一个边界值$\Delta$。假设，第i个数据中包含图像$x_i$的像素和代表正确类别的标签$y_i$。评分函数输入像素数据，然后通过公式$f(x_i,W)$来计算不同分类类别的分值。这里将分值简写为s。比如，针对第j个类别的得分就是第j个元素：$s_j=f(x_i,W)_j$。针对第i个数据的多类SVM的损失函数定义如下：<br>$$L_i=\sum_{j \neq y_i} max(0, s_j - s_{y_i}+\Delta)$$<br>举个例子，假设有3个类别，并且得到了分值s=[13,-7,11]。其中第一个类别是正确的类别，即$y_i=0$。同时，假设$\Delta=10$。上面的公式是将所有不正确分类($j\neq y_i$)加起来，所以我们会得到两个部分：$$<br>L_i=max(0,-7-13+10) + max(0, 11-13+10)$$<br>可以看到，第一个部分的结果是0，这一对类别分数和标签的损失值为0，这是因为正确分类的得分13与错误分类的得分-7的差为20，高于边界值10，而SVM只关心差距至少要大于10，更大差值还是算作损失值为0。第二个部分计算[11-13+10]得到8。虽然正确分类的得分比不正确分类的得分要高（13&gt;11），但是比10的边界值还是小了，分差只有2，这就是为什么损失值等于8。简而言之，SVM的损失函数想要正确分类类别$y_i$的分数比不正确类别分数高，而且至少要高$\Delta$。如果不满足这点，就开始计算损失值。那么，我们面对的是线性评分函数($f(x_i,W)=Wx_i$)，所以我们可以将损失函数稍微改写一下：$$<br>L_i = \sum_{j \neq y_i} max(0, w_j^Tx_i-w_{y_i}^Tx_i+\Delta)<br>$$<br>其中，$w_j$是权重W的第j行，被变形为列向量。然而，一旦开始考虑更复杂的评分函数f，这样做就不是必须的了。<br>max(0,-)函数，它常被称为折页损失(hinge loss)，有时候会听到使用平方折页损失SVM（即L2-SVM）,它使用的是$max(0,-)^2$，将更强烈地惩罚过界的边界值。不使用平方的更标准的版本，但是在某些数据集中，平方折页损失会工作得更好。可以通过交叉验证来决定到底使用哪个。</p>
+<p><div align="center"><br>    <img src="http://of6h3n8h0.bkt.clouddn.com/blog/171130/4FKLFI5ki6.jpg?imageslim" alt="mark"><br></div><br>多类SVM“想要”正确类别的分类分数比其他不正确分类类别的分数要高，而且至少高出delta的边界值。如果其他分类分数进入了红色的区域，甚至更高，那么就开始计算损失。如果没有这些情况，损失值为0。我们的目标是找到一些权重，它们既能够让训练集中的数据样例满足这些限制，也能让总的损失值尽可能地低。</p>
+<h2 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h2><p>上面的损失函数有一个问题，假设有一个数据集和权重集W能够正确分类每个数据。问题在于这个W并不唯一：可能有很多相似的W都能正确地分类所有的数据。一个简单的例子：如果W能够正确分类所有数据，即对于每个数据，损失值都是0。那么当$\lambda&gt;1$时，任何数乘$\lambda W$都能使得损失值为0，因为这个变化将所有分值的大小都均等地扩大了，所以它们之间的绝对差值也扩大了。举个例子，如果一个正确分类的分值和举例它最近的错误分类的分值的差距是15，对W乘以2将使得差距变成30。</p>
+<p>换句话说，我们希望能向某些特定的权重W添加一些偏好，对其他权重则不添加，以此来消除模糊性。这一点是能够实现的，方法是向损失函数增加一个正则化惩罚R(W)部分。最长用的正则化惩罚是L2范式，L2范式通过对所有参数进行逐元素的平方惩罚来抑制大数值的权重：$$<br>R(W)=\sum_k\sum_l W_{k,l}^2<br>$$<br>上面的表达式中，将W中所有元素平方求和。注意正则化函数不是数据的函数，仅基于权重。包含正则化惩罚后，就能够给出完整的多类SVM损失函数，它由两部分组成：数据损失，即所有样例的平均损失$L_i$，以及正则化损失。完整公式如下：</p>
+<p><div align="center"><br>    <img src="http://of6h3n8h0.bkt.clouddn.com/blog/171201/f8I73cDDJi.jpg?imageslim" alt="mark"><br></div><br>将其展开完整公式是：$$<br>L = \frac {1}{N}\sum_i\sum_{j\neq y_i}[max(0,f(x_i;W)_j - f(x_i;W)y_i+\Delta)] + \lambda \sum_k\sum_l W_{k,l}^2$$<br>其中，N是训练数据集的数据量。现在正则化惩罚添加到了损失函数里面，并用超参数$\lambda$来计算权重。该超参数无法简单确定，需要通过交叉验证来获取。<br>正则化最好的性质就是对大数值权重进行惩罚，可以提升泛化能力，因为这就意味着没有哪个维度能够独自对于整体分值由过大的影响。</p>
+<p>举个例子，假设输入向量x=[1,1,1,1]，两个权重向量$w_1=[1,0,0,0]，w_2=[0.25,0.25,0.25,0.25]$。那么，$w_1^T=w_2^T=1$，两个权重向量都得到同样的内积，但是$w_1$的L2惩罚是1.0，而$w_2$的L2惩罚是0.25。因此，根据L2惩罚来看，$w_2$更好，因为它的正则化损失更小。从直观上来看，这是因为w_2的权重值更小且更分散。既然L2惩罚倾向于更小更分散的权重向量，这就会鼓励分类器最终将所有维度上的特征都用起来，而不是强烈依赖其中少数几个维度。在后面的课程中可以看到，这一效果将会提升分类器的泛化能力，并避免过拟合。</p>
+<p>需要注意的是，和权重不同， 偏差没有这样的效果，因为它们并不控制输入维度上的影响强度。因此，通常只对权重W正则化，而不正则化偏差b。在实际操作中，可以发现这一操作的影响可忽略不计。最后，因为正则化惩罚的存在，不可能在所有的例子中得到0的损失值，这是因为只有当W=0的特殊情况下，才能得到损失值为0。</p>
+<p><strong>设置$\Delta$</strong><br>$\Delta$这个超参数在绝大多数情况下被设置为$\Delta=1.0$。超参数$\Delta$和$\lambda$看起来是两个不同的超参数，但实际上他们一起控制同一个权衡：即损失函数中的数据损失和正则化损失之间的权衡。理解这一点的关键是要知道，权重W的大小对于分类分值有直接影响：当我们将W中值缩小，分类分值之间的差异也变小，反之亦然。因此，不同分类分值之间的边界的具体值（比如$\Delta=1$或$\Delta=100$）从某些角度来看是没意义的，因为权重自己就可以控制差异变大和缩小。也就是说，真正的权衡是我们允许权重能够变大到何种程度（通过正则化强度$\lambda$来控制)。</p>
+<h2 id="Softmax分类器"><a href="#Softmax分类器" class="headerlink" title="Softmax分类器"></a>Softmax分类器</h2><p>SVM是最常用的两个分类器之一，而另一个就是Softmax分类器，它的损失函数和SVM的损失函数不同。Softmax分类器可以理解为逻辑回归分类器面对多个分类的一般化归纳。SVM将输出$f(x_i,W)$作为每个分类的评分。与SVM不同，Softmax的输出（归一化的分类概率）更加直观，并且从概率上可以解释。在Softmax分类器中，函数映射保持不变$f(x_i;W)=Wx_i$,但将这些评分视为每个分类的未归一化的对数概率，并将hinge loss替换为交叉熵损失(cross-entropy loss)。公式如下：$$<br>L_i=-log(\frac {e^{f_{y_i}}}{\sum_j e^{f_j}})<br>$$<br>在上式中，$f_j$表示评分向量f中的第j个元素。和之前一样，整个数据集的损失值是数据集中所有样本数据的损失值$L_i$的均值与正则化损失R(W)之和。其中函数$f_j(z) = \frac {e^{z_j}}{\sum_k e^{z_k}}$被称作为Softmax函数：其输入值是一个向量，向量中的元素为任意实数的评分值，函数对其进行压缩，输出一个向量，其中每个元素在0到1之间，且所有的元素之和为1。<br><strong>信息理论视角</strong>：在”真实”分布p和评估分布q之间的较差熵定义如下：$$<br>H(p,q)=-\sum_x p(x)logq(x)$$<br>因此，Softmax分类器所做的就是最小化在估计分类概率和在“真实”分布之间的较差熵。在这个解释中，“真实”分布就是所有概率密度都分布在正确的类别上（比如：p=[0,…,1,…,0]在某个位置就有一个单独的1）。还有，既然交叉熵可以写成熵和相对熵$H(p,q)=H(p)+D_{KL}(p||q)$，并且delta函数p的熵是0，那么就能等价的看做是对两个分别之间的相对熵做最小化操作。换句话说，交叉熵损失函数“想要”预测分布的所有概率密度都在正确分类上。</p>
+<p><strong>概率论解释</strong>：先看下面的公式:$$<br>P(y_i|x_i,W)=\frac {e^{f_{y_i}}}{\sum_j e^{f_j}}$$<br>可以解释为是给定图像数据$x_i$，以W为参数，分配给正确分类标签$y_i$的归一化概率。为了理解这点，请回忆一下Softmax分类器将输出向量f中的评分值解释为没有归一化的对数概率。那么以这些数值做指数函数的幂就得到了没有归一化的概率，而除法操作则对数据进行了归一化处理，使得这些概率的和为1。从概率论的角度来理解，我们就是在最小化正确分类的负对数概率，这可以看做是在进行最大似然估计（MLE）。该解释的另一个好处是，损失函数中的正则化部分R(W)可以被看做是权重矩阵W的高斯先验，这里进行的是最大后验估计（MAP）而不是最大似然估计。</p>
+<h2 id="SVM-和-Softmax的比较"><a href="#SVM-和-Softmax的比较" class="headerlink" title="SVM 和 Softmax的比较"></a>SVM 和 Softmax的比较</h2><p>下图有助于区分Softmax和SVM这两类分类器：</p>
+<p><div align="center"><br>    <img src="http://of6h3n8h0.bkt.clouddn.com/blog/171201/9kiELFfDg3.jpg?imageslim" alt="mark"><br></div><br>针对一个数据点，SVM和Softmax分类器的不同处理方式的例子。两个分类器都计算了同样的分值向量f（本节中是通过矩阵乘来实现）。不同之处在于对f中分值的解释：SVM分类器将它们看做是分类评分，它的损失函数鼓励正确的分类（本例中是蓝色的类别2）的分值比其他分类的分值高出至少一个边界值。Softmax分类器将这些数值看做是每个分类没有归一化的对数概率，鼓励正确分类的归一化的对数概率变高，其余的变低。SVM的最终的损失值是1.58，Softmax的最终的损失值是0.452，但要注意这两个数值没有可比性。只在给定同样数据，在同样的分类器的损失值计算中，它们才有意义。</p>
+<p><strong>Softmax分类器为每个分类提供了“可能性”</strong>：SVM的计算是无标定的，而且难以针对所有分类的评分值给出直观解释。Softmax分类器则不同，它允许我们计算出对于所有分类标签的可能性。举个例子，针对给出的图像，SVM分类器可能给你的是一个[12.5, 0.6, -23.0]对应分类“猫”，“狗”，“船”。而softmax分类器可以计算出这三个标签的“可能性”是[0.9, 0.09, 0.01]，这就让你能看出对于不同分类准确性的把握。为什么我们要在“可能性”上面打引号呢？这是因为可能性分布的集中或离散程度是由正则化参数λ直接决定的，λ是你能直接控制的一个输入参数。举个例子，假设3个分类的原始分数是[1, -2, 0]，那么softmax函数就会计算：$$<br>[1,-2,0]\rightarrow[e^1,e^{-2},e^0]=[2.71,0.14,1]\rightarrow[0.7,0.004,0.26]$$<br>现在，如果正则化参数λ更大，那么权重W就会被惩罚的更多，然后他的权重数值就会更小。这样算出来的分数也会更小，假设小了一半吧[0.5, -1, 0]，那么Softmax函数的计算就是：$$[0.5,-1,0]\rightarrow[e^{0.5},e^{-1},e^0]=[1.65,0.73,1]\rightarrow[0.55,0.12,0.33]$$现在看起来，概率的分布就更加分散了。还有，随着正则化参数λ不断增强，权重数值会越来越小，最后输出的概率会接近于均匀分布。这就是说，<strong>softmax分类器算出来的概率最好是看成一种对于分类正确性的置信</strong>。和SVM一样，数字间相互比较得出的大小顺序是可以解释的，但其绝对值则难以直观解释。</p>
+<p><strong>在实际使用中，SVM和Softmax经常是相似的</strong>:通常来说，这两种分类器的表现差别很小，不同的人对于哪个分类器更好有不同的看法。相对于Softmax分类器，SVM更加”局部目标化”，这既可以看做是一个特性，也可以看做是一个劣势。考虑一个评分是[10, -2, 3]的数据，其中第一个分类是正确的。那么一个SVM（$\Delta =1$）会看到正确分类相较于不正确分类，已经得到了比边界值还要高的分数，它就会认为损失值是0。SVM对于数字个体的细节是不关心的：如果分数是[10, -100, -100]或者[10, 9, 9]，对于SVM来说没设么不同，只要满足超过边界值等于1，那么损失值就等于0。</p>
+<p>对于Softmax分类器，情况则不同。对于[10, 9, 9]来说，计算出的损失值就远远高于[10, -100, -100]的。换句话来说，softmax分类器对于分数是永远不会满意的：<strong>正确分类总能得到更高的可能性，错误分类总能得到更低的可能性，损失值总是能够更小。</strong>但是，SVM只要边界值被满足了就满意了，不会超过限制去细微地操作具体分数。这可以被看做是SVM的一种特性。举例说来，一个汽车的分类器应该把他的大量精力放在如何分辨小轿车和大卡车上，而不应该纠结于如何与青蛙进行区分，因为区分青蛙得到的评分已经足够低了。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul>
+<li>与kNN分类器不同，参数方法的优势在于一旦通过训练学习到了参数，就可以将训练数据丢弃了。同时该方法对于新的测试数据的预测非常快，因为只需要与权重W进行一个矩阵乘法运算。</li>
+<li>偏差技巧，让我们能够将偏差向量和权重矩阵合二为一，然后就可以只跟踪一个矩阵。</li>
+<li>损失函数（SVM和Softmax线性分类器最常用的2个损失函数）。损失函数能够衡量给出的参数集与训练集数据真实类别情况之间的一致性。在损失函数的定义中可以看到，对训练集数据做出良好预测与得到一个足够低的损失值这两件事是等价的。</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作!</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="luerwei 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpeg" alt="luerwei 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/DeepLearning/" rel="tag"># DeepLearning</a>
+          
+            <a href="/tags/cs231n/" rel="tag"># cs231n</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/02/CS231n课程笔记-第2课-Image-Calssification/" rel="next" title="CS231n课程笔记(2)  图像分类">
+                <i class="fa fa-chevron-left"></i> CS231n课程笔记(2)  图像分类
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/04/CS231n课程笔记-第4课-Optimization/" rel="prev" title="CS231n课程笔记(4)  Optimization Note">
+                CS231n课程笔记(4)  Optimization Note <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="luerwei" />
+            
+              <p class="site-author-name" itemprop="name">luerwei</p>
+              <p class="site-description motion-element" itemprop="description">Stay hungry. Stay foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/ilewseu" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:18801628065@163.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://www.zhihu.com/people/erweilu" target="_blank" title="zhihu">
+                    
+                      <i class="fa fa-fw fa-globe"></i>zhihu</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://chengjin.li" title="MJ's Learning Notes" target="_blank">MJ's Learning Notes</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线性分类器简介"><span class="nav-number">1.</span> <span class="nav-text">线性分类器简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#从图像到标签分值的参数化映射"><span class="nav-number">1.1.</span> <span class="nav-text">从图像到标签分值的参数化映射</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#理解线性分类器"><span class="nav-number">1.2.</span> <span class="nav-text">理解线性分类器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#损失函数"><span class="nav-number">2.</span> <span class="nav-text">损失函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正则化"><span class="nav-number">3.</span> <span class="nav-text">正则化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Softmax分类器"><span class="nav-number">4.</span> <span class="nav-text">Softmax分类器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SVM-和-Softmax的比较"><span class="nav-number">5.</span> <span class="nav-text">SVM 和 Softmax的比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">6.</span> <span class="nav-text">小结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">luerwei</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访问人数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://author.disqus.com/count.js" async></script>
+    
+
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("mlAQjx22Lupo4XTQgrjDqowe-gzGzoHsz", "gUyOWXuoKewzNnKp2uFpEz0V");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
