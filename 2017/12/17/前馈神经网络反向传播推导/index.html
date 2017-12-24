@@ -91,7 +91,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171216/Jb3maf249i.png?imageslim">
 <meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171216/Dg5jm8Hjg0.jpg?imageslim">
-<meta property="og:updated_time" content="2017-12-16T16:55:08.913Z">
+<meta property="og:updated_time" content="2017-12-24T09:03:31.194Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="前馈神经网络反向传播推导">
 <meta name="twitter:description" content="前馈神经网络前向传播">
@@ -423,8 +423,8 @@
 <p>前馈神经网络通过下面的公式进行信息传播：<br>$$<br>z^{(l)} = W^{(l)}\cdot a^{(l-1)} + b^{(l)} \\\\<br>a^{(l)} = f_l(z^{(l)})<br>$$<br>上面的公式可以合并为：$$<br>z^{(l)} = W^{(l)}\cdot f_{l-1}(z^{(l-1)}) + b^{(l)}<br>$$</p>
 <p>这样，前馈神经网络可以通过逐层的信息传递，得到网络最后的输出$a^{(L)}$。整个网络可以看作一个复合函数$\phi(x;W,b)$,将输入x作为第1层的输入$a^{(0)}$，将第L层的输出作为$a^{(L)}$作为输出。<br>$$x=a^{(0)}\rightarrow z^{(l)} \rightarrow a^{(1)}\rightarrow z^{(2)}\rightarrow … \rightarrow a^{(L-1)} \rightarrow z^{(L)} \rightarrow a^{(L-1)}=\phi(x;W,b)$$</p>
 <h2 id="反向传播推导"><a href="#反向传播推导" class="headerlink" title="反向传播推导"></a>反向传播推导</h2><p>假设损失函数是$L(y,\hat{y})$，对第l层中的参数$W^{(l)}$和$b^{(l)}$计算偏导数。因为$<br>\frac {\partial L(y,\hat{y})}{\partial W^{(l)}}$的计算涉及到矩阵的微分，十分繁琐，可以先计算偏导数$\frac {\partial L(y,\hat{y})}{\partial W_{ij}^{(l)}}$。根据链式法则：$$<br>\frac {\partial L(y,\hat{y})}{\partial W_{ij}^{(l)}} =\left(\frac {\partial z^{(l)}}{\partial W_{ij}^{(l)}}\right)^T\frac {\partial L(y,\hat{y})}{\partial z^{(l)}}   （1）<br>\\\\<br>\frac {\partial L(y,\hat{y})}{\partial b^{(l)}} =\left(\frac {\partial z^{(l)}}{\partial b^{(l)}}\right)^T\frac {\partial L(y,\hat{y})}{\partial z^{(l)}}     (2)<br>$$<br>公式(1)和(2)都是为目标函数关于第l层神经元$z^{(l)}$的偏导数，称为<strong>误差项</strong>，因此可以共用。我们只需要计算三个偏导数，分别为$\frac {\partial z^{(l)}}{\partial W_{ij}^{(l)}},\frac {\partial L(y,\hat{y})}{\partial b^{(l)}}和\frac {\partial L(y,\hat{y})}{\partial z^{(l)}}$</p>
-<p><strong>1、计算偏导数$\frac {\partial L(y,\hat{y})}{\partial W_{ij}^{(l)}}$</strong></p>
-<p>因为$z^{(l)}和W_{ij}^{(l)}$的函数关系为$z^{(l)}=W^{(l)}a^{(l-1)}+b^{(l)}$，因此，偏导数：<br>$$<br>\frac {\partial L(y,\hat{y})}{\partial W_{ij}^{(l)}}=\frac {\partial (W^{(l)}a^{(l-1)}+b^{(l)})}{\partial W_{ij}^{(l)}}= a_j^{(l-1)}<br>$$<br>其中，$W_{i:}^{(l)}$为权重矩阵$W^{(l)}$的第i行</p>
+<p><strong>1、计算偏导数$\frac {\partial z^{(l)} }{\partial W_{ij}^{(l)}}$</strong></p>
+<p>因为$z^{(l)}和W_{ij}^{(l)}$的函数关系为$z^{(l)}=W^{(l)}a^{(l-1)}+b^{(l)}$，因此，偏导数：<br>$$<br>\frac {\partial z^{(l)}}{\partial W_{ij}^{(l)}}=\frac {\partial (W^{(l)}a^{(l-1)}+b^{(l)})}{\partial W_{ij}^{(l)}}= a_j^{(l-1)}<br>$$<br>其中，$W_{i:}^{(l)}$为权重矩阵$W^{(l)}$的第i行</p>
 <p><strong>2、计算偏导数</strong>$\frac {\partial z^{l}}{\partial b^{(l)}}$</p>
 <p>因为$z^{(l)}$和$b^{(l)}$的函数关系为$z^{(l)} = W^{(l)}a^{(l-1)}+b^{(l)}$，因此偏导数：<br>$$<br>\frac {\partial z^{l}}{\partial b^{(l)}}=I_{n^l}<br>$$<br>为$n^l\times n^l$的单位矩阵。</p>
 <p><strong>3、计算偏导数</strong>$\frac {\partial L(y,\hat{y})}{\partial z{(l)}}$</p>
