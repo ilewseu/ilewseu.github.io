@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="DeepLearning,LSTM," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="记录思考" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="本文是http://colah.github.io/posts/2015-08-Understanding-LSTMs/的译文，这篇文章对LSTM的原理讲解的非常清楚，故存下来。  Recurrent Neural Networks人类并非每一秒都从头开始思考问题。当你阅读这篇文章时，你是基于之前的单词来理解，每个单词。你并不会把所有的内容都抛弃掉，然后从头开始理解。你的思考具有持久性。">
+<meta name="keywords" content="DeepLearning,LSTM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解LSTM">
+<meta property="og:url" content="https://ilewseu.github.io/2017/12/31/理解LSTM/index.html">
+<meta property="og:site_name" content="记录思考">
+<meta property="og:description" content="本文是http://colah.github.io/posts/2015-08-Understanding-LSTMs/的译文，这篇文章对LSTM的原理讲解的非常清楚，故存下来。  Recurrent Neural Networks人类并非每一秒都从头开始思考问题。当你阅读这篇文章时，你是基于之前的单词来理解，每个单词。你并不会把所有的内容都抛弃掉，然后从头开始理解。你的思考具有持久性。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171231/Bmh8aD2DdA.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171231/iK11DGDA83.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171231/3La0B0C0iK.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171231/d9IAjAB7IL.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171231/BF8kcb785A.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171231/6IlDEAkI3L.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171231/GC9cecCGhg.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171231/92f48mcjDG.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171231/Lek8DbbiFC.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171231/cG7AbK6EEC.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171231/Hce780KF2L.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171231/BC8GaK4Fjc.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171231/f2b7k0070c.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171231/8e4JBf654L.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171231/H16C53f5IC.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171231/F2C472DeBH.jpg?imageslim">
+<meta property="og:updated_time" content="2018-01-01T05:49:12.227Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解LSTM">
+<meta name="twitter:description" content="本文是http://colah.github.io/posts/2015-08-Understanding-LSTMs/的译文，这篇文章对LSTM的原理讲解的非常清楚，故存下来。  Recurrent Neural Networks人类并非每一秒都从头开始思考问题。当你阅读这篇文章时，你是基于之前的单词来理解，每个单词。你并不会把所有的内容都抛弃掉，然后从头开始理解。你的思考具有持久性。">
+<meta name="twitter:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/171231/Bmh8aD2DdA.jpg?imageslim">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ilewseu.github.io/2017/12/31/理解LSTM/"/>
+
+
+
+
+
+  <title>理解LSTM | 记录思考</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7d771b3a7c8a49da8ba4db85e1e6ead7";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">记录思考</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">ML、DL、NLP</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ilewseu.github.io/2017/12/31/理解LSTM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="luerwei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="记录思考">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">理解LSTM</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-31T17:35:20+08:00">
+                2017-12-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/12/31/理解LSTM/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/12/31/理解LSTM/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/12/31/理解LSTM/" class="leancloud_visitors" data-flag-title="理解LSTM">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本文是<a href="http://colah.github.io/posts/2015-08-Understanding-LSTMs/的译文，这篇文章对LSTM的原理讲解的非常清楚，故存下来。" target="_blank" rel="external">http://colah.github.io/posts/2015-08-Understanding-LSTMs/的译文，这篇文章对LSTM的原理讲解的非常清楚，故存下来。</a></p>
+</blockquote>
+<h2 id="Recurrent-Neural-Networks"><a href="#Recurrent-Neural-Networks" class="headerlink" title="Recurrent Neural Networks"></a>Recurrent Neural Networks</h2><p>人类并非每一秒都从头开始思考问题。当你阅读这篇文章时，你是基于之前的单词来理解，每个单词。你并不会把所有的内容都抛弃掉，然后从头开始理解。你的思考具有持久性。<br><a id="more"></a><br>传统的神经网络并不能做到这一点，这似乎是其一个主要的缺点。例如，想象你要把一部电影里面的时间点正在发生的事情进行分类。传统神经网络并不知道怎样才能把关于之前事件的推理运用到之后的事件中去。RNN神经网络解决了这个问题。它们是一种具有循环的网络，具有保持信息的能力。如下图所示：</p>
+<div align="center"><br>    <img src="http://of6h3n8h0.bkt.clouddn.com/blog/171231/Bmh8aD2DdA.jpg?imageslim" alt="mark"><br></div><br>如上图所示，神经网络的模块A输入为$x_i$，输出为$h_t$。模块A的循环结构使得信息从网络的上一步传到了下一步。这个循环使得RNN看起来有点神秘。然而，如果你仔细想想就会发现它与普通的神经网络并没有太大不同。RNN可以被认为是相同网络的多重复制结构，每一个网络把消息传给其继承者。如果我们把循环体展开就是这样，如下图所示：<br><div align="center"><br><img src="http://of6h3n8h0.bkt.clouddn.com/blog/171231/iK11DGDA83.jpg?imageslim" alt="mark"><br></div>
+
+<p>这种链接属性表明，RNN与序列之间有着紧密的连续。这也是运用这类数据最自然的结构。当然它们已经得到了应用。过去几年中，RNNs已经被成功用于各式各样的问题中：语音识别、语言建模、翻译、图像标注..等等。RNNs取得的各种瞩目成果可以参考Andrej Karpathy的博客：The Unreasonable Effectiveness of Recurrent Neural Networks。确实效果让人非常吃惊。</p>
+<p>取得这项成功的一个要素是LSTMs，这是一种非常特殊的周期神经网络，对于许多任务，比标准版要有效得多。几乎所有基于RNN的好成果都使用了它们。本文将着重介绍LSTMs。</p>
+<h2 id="长期依赖问题-The-Problem-of-Long-Term-Dependencies"><a href="#长期依赖问题-The-Problem-of-Long-Term-Dependencies" class="headerlink" title="长期依赖问题(The Problem of Long-Term Dependencies)"></a>长期依赖问题(The Problem of Long-Term Dependencies)</h2><p>RNNs的一个想法是，它们可能会能够将之前的信息连接到现在的任务之中。例如，用视频前一帧的信息可以用于理解当前帧的信息。如果RNNs能够做到这些，那么将会非常有用。但是它们可以吗？ 这要看情况。</p>
+<p>有时候，我们处理当前任务仅需要查看当前信息。例如，设想用一个语言模型基于当前单词尝试着去预测下一个单词。如果我们尝试着预测”the clouds are in the”的最后一个单词，我们并不需要任何额外的信息，很显然下一个但是sky。这样的话，如果目标预测的点与其他相关信息的点之间的间隔较小，RNNs可以学习利用过去的信息。</p>
+<p>但是，也有时候我们需要更多的上下文信息。设想预测这句话的最后一个单词：”I grew up in France… I speak fluent <strong>French</strong>“。最近的信息表明下一个单词似乎是一种语言的名字，但是如果我们希望缩小确定语言类型的范围，我们需要更早之前作为France 的上下文。而且需要预测的点与其相关点之间的间隔非常有可能变得很大，如图所示：</p>
+<div align="center"><br>    <img src="http://of6h3n8h0.bkt.clouddn.com/blog/171231/3La0B0C0iK.jpg?imageslim" alt="mark"><br></div><br>不幸的是，随着间隔增长，RNNs变得难以学习连接之间的关系，如下图所示：<br><br><div align="center"><br>    <img src="http://of6h3n8h0.bkt.clouddn.com/blog/171231/d9IAjAB7IL.jpg?imageslim" alt="mark"><br></div>
+
+<p>理论上来说，RNNs绝对能够处理这种『长期依赖』。人们可以小心选取参数来解决这种类型的小模型。悲剧的是，事实上，RNNs似乎并不能学习出来这些参数。这个问题已经在<a href="http://people.idsia.ch/~juergen/SeppHochreiter1991ThesisAdvisorSchmidhuber.pdf" target="_blank" rel="external">Hochreiter (1991) German</a>与<a href="http://www-dsi.ing.unifi.it/~paolo/ps/tnn-94-gradient.pdf" target="_blank" rel="external">Bengio, et al. (1994)</a>,中被深入讨论，他们发现了为何RNNs不起作用的一些基本原因。幸运的是，LSTMs可以解决这个问题!</p>
+<div></div>
+
+<h2 id="LSTM网络"><a href="#LSTM网络" class="headerlink" title="LSTM网络"></a>LSTM网络</h2><p>长短时间记忆网络(Long Short Term Memory networks, LSTMs)，是一种特殊的RNN，它能够学习长时间依赖。它们由<a href="http://deeplearning.cs.cmu.edu/pdfs/Hochreiter97_lstm.pdf" target="_blank" rel="external">Hochreiter &amp; Schmidhuber (1997)</a>，后来由很多让人加以改进和推广。它们在大量的问题上都取得了巨大的成功，现在已经被广泛应用。</p>
+<p>LSTMs是专门设计用来避免长期依赖问题的。记忆长期信息是LSTMs的默认行为，而不是它们努力学习的东西！所有RNN都具有链式的重复模块神经网络。在标准的RNNs中，这种重复模块具有非常简单的结构，比如是一个tanh层，如下图所示：</p>
+<div align="center"><br>    <img src="http://of6h3n8h0.bkt.clouddn.com/blog/171231/BF8kcb785A.jpg?imageslim" alt="mark"><br></div><br>LSTMs同样具有链式结构，但是其重复模块却有着不同的结构。不同于单独的神经网络层，它具有4个以特殊方式相互影响的神经网络层，如图所示：<br><div align="center"><br>    <img src="http://of6h3n8h0.bkt.clouddn.com/blog/171231/6IlDEAkI3L.jpg?imageslim" alt="mark"><br></div><br>不要担心接下来涉及到的细节。我们将会一步步讲解LSTM的示意图。下面是我们将要用到的符号，如图所示：<br><div><br>    <img src="http://of6h3n8h0.bkt.clouddn.com/blog/171231/GC9cecCGhg.jpg?imageslim" alt="mark"><br></div>
+
+<p>在上图中，每一条线代表一个完整的向量，从一个节点的输出到另一个节点的输入。粉红色圆形代表了逐点操作。例如，向量求和；黄色方框代表学习出的神经网络层；聚拢的线代表了串联，而分开的线代表了内容复制去了不同的地方。</p>
+<h3 id="LSTMs背后的核心思想"><a href="#LSTMs背后的核心思想" class="headerlink" title="LSTMs背后的核心思想"></a>LSTMs背后的核心思想</h3><p>LSTMs的关键在于细胞状态，在图中以水平线表示。<br>细胞状态就像一个传送带。它顺着整个链条从头到尾运行，中间只有少许线性的交互。信息很容易顺着它流动而保持不变。如图所示：</p>
+<div align="center"><br>    <img src="http://of6h3n8h0.bkt.clouddn.com/blog/171231/92f48mcjDG.jpg?imageslim" alt="mark"><br></div>
+
+<p>LSTM通过称之为门(gates)的结构来对细胞状态增加或删除信息。门是选择性的让信息通过的方式。它们的输出有一个sigmoid层和逐点乘积操作，如图所示：</p>
+<div align="center"><br>    <img src="http://of6h3n8h0.bkt.clouddn.com/blog/171231/Lek8DbbiFC.jpg?imageslim" alt="mark"><br></div><br>Sigmoid 层的输出在0到1之间，定义了各成分被放行通过的程度。0值意味着『不让任何东西过去』；1值意味着『让所有东西通过』。LSTM具有3种门，用于保护和控制细胞状态。<br><div> </div>
+
+<h3 id="逐步讲解LSTM"><a href="#逐步讲解LSTM" class="headerlink" title="逐步讲解LSTM"></a>逐步讲解LSTM</h3><p>LSTM的第一步是决定我们要从细胞中抛弃何种信息。这个决定是由叫做『遗忘门』的sigmoid层决定的。它以$h_{t-1}$和$x_i$为输入，在$C_{t-1}$细胞输出一个介于0和1之间的数。其中，1代表『完全保留』，0代表『完全遗忘』。</p>
+<p>让我们回到之前那个语言预测模型的例子，这个模型尝试着根据之前的单词学习预测下一个单词。在这个问题中，细胞状态可能包括了现在的主语的性别，因此能够使用正确的代词。当我们见到一个新的主语时，我们希望它能够忘记之前主语的性别。如下图所示：</p>
+<div align="center"><img src="http://of6h3n8h0.bkt.clouddn.com/blog/171231/cG7AbK6EEC.jpg?imageslim" alt="mark"></div><br>下一步是决定细胞要存储何种信息。它有2个组成部分，首先一各叫做『输入门层』的sigmoid层决定我们将要更新哪些值。其次，一个tanh层创建一个新的候选向量$\hat{C}_t$，它可以加在状态之中。在下一步我们将结合两者来生成状态的更新。在语言模型的例子中，我们希望把新主语的性别加入到状态之中，从而取代我们打算遗忘的旧主语的性别，如下图所示：<br><div><br>    <img src="http://of6h3n8h0.bkt.clouddn.com/blog/171231/Hce780KF2L.jpg?imageslim" alt="mark"><br></div><br>现在我们可以将旧细胞状态$C_{t-1}$更新为$C_t$了。之前的步骤已经决定了该怎么做，我们现在实际操作一下。我们把旧状态乘以$f_t$，用以遗忘之前我们决定忘记的信息。然后我们加上$i_t*\hat{C}_t$。这是新的候选值，根据我们决定更新状态的程度来作为缩放系数。<br><br>在语言模型中，这里就是我们真正丢弃关于旧主语性信息以及添加新信息的地方，如下图所示：<br><div align="center"><br>    <img src="http://of6h3n8h0.bkt.clouddn.com/blog/171231/BC8GaK4Fjc.jpg?imageslim" alt="mark"><br></div><br>最终，我们可以决定输出哪些内容。输出取决于我们的细胞状态，但是以一个过滤后的版本。首先，我们使用sigmoid层来决定我们要输出细胞状态的哪些部分。然后，把用tanh处理细胞状态（将状态值映射到-1至1之间）。最后，将其与sigmoid门的输出值相乘，从而我们能够输出我们决定输出的值。如下图所示：<br><div align="center"><br>    <img src="http://of6h3n8h0.bkt.clouddn.com/blog/171231/f2b7k0070c.jpg?imageslim" alt="mark"><br></div><br>对于语言模型，在预测下一个单词的例子中，当它输入一个主语，它可能会希望输出相关的动词。例如，当主语时单数或复数时，它可能会以相应形式的输出。<br><div></div>
+
+<h3 id="各种LSTM的变化形式"><a href="#各种LSTM的变化形式" class="headerlink" title="各种LSTM的变化形式"></a>各种LSTM的变化形式</h3><p>目前，我所描述的都是普通的LSTM，然而并非所有的LSTM都是一样的。事实上，似乎每一篇使用LSTMs的文章都有细微的差别。这些差别很小，但是值得一提。</p>
+<p>其中一个流行的LSTM变化形式是由<a href="ftp://ftp.idsia.ch/pub/juergen/TimeCount-IJCNN2000.pdf" target="_blank" rel="external">Gers &amp; Schmidhuber (2000)</a>提出的，增加了『窥视孔连接（peephole connections）』。如下图所示：</p>
+<div align="center"><br>    <img src="http://of6h3n8h0.bkt.clouddn.com/blog/171231/8e4JBf654L.jpg?imageslim" alt="mark"><br></div><br>在上图中，所有的门都加上了窥视孔，但是许多论文中只在其中一些装了窥视孔。<br>另一个变种是使用了配对遗忘与输入门。与之前分别决定遗忘与添加信息不同，我们同时决定两者。只有当我们需要输入一些内容的时候我们才需要忘记。只有当早前信息被忘记之后我们才会输入。如图所示：<br><div><br>    <img src="http://of6h3n8h0.bkt.clouddn.com/blog/171231/H16C53f5IC.jpg?imageslim" alt="mark"><br></div>
+
+<p>LSTM 一个更加不错的变种是 Gated Recurrent Unit（GRU），是由<a href="https://arxiv.org/pdf/1406.1078v3.pdf" target="_blank" rel="external">Cho, et al. (2014)</a>提出的。这个模型将输入门与和遗忘门结合成了一个单独的『更新门』。而且同时还合并了细胞状态和隐含状态，同时也做了一下其他的修改。因此这个模型比标准LSTM模型要简单，并且越来越收到欢迎。如下图所示：</p>
+<p><div align="center"><br>    <img src="http://of6h3n8h0.bkt.clouddn.com/blog/171231/F2C472DeBH.jpg?imageslim" alt="mark"><br></div><br>这些仅仅只是LSTM的少数几个著名变种。还有很多其他的种类，例如由<a href="https://arxiv.org/pdf/1508.03790v2.pdf" target="_blank" rel="external">Yao, et al. (2015)</a> 提出的Depth Gated RNNs 。以及处理长期依赖问题的完全不同的手段，如<a href="https://arxiv.org/pdf/1402.3511v1.pdf" target="_blank" rel="external">Koutnik, et al. (2014)</a>提出的Clockwork RNNs。</p>
+<p>那种变种是最好的？这些不同重要吗？<a href="http://arxiv.org/pdf/1503.04069.pdf" target="_blank" rel="external">Greff, et al. (2015)</a>将各种著名的变种做了比较，发现其实基本上是差不多的。<a href="http://jmlr.org/proceedings/papers/v37/jozefowicz15.pdf" target="_blank" rel="external">Jozefowicz, et al. (2015)</a>测试了超过一万种RNN结构，发现了一些在某些任务上表现良好的模型。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>最开始我提到的杰出成就都是使用的是RNNs。本质上所有的这些成果都是使用了LSTMs。在大多数任务中，确实它们的表现非常优秀。</p>
+<p>以公式的形式写下来，LSTMs看起来非常令人胆怯。然而本文的逐步讲解使得LSTM变得平易近人了。</p>
+<p>LSTMs 是我们使用RNNs的重要一步。我们很自然地想到：还有下一个重要的一大步吗？研究者的普遍观点是：『有！下一大步就是「注意力」。』其基本思想就是让RNN的每一步从更大范围的信息中选取。例如，假设你为图片打标签，它可能会为它输出的每一个词语选取图片的一部分作为输入。事实上，<a href="http://arxiv.org/pdf/1502.03044v2.pdf" target="_blank" rel="external">Xu, et al. (2015)</a>就是这么做的——如果你想探索『注意力』的话，这是个有趣的引子！已经有大量使用『注意力』得到的良好成果，而且似乎更多的陈果也将要出现……</p>
+<p>『注意力』并非是RNN研究中唯一一个激动人心的方向。例如，<a href="http://arxiv.org/pdf/1507.01526v1.pdf" target="_blank" rel="external">Kalchbrenner, et al. (2015)</a>做出的Grid LSTMs 似乎很有前途。在生成模型中使用RNNs－例如<a href="http://arxiv.org/pdf/1502.04623.pdf" target="_blank" rel="external">Gregor, et al. (2015)</a>，<a href="http://arxiv.org/pdf/1506.02216v3.pdf" target="_blank" rel="external">Chung, et al. (2015)</a>以及<a href="http://arxiv.org/pdf/1411.7610v3.pdf" target="_blank" rel="external">Bayer &amp; Osendorfer (2015)</a>－似乎也很有趣。过去几年是RNN激动人心的阶段，未来几年将会更加如此！</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作!</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="luerwei 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpeg" alt="luerwei 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/DeepLearning/" rel="tag"># DeepLearning</a>
+          
+            <a href="/tags/LSTM/" rel="tag"># LSTM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/30/RNN简单推导/" rel="next" title="循环神经网络RNN 梯度推导(BPTT)">
+                <i class="fa fa-chevron-left"></i> 循环神经网络RNN 梯度推导(BPTT)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="luerwei" />
+            
+              <p class="site-author-name" itemprop="name">luerwei</p>
+              <p class="site-description motion-element" itemprop="description">Stay hungry. Stay foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/ilewseu" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:18801628065@163.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://www.zhihu.com/people/erweilu" target="_blank" title="zhihu">
+                    
+                      <i class="fa fa-fw fa-globe"></i>zhihu</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://chengjin.li" title="MJ's Learning Notes" target="_blank">MJ's Learning Notes</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Recurrent-Neural-Networks"><span class="nav-number">1.</span> <span class="nav-text">Recurrent Neural Networks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#长期依赖问题-The-Problem-of-Long-Term-Dependencies"><span class="nav-number">2.</span> <span class="nav-text">长期依赖问题(The Problem of Long-Term Dependencies)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LSTM网络"><span class="nav-number">3.</span> <span class="nav-text">LSTM网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#LSTMs背后的核心思想"><span class="nav-number">3.1.</span> <span class="nav-text">LSTMs背后的核心思想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#逐步讲解LSTM"><span class="nav-number">3.2.</span> <span class="nav-text">逐步讲解LSTM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#各种LSTM的变化形式"><span class="nav-number">3.3.</span> <span class="nav-text">各种LSTM的变化形式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结论"><span class="nav-number">4.</span> <span class="nav-text">结论</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">luerwei</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访问人数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://author.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://ilewseu.github.io/2017/12/31/理解LSTM/';
+          this.page.identifier = '2017/12/31/理解LSTM/';
+          this.page.title = '理解LSTM';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://author.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("mlAQjx22Lupo4XTQgrjDqowe-gzGzoHsz", "gUyOWXuoKewzNnKp2uFpEz0V");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
