@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo ,NexT" />
+  <meta name="keywords" content="DeepLearning,GRU," />
 
 
 
@@ -81,16 +81,21 @@
 
 
 
-<meta name="description" content="Stay hungry. Stay foolish">
-<meta property="og:type" content="website">
-<meta property="og:title" content="记录思考">
-<meta property="og:url" content="https://ilewseu.github.io/archives/index.html">
+<meta name="description" content="GRU神经网络GRU(Gated Recurrent Unit)是LSTM的一种变体，它对LSTM做了很多简化，同时却保持着和LSTM几乎相同的效果。因此，GRU最近变得非常流行。下图是GRU的网络架构图。">
+<meta name="keywords" content="DeepLearning,GRU">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GRU神经网络">
+<meta property="og:url" content="https://ilewseu.github.io/2018/01/20/GRU神经网络/index.html">
 <meta property="og:site_name" content="记录思考">
-<meta property="og:description" content="Stay hungry. Stay foolish">
+<meta property="og:description" content="GRU神经网络GRU(Gated Recurrent Unit)是LSTM的一种变体，它对LSTM做了很多简化，同时却保持着和LSTM几乎相同的效果。因此，GRU最近变得非常流行。下图是GRU的网络架构图。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/180113/Ja3I15iABg.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/180120/bHHG1j84eF.jpg?imageslim">
+<meta property="og:updated_time" content="2018-01-20T15:27:31.387Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="记录思考">
-<meta name="twitter:description" content="Stay hungry. Stay foolish">
+<meta name="twitter:title" content="GRU神经网络">
+<meta name="twitter:description" content="GRU神经网络GRU(Gated Recurrent Unit)是LSTM的一种变体，它对LSTM做了很多简化，同时却保持着和LSTM几乎相同的效果。因此，GRU最近变得非常流行。下图是GRU的网络架构图。">
+<meta name="twitter:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/180113/Ja3I15iABg.jpg?imageslim">
 
 
 
@@ -120,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="https://ilewseu.github.io/archives/"/>
+  <link rel="canonical" href="https://ilewseu.github.io/2018/01/20/GRU神经网络/"/>
 
 
 
 
 
-  <title>归档 | 记录思考</title>
+  <title>GRU神经网络 | 记录思考</title>
   
 
 
@@ -155,7 +160,7 @@
     
   
 
-  <div class="container sidebar-position-right page-archive">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -293,416 +298,241 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
 
-      <span class="archive-page-counter">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ilewseu.github.io/2018/01/20/GRU神经网络/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="luerwei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="记录思考">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h1 class="post-title" itemprop="name headline">GRU神经网络</h1>
         
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-20T13:58:20+08:00">
+                2018-01-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-        嗯..! 目前共计 27 篇日志。 继续努力。
-      </span>
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
 
-      
-
-        
-        
-        
-
-        
+                
+                
+              
+            </span>
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2018">2018</h1>
-          </div>
-        
-        
 
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/01/20/GRU神经网络/" itemprop="url">
-              
-                <span itemprop="name">GRU神经网络</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-20T13:58:20+08:00"
-              content="2018-01-20" >
-          01-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/01/06/LSTM参数更新推导/" itemprop="url">
-              
-                <span itemprop="name">LSTM参数更新推导</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-06T15:45:20+08:00"
-              content="2018-01-06" >
-          01-06
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2017">2017</h1>
-          </div>
-        
-        
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/20/GRU神经网络/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/01/20/GRU神经网络/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
 
-        
+          
+          
+             <span id="/2018/01/20/GRU神经网络/" class="leancloud_visitors" data-flag-title="GRU神经网络">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/31/理解LSTM/" itemprop="url">
-              
-                <span itemprop="name">理解LSTM</span>
-              
-            </a>
-        
-      </h2>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-31T17:35:20+08:00"
-              content="2017-12-31" >
-          12-31
-        </time>
-      </div>
+          
 
-    </header>
-  </article>
+        </div>
+      </header>
+    
 
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/30/RNN简单推导/" itemprop="url">
-              
-                <span itemprop="name">循环神经网络RNN 梯度推导(BPTT)</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-30T11:28:20+08:00"
-              content="2017-12-30" >
-          12-30
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/23/卷积神经网络学习笔记/" itemprop="url">
-              
-                <span itemprop="name">卷积神经网络学习笔记</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-23T19:48:20+08:00"
-              content="2017-12-23" >
-          12-23
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/17/前馈神经网络反向传播推导/" itemprop="url">
-              
-                <span itemprop="name">前馈神经网络反向传播推导</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-17T20:08:08+08:00"
-              content="2017-12-17" >
-          12-17
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <h2 id="GRU神经网络"><a href="#GRU神经网络" class="headerlink" title="GRU神经网络"></a>GRU神经网络</h2><p>GRU(Gated Recurrent Unit)是LSTM的一种变体，它对LSTM做了很多简化，同时却保持着和LSTM几乎相同的效果。因此，GRU最近变得非常流行。下图是GRU的网络架构图。<br><a id="more"></a><br><img src="http://of6h3n8h0.bkt.clouddn.com/blog/180113/Ja3I15iABg.jpg?imageslim" alt="mark"><br>GRU对LSTM做了两个大得改动：</p>
+<ul>
+<li>将<strong>输入门、遗忘门和输出门</strong>改变为两个门：<strong>更新门（Update Gate)$z_t$</strong>和<strong>重置门(Reset Gate)$r_t$</strong>。</li>
+<li><strong>将单元状态与输出合并为一个状态：h</strong>。</li>
+</ul>
+<p>根据上图的架构图可以得出GRU的前向计算公式：<br>$$r_t = \sigma(W_r\cdot[h_{t-1},x_t])\\\\z_t = \sigma(W_z\cdot[h_{t-1},x_t])\\\ \hat{h_t}=tanh(W_{\hat {h}} \cdot[r_t<em>h_{t-1},x_t])\\\ h_t = (1-z_t)</em>h_{t-1}+z_t*\hat{h_t}\\\\y_t=\sigma(W_o \cdot h_t)$$</p>
+<h2 id="GRU的反向传播梯度计算"><a href="#GRU的反向传播梯度计算" class="headerlink" title="GRU的反向传播梯度计算"></a>GRU的反向传播梯度计算</h2><p>GRU的参数更新方式同样是基于沿时间反向传播的算法（BPTT）,为了为了更清晰的推导GRU反向传播梯度计算，对上文的GRU前向计算公式进行一定的改写，实质上还是一样的，只不过是将参数分开写而已。具体如下：假设，对于t时刻，GRU的输出为$\hat {y_t}$，输入为$x_t$，前一时刻的状态为$s_{t-1}$，则可以得出如下的前向计算的公式：<br>$$\begin{aligned}<br>    &amp;z_t = \sigma(U_zx_t+W_zs_{t-1}+b_z)\\\\<br>    &amp;r_t = \sigma(U_r x_t+W_rs_{t-1}+b_r)\\\\<br>    &amp;h_t = tanh(U_hx_t+W_h(s_{t-1}\bigodot  r_t)+b_h)\\\\<br>    &amp;s_t = (1-z_t)\bigodot  h_t + z_t \bigodot  s_{t-1}\\\\<br>    &amp;\hat {y_t}=softmax(Vs_t+b_V)<br>\end{aligned}<br>$$<br>其中，$\bigodot$表示向量的点乘；$z_t$表示更新门；$r_t$表示重置门；$\hat {y_t}$表示t时刻的输出。<br>如果采用交叉熵损失函数，那么在t时刻的损失为$L_t$:$$<br>L_t =sumOfAllElements(-y_t\bigodot log(\hat {y_t}))<br>$$<br>为了训练GRU，需要把所有时刻的损失加在一起，并最小化损失$L=\sum_{t=1}^T L_t$:<br>$$argmin_{\Theta}L$$<br>其中，$\Theta={U_z,U_r,U_c,W_z,W_r,W_c,b_z,b_r,b_c,V,b_V}$。</p>
+<p>这是一个非凸优化问题，通常采用随机梯度下降法去解决问题。因此，需要计算$\partial L/ \partial U_z,\partial L/ \partial U_r,\partial L/ \partial U_h,\partial L/ \partial W_z,\partial L/ \partial W_r,\partial L/ \partial W_h,\partial L/ \partial b_z,\partial L/ \partial b_r,\partial L/ \partial b_h,\partial L/ \partial V,\partial L/ \partial b_v$。计算上面的梯度，最好的方式是利用链式法则从输出到输入一步一步去计算，为了更好得看清输入、中间值以及输出之间的关系，画了一张GRU的计算图，如下图所示：</p>
+<p><div align="center"><br>    <img src="http://of6h3n8h0.bkt.clouddn.com/blog/180120/bHHG1j84eF.jpg?imageslim" alt="mark"><br></div><br>根据计算图，利用链式法则计算梯度，需要从上至下沿着边进行计算。如果节点X有多条出边和目标节点T相连，如果要计算$\partial T / \partial X$，需要分别计算每条边对X的梯度，并将梯度进行相加。</p>
+<p>以计算$\frac {\partial L}{\partial U_z}$为例，其他的计算方式和其相似。因为$L=\sum_{t=1}^T L_t$，所以，$\frac {\partial L}{\partial U_z}=\sum_{t=1}^T \frac {\partial L_t}{\partial U_z}$，因此，可以先计算$\frac {\partial L_t}{\partial U_z}$，然后将不同时刻结果加起来就可以。</p>
+<p>根据链式法则:$$\frac {\partial L_t}{\partial U_z} = \frac {\partial L_t}{\partial s_t} \frac{\partial s_t}{\partial U_z}    (公式1)<br>$$<br>公式1右边的第一个式子的计算如下：$$\frac {\partial L_t}{\partial s_t}=V(\hat {y_t}-y_t)    (公式2)<br>$$<br>对于$\frac {\partial z}{\partial U_z}$，一些人可能会直接进行如下的求导计算<br>$$<br>\frac {\overline{\partial s_t}}{\partial U_z}=((s_{t-1}-h_t)\bigodot z_t \bigodot (1-z_t))x_t^T     (公式3)<br>$$<br>在$s_t$的计算公式里有$1-z$和$z\bigodot s_{t-1}$两个公式都会影响到$\frac {\partial s_t}{\partial U_z}$。正确的方法是分别计算每条边的偏导数，并将它们相加，因此，需要引入$\frac {\partial s_t}{\partial s_{t-1}}$。但是，公式3只计算了部分的梯度，因此用$\frac {\overline{\partial s_t}}{\partial U_z}$表示。</p>
+<p>因为$s_{t-1}$同样依赖于$U_z$，因此我们不能把$s_{t-1}$作为一个常量处理。$s_{t-1}$同样会受到$s_i,i=1,…,t-2$的影响，因此，需要将公式1进行扩展，如下：<br>$$\begin{aligned}<br>    \frac {\partial L_t}{\partial U_z} = &amp;\frac {\partial L_t}{\partial s_t} \frac{\partial s_t}{\partial U_z}\\\\<br>    =&amp;\frac {\partial L_t}{\partial s_t}\sum_{i=1}^t(\frac{\partial s_t}{\partial s_i}\frac{\overline {\partial s_i}}{\partial U_z})\\\\<br>    =&amp;\frac {\partial L_t}{\partial s_t}\sum_{i=1}^t ((\prod_{j=i}^{t-1} \frac {\partial s_{j+1}}{\partial s_j})\frac{\overline {\partial s_i}}{\partial U_z})<br>\end{aligned}     (公式4)<br>$$<br>其中，$\frac{\overline {\partial s_i}}{\partial U_z}$是$s_i$对$U_z$的梯度，其计算公式如公式3所示。<br>$\frac {\partial s_t}{\partial s_{t-1}}$的计算和$\frac {\partial s_t}{\partial z}$的计算相似。因为从$s_{t-1}$到$s_t$有四条边，直接或间接相连，通过$z_t,r_t和h_t$，因此，需要计算这四条边上的梯度，然后进行相加，计算公式如下：$$\begin{aligned}<br>\frac {\partial s_t}{\partial s_{t-1}}=&amp;\frac {\partial s_t}{\partial h_t} \frac {\partial h_t}{\partial s_{t-1}}+\frac{\partial s_t}{\partial z_t}\frac{\partial z_t}{\partial s_{t-1}} + \frac {\overline {\partial s_t}}{\partial s_{t-1}}\\\\<br>=&amp;\frac {\partial s_t}{\partial h_t}(\frac {\partial h_t}{\partial r_t}\frac {\partial r_t}{\partial s_{t-1}}+\frac {\overline {\partial h_t}}{\partial s_{t-1}}) + \frac {\partial s_t}{\partial z_t}\frac{\partial z_t}{\partial s_{t-1}}+\frac {\overline {\partial s_t}}{\partial s_{t-1}}<br>\end{aligned}    (公式5)$$<br>其中，$\frac {\overline {\partial s_t}}{\partial s_{t-1}}$是对$s_t$关于$s_{t-1}$的导数，并将$h_t,z_t$看做常量。同样，$\frac {\overline {\partial h_t}}{\partial s_{t-1}}$是$h_t$关于$s_{t-1}$的导数，将$r_t$看做常量。最终，可以得到:<br>$$ \frac {\partial s_t}{\partial s_{t-1}}=(1-z_t)(W_r^T((W_h^T(1-h\bigodot h))\bigodot s_{t-1}\bigodot r \bigodot (1-r))+((W_h^T(1-h \bigodot h))\bigodot r_t))+\\\\W_z^T((s_{t-1}-h_t)\bigodot z_t \bigodot (1-z_t))+z     (公式6)$$<br>到此为止，$\frac {\partial L}{\partial U_z}$的计算已经完成，而其余的参数的计算和它的计算方式类似，沿着计算图一步一步计算，这里就不一一计算了。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li>A Tutorial On Backward Propagation Through Time (BPTT) In The Gated Recurrent Unit (GRU) RNN</li>
+</ul>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/17/CNN学习的相关博客/" itemprop="url">
-              
-                <span itemprop="name">CNN学习的相关资料</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-17T19:48:20+08:00"
-              content="2017-12-17" >
-          12-17
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/16/CS231n课程笔记-第9课-ConvNet-notes/" itemprop="url">
-              
-                <span itemprop="name">CS231n课程笔记(9)  ConvNet notes</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-16T22:17:23+08:00"
-              content="2017-12-16" >
-          12-16
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/13/CS231n课程笔记-第8课-Neural-Nets-Notes-3/" itemprop="url">
-              
-                <span itemprop="name">CS231n课程笔记(8)  Neural Nets Notes 3</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-13T22:17:23+08:00"
-              content="2017-12-13" >
-          12-13
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/12/CS231n课程笔记-第7课-Neural-Nets-Notes-2/" itemprop="url">
-              
-                <span itemprop="name">CS231n课程笔记(7)  Neural Nets Notes 2</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-12T22:17:23+08:00"
-              content="2017-12-12" >
-          12-12
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作!</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="luerwei 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpeg" alt="luerwei 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/DeepLearning/" rel="tag"># DeepLearning</a>
+          
+            <a href="/tags/GRU/" rel="tag"># GRU</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/06/LSTM参数更新推导/" rel="next" title="LSTM参数更新推导">
+                <i class="fa fa-chevron-left"></i> LSTM参数更新推导
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><a class="extend next" rel="next" href="/archives/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -710,6 +540,20 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -730,8 +574,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -838,6 +691,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#GRU神经网络"><span class="nav-number">1.</span> <span class="nav-text">GRU神经网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GRU的反向传播梯度计算"><span class="nav-number">2.</span> <span class="nav-text">GRU的反向传播梯度计算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -975,6 +844,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
 
   
 
@@ -992,6 +865,18 @@
       <script id="dsq-count-scr" src="https://author.disqus.com/count.js" async></script>
     
 
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://ilewseu.github.io/2018/01/20/GRU神经网络/';
+          this.page.identifier = '2018/01/20/GRU神经网络/';
+          this.page.title = 'GRU神经网络';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://author.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
     
 
   

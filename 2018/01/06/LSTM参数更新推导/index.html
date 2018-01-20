@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo ,NexT" />
+  <meta name="keywords" content="DeepLearning,GRU,LSTM," />
 
 
 
@@ -81,16 +81,21 @@
 
 
 
-<meta name="description" content="Stay hungry. Stay foolish">
-<meta property="og:type" content="website">
-<meta property="og:title" content="记录思考">
-<meta property="og:url" content="https://ilewseu.github.io/archives/index.html">
+<meta name="description" content="本文转自：https://zybuluo.com/hanbingtao/note/581764，对其进行一定的整理。  LSTM前向计算">
+<meta name="keywords" content="DeepLearning,GRU,LSTM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LSTM参数更新推导">
+<meta property="og:url" content="https://ilewseu.github.io/2018/01/06/LSTM参数更新推导/index.html">
 <meta property="og:site_name" content="记录思考">
-<meta property="og:description" content="Stay hungry. Stay foolish">
+<meta property="og:description" content="本文转自：https://zybuluo.com/hanbingtao/note/581764，对其进行一定的整理。  LSTM前向计算">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/180106/49m8miGdIC.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/180106/adGab6A7GF.png?imageslim">
+<meta property="og:updated_time" content="2018-01-20T15:22:34.868Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="记录思考">
-<meta name="twitter:description" content="Stay hungry. Stay foolish">
+<meta name="twitter:title" content="LSTM参数更新推导">
+<meta name="twitter:description" content="本文转自：https://zybuluo.com/hanbingtao/note/581764，对其进行一定的整理。  LSTM前向计算">
+<meta name="twitter:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/180106/49m8miGdIC.jpg?imageslim">
 
 
 
@@ -120,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="https://ilewseu.github.io/archives/"/>
+  <link rel="canonical" href="https://ilewseu.github.io/2018/01/06/LSTM参数更新推导/"/>
 
 
 
 
 
-  <title>归档 | 记录思考</title>
+  <title>LSTM参数更新推导 | 记录思考</title>
   
 
 
@@ -155,7 +160,7 @@
     
   
 
-  <div class="container sidebar-position-right page-archive">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -293,416 +298,274 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
 
-      <span class="archive-page-counter">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ilewseu.github.io/2018/01/06/LSTM参数更新推导/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="luerwei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="记录思考">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h1 class="post-title" itemprop="name headline">LSTM参数更新推导</h1>
         
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-06T15:45:20+08:00">
+                2018-01-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-        嗯..! 目前共计 27 篇日志。 继续努力。
-      </span>
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
 
-      
-
-        
-        
-        
-
-        
+                
+                
+              
+            </span>
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2018">2018</h1>
-          </div>
-        
-        
 
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/01/20/GRU神经网络/" itemprop="url">
-              
-                <span itemprop="name">GRU神经网络</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-20T13:58:20+08:00"
-              content="2018-01-20" >
-          01-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/01/06/LSTM参数更新推导/" itemprop="url">
-              
-                <span itemprop="name">LSTM参数更新推导</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-06T15:45:20+08:00"
-              content="2018-01-06" >
-          01-06
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2017">2017</h1>
-          </div>
-        
-        
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/06/LSTM参数更新推导/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/01/06/LSTM参数更新推导/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
 
-        
+          
+          
+             <span id="/2018/01/06/LSTM参数更新推导/" class="leancloud_visitors" data-flag-title="LSTM参数更新推导">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/31/理解LSTM/" itemprop="url">
-              
-                <span itemprop="name">理解LSTM</span>
-              
-            </a>
-        
-      </h2>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-31T17:35:20+08:00"
-              content="2017-12-31" >
-          12-31
-        </time>
-      </div>
+          
 
-    </header>
-  </article>
+        </div>
+      </header>
+    
 
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/30/RNN简单推导/" itemprop="url">
-              
-                <span itemprop="name">循环神经网络RNN 梯度推导(BPTT)</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-30T11:28:20+08:00"
-              content="2017-12-30" >
-          12-30
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/23/卷积神经网络学习笔记/" itemprop="url">
-              
-                <span itemprop="name">卷积神经网络学习笔记</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-23T19:48:20+08:00"
-              content="2017-12-23" >
-          12-23
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/17/前馈神经网络反向传播推导/" itemprop="url">
-              
-                <span itemprop="name">前馈神经网络反向传播推导</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-17T20:08:08+08:00"
-              content="2017-12-17" >
-          12-17
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <blockquote>
+<p>本文转自：<a href="https://zybuluo.com/hanbingtao/note/581764，对其进行一定的整理。" target="_blank" rel="external">https://zybuluo.com/hanbingtao/note/581764，对其进行一定的整理。</a></p>
+</blockquote>
+<h2 id="LSTM前向计算"><a href="#LSTM前向计算" class="headerlink" title="LSTM前向计算"></a>LSTM前向计算</h2><a id="more"></a>
+<p>在<a href="http://colah.github.io/posts/2015-08-Understanding-LSTMs/" target="_blank" rel="external">Understanding LSTM Networks</a>一文中，介绍了LSTM的基本原理。LSTM网络使用了门(gete)的概念，门实际上就是一层全连接，它的输入是一个向量，输出是一个0到1之间的实数向量。假设W是门的权重向量，b是偏置项，那么门可以表示为：$$<br>g(x) =\sigma(Wx+b)<br>$$<br>门的使用，就是用门的输出向量按元素乘以要控制的向量。因为门的输出是0到1之间的实数向量。所以，当门输出为0时，任何向量与之相乘都会得到0向量，这就相当于不能通过；当输出为1时，任何向量与之相乘都不会有任何改变，相当都通过。因为$\sigma$函数的值域是(0,1)，所以门的状态都是半开半闭的。</p>
+<p>典型的LSTM的网络架构图如下图所示：</p>
+<p><div align="center"><br>    <img src="http://of6h3n8h0.bkt.clouddn.com/blog/180106/49m8miGdIC.jpg?imageslim" alt="mark"><br></div><br>相比RNN网络，LSTM新增加状态C，称为单元状态(cell state)，如下图所示：</p>
+<p><div align="center"><br>    <img src="http://of6h3n8h0.bkt.clouddn.com/blog/180106/adGab6A7GF.png?imageslim" alt="mark"></div></p>
+<pre><code>图引自：https://zybuluo.com/hanbingtao/note/581764
+</code></pre><p><br>从图中可以看出，LSTM的输入有三个：<strong>当前时刻网络的输入$x_t$、上一时刻LSTM的输出值$h_{t-1}$以及上一时刻的单元状态$c_{t-1}$</strong>。LSTM的输出有两个：<strong>当前时刻LSTM输出值$h_t$和当前时刻的单元状态$c_t$</strong>。在这里x、h、c都是向量。</p>
+<p>LSTM中引入了三个门：<strong>遗忘门(forget gate)、输入门(input gate)和输出门(output gate)</strong>。</p>
+<ul>
+<li><strong>遗忘门</strong>：它决定了上一时刻的单元状态$c_{t-1}$有多少保留到当前时刻$c_t$;</li>
+<li><strong>输入门</strong>：它决定了当前时刻网络的输入$x_t$有多少保留到单元状态$c_t$。</li>
+<li><strong>输出门</strong>：来控制单元状态$c_t$有多少输出到LSTM的当前输出值$h_t$。</li>
+</ul>
+<p><strong>遗忘门计算</strong><br>$$f_t = \sigma(W_f\cdot[h_{t-1},x_t]+b_f)        (公式1)$$<br>其中，$W_f$是遗忘门的权重矩阵，$[h_{t-1},x_t]$是表示把两个向量连接成一个更长的向量，$b_f$是遗忘门的偏置项，$\sigma$是sigmoid函数。事实上权重矩阵$W_f$是由两个矩阵拼接而成的，一个是$W_{fh}$，它对应着输入项$h_{t-1}$，一个是$W_{fx}$。$W_f$可以写为：$$<br>[W_f]\begin{bmatrix}h_{t-1}\\\\x_t\end{bmatrix}=\begin{bmatrix}<br>    W_{fh}&amp;W_{fx}<br>\end{bmatrix}\begin{bmatrix}h_{t-1}\\\\x_t\end{bmatrix}=W_{fh}h_{t-1}+W_{fx}x_t<br>$$</p>
+<p><strong>输出门计算</strong><br>$$i_t=\sigma(W_i\cdot[h_{t-1},x_t]+b_i)    (公式2)$$</p>
+<p><strong>单元状态$\hat{c_t}$</strong><br>$$\hat{c_t}=tanh(W_c\cdot[h_{t-1},x_t]+b_c)    (公式3)$$<br>单元状态$c_t$,它是有上一时刻的单元状态$c_{t-1}$按元素乘以遗忘门$f_t$，再用当前输入的单元状态$\hat{c_t}$按元素乘以输入门$i_t$，再将两个积加和产生的：<br>$$c_t = f_t \bigodot c_{t-1}+i_t \bigodot \hat{c_t}    (公式4)$$<br>其中$\bigodot$表示按位相乘。这样就把LSTM关于当前的记忆$\hat{c_t}$和长期的记忆$c_{t-1}$组合在一起，形成了新的状态单元$c_t$。由于遗忘门的控制，它可以保存很久很久之前的信息，由于输入门的控制，又可以避免当前无关紧要的内容进入记忆。下面看一下输出门，它控制了长期记忆对当前输出的影响：<br><strong>输出门</strong><br>$$o_t=\sigma(W_o\cdot[h_{t-1},x_t]+b_o)    (公式5)$$</p>
+<p>LSTM最终的输出，是由输出门和单元状态共同确定的：<br>$$h_t = o_t \bigodot tanh(c_t)     (公式6)$$<br>从公式1到公式6就是LSTM的前向计算的全部公式。<br>LSTM前向传播的更新过程如下：</p>
+<ol>
+<li><strong>更新遗忘门的输出：</strong>$$f_t = \sigma(W_f\cdot[h_{t-1},x_t]+b_f)$$</li>
+<li><strong>更新输入门的两部分输出:</strong>$$i_t=\sigma(W_i\cdot[h_{t-1},x_t]+b_i)\\\\\hat{c_t}=tanh(W_c\cdot[h_{t-1},x_t]+b_c)$$</li>
+<li><strong>更新细胞状态:</strong>$$c_t = f_t \bigodot c_{t-1}+i_t \bigodot \hat{c_t}$$</li>
+<li><strong>更新输出门状态:</strong>$$o_t=\sigma(W_o\cdot[h_{t-1},x_t]+b_o)\\\\h_t = o_t \bigodot tanh(c_t)$$</li>
+<li><strong>更新当前序列输出</strong>:$$\hat {y_t}=\sigma(Vh_t+b_y)$$</li>
+</ol>
+<h2 id="LSTM反向传播"><a href="#LSTM反向传播" class="headerlink" title="LSTM反向传播"></a>LSTM反向传播</h2><p>LSTM的训练算法，仍然是反向传播算法，主要有三个步骤：</p>
+<ol>
+<li>前向计算每个神经元的输出值，对于LSTM来说，即$f_t、i_t、c_t、o_t、h_t$ 5组向量。</li>
+<li>反向计算每个神经元的误差项$\delta$。与循环神网络一样，LSTM误差项的反向传播也是包括两个方向：一个是沿时间的反向传播，即从当前时刻t开始，计算每个时刻的误差项；一个是将误差项向上一层传播。</li>
+<li>根据相应的误差项，计算每个权重的梯度。</li>
+</ol>
+<p>LSTM需要学习的参数共有8组，分别是：遗忘门的权重矩阵$W_f$和偏置项$b_f$、输入门的权重矩阵$W_i$和偏置项$b_i$、输出门的权重矩阵$W_o$和偏置项$b_o$以及计算单元状态的权重矩阵$W_c$和偏置项$b_c$。因为权重矩阵的两部分在反向传播中使用不同的公式，因此，权重矩阵$W_f$、$W_i$、$W_c$、$W_o$都将被写为分开的两个矩阵:$W_{fh}$、$W_{fx}$、$W_{ih}$、$W_{ix}$、$W_{ch}$、$W_{cx}$、$W_{oh}$、$W_{ox}$。</p>
+<p>在t时刻，LSTM的输出值为$h_t$，定义t时刻的误差项为$\delta_t$为:$$<br>\delta_t = \frac {\partial E}{\partial h_t}$$</p>
+<p>因为LSTM有四个加权输入，分别为$f_t、i_t、c_t、o_t、h_t$，定义这四个加权输入，以及他们对应的误差项。$$<br>net_{f,t} = W_f[h_{t-1},x_t]+b_f=W_{fh}h_{t-1}+W_{fx}x_t+b_f\\\\<br>net_{i,t} = W_i[h_{t-1},x_t]+b_i=W_{ih}h_{t-1}+W_{ix}x_t+b_i\\\\<br>net_{\hat{c},t} = W_c[h_{t-1},x_t]+b_f=W_{ch}h_{t-1}+W_{cx}x_t+b_c\\\\<br>net_{o,t} = W_o[h_{t-1},x_t]+b_o=W_{oh}h_{t-1}+W_{ox}x_t+b_o\\\\<br>\delta_{f,t}=\frac {\partial E}{\partial net_{f,t}}\\\\<br>\delta_{i,t}=\frac {\partial E}{\partial net_{i,t}}\\\\<br>\delta_{\hat{c},t}=\frac {\partial E}{\partial net_{\hat{c},t}}\\\\<br>\delta_{o,t}=\frac {\partial E}{\partial net_{o,t}}<br>$$</p>
+<h3 id="误差项沿时间反向传递"><a href="#误差项沿时间反向传递" class="headerlink" title="误差项沿时间反向传递"></a>误差项沿时间反向传递</h3><p>沿时间反向传递误差项，就是要计算出t-1时刻的误差项$\delta_{t-1}$。<br>$$<br>\delta_{t-1}^T=\frac {\partial E}{\partial h_{t-1}}=\frac {\partial E}{\partial h_{t}}\frac {\partial h_t}{\partial h_{t-1}}=\delta_t^T\frac  {\partial h_t}{\partial h_{t-1}}<br>$$<br>其中，$\frac {\partial h_t}{\partial h_{t-1}}$是一个Jacobian矩阵。如果隐藏层h的维度是N的话，那么它就是一个N*N的矩阵。为了求出它，先列出$h_t$的计算公式，即公式6和公式4：<br>$$<br>h_t=o_t\bigodot tanh(c_t)\\\\c_t=f_t \bigodot c_{t-1}+i_t \bigodot \hat {c_t}<br>$$<br>可以看出，$o_t、f_t、i_t、\hat{c_t}$都是$h_{t-1}$的函数，那么利用全导数公式可得：$$<br>\delta_t^T\frac {\partial h_t}{\partial h_{t-1}}=\delta_t^T\frac {\partial h_t}{\partial o_t}\frac {\partial o_t}{\partial net_{o,t}}\frac {\partial net_{o,t}}{\partial h_{t-1}}+\delta_t^T\frac {\partial h_t}{\partial c_t}\frac {\partial c_t}{\partial f_t}\frac{\partial f_t}{\partial net_{f,t}}\frac {\partial net_{f,t}}{\partial h_{t-1}}+\delta_t^T\frac{\partial h_t}{\partial c_t}\frac {\partial c_t}{\partial i_t}\frac {\partial i_t}{\partial net_{i,t}}\frac {\partial net_{i,j}}{\partial h_{t-1}}\\\\=\delta_{o,t}^T\frac {\partial net_{o,t}}{\partial h_{t-1}}+\delta_{f,t}^T\frac {\partial net_{f,t}}{\partial h_{t-1}}+\delta_{i,t}^T\frac {\partial net_{i,t}}{\partial h_{t-1}}+\delta_{\hat{c_t},t}^T\frac{\partial net_{\hat{c_t},t}}{\partial h_{t-1}}\\\(公式7)<br>$$<br>下面要把公式7中的每个偏导数都求出来，根据公式6，我们可以求出：$$<br>\frac {\partial h_t}{\partial o_t}= diag[tanh(c_t)]\\\\<br>\frac {\partial h_t}{\partial c_t}= diag[o_t\bigodot(1-tanh(c_t)^2)]<br>$$<br>根据公式4，可以求出：$$<br>\frac {\partial c_t}{\partial f_t} = diag[c_{t-1}]\\\\<br>\frac {\partial c_t}{\partial i_t} = diag[\hat{c_t}]\\\\<br>\frac {\partial c_t}{\partial \hat{c_t}} =diag[i_t]<br>$$<br>因为：$$\begin{aligned}<br>    &amp;o_t = \sigma(net_{o,t})\\\\<br>&amp;net_{o,t} = W_{oh}h_{t-1}+W_{ox}x_t+b_o\\\ <br>&amp;f_t = \sigma(net_{f,t})\\\ <br>&amp;net_{f,t} = W_{ft}h_{t-1}+W_{fx}x_t+b_f\\\ <br>&amp;i_t = \sigma(net_{i,t})\\\\<br>&amp;net_{i,t}=W_{ih}h_{t-1}+W_{ix}x_t+b_i\\\ <br>&amp;\hat{c_t}=tanh(net_{\hat{c},t})\\\\<br>&amp;net_{\hat{c},t}=W_{ch}h_{t-1}+W_{cx}x_t+b_c<br>\end{aligned}<br>$$<br>很容易得出:<br>$$\begin{aligned}<br>&amp;\frac {\partial o_t}{\partial net_{o,t}}= diag[o_t\bigodot(1-o_t)]\\\\<br>&amp;\frac {\partial_{o,t}}{\partial h_{t-1}}=W_{oh}\\\\<br>&amp;\frac {\partial f_t}{\partial net_{f,t}}=diag[f_t\bigodot(1-f_t)]\\\\<br>&amp;\frac {\partial net_{f,t}}{\partial h_{t-1}}=W_{fh}\\\\<br>&amp;\frac {\partial i_t}{\partial net_{i,j}}=diag[i_t\bigodot(1-i_t)]\\\\<br>&amp;\frac {\partial net_{i,t}}{\partial h_{t-1}}=W_{ih}\\\\<br>&amp;\frac {\partial \hat{c_t}}{\partial net_{\hat{c},t}}=diag[1-\hat{c_t}^2]\\\\<br>&amp;\frac {\partial net_{\hat{c},t}}{\partial h_{t-1}}=W_{ch}<br>\end{aligned}<br>$$<br>将上述偏导数带入公式7，可以得到：$$<br>\delta_{t-1} = \delta_{o,t}^T\frac {\partial net_{o,t}}{\partial h_{t-1}}+\delta_{f,t}^T\frac {\partial net_{f,t}}{\partial h_{t-1}}+\delta_{i,t}^T\frac {\partial net_{i,t}}{\partial h_{t-1}}+\delta_{\hat{c},t}^T\frac {\partial net_{\hat{c},t}}{\partial h_{t-1}}=\delta_{o,t}^TW_{oh}+\delta_{f,t}^TW_{fh}+\delta_{i,t}^TW_{i,h}+\delta_{\hat{c},t}^TW_{ch}    (公式8)$$</p>
+<p>根据$\delta_{o,t}、\delta_{f,t}、\delta_{i,t}、\delta_{\hat{c},t}$的定义，可知：<br>$$<br>\begin{aligned}<br>&amp;\delta_{o,t}^T = \delta_t^T\bigodot tanh(c_t)\bigodot o_t\bigodot(1-o_t)(公式9)\\\\<br>&amp;\delta_{f,t}^T =\delta_t^T \bigodot o_t\bigodot(1-tanh(c_t)^2)\bigodot c_{t-1}\bigodot f_t \bigodot (1-f_t)(公式10)\\\\<br>&amp;\delta_{i,t}^T = \delta_t^T \bigodot o_t \bigodot(1-tanh(c_t)^2)\bigodot \hat{c_t}\bigodot i_t \bigodot (1-i_t)(公式11)\\\\<br>&amp;\delta_{\hat{c},t}^T=\delta_t^T\bigodot o_t\bigodot(1-tanh(c_t)^2)\bigodot i_t\bigodot (1-\hat{c}^2)(公式12)<br>\end{aligned}<br>$$<br>公式8到公式12就是将误差沿时间反向传播的一个时刻的公式。有了它，我们可以写出将误差向前传递到任意时刻k的公式：$$<br>\delta_k^T = \prod_{j=k}^t-1\delta_{o,j}^TW_{oh}+\delta_{f,j}^TW_{fh}+\delta_{i,j}^TW_{ih}+\delta_{\hat{c},j}^TW_{ch}<br>$$</p>
+<h3 id="将误差传递到上一层"><a href="#将误差传递到上一层" class="headerlink" title="将误差传递到上一层"></a>将误差传递到上一层</h3><p>假设当前层为第l层，定义第l-1层的误差项是误差函数l-1层加权输入的导数，即:$$<br>\delta_t^{l-1}=\frac {\partial E}{\partial net_t^{l-1}}<br>$$<br>LSTM的输入$x_t$由下面的公式计算：<br>$$<br>x_t^l = f^{l-1}(net_t^{l-1})<br>$$<br>上式中，$f^{l-1}$表示第l-1层的激活函数。<br>因为$net_{f,t}^l、net_{i,t}^l、net_{\hat{c},t}^l、net_{o,t}^l$都是$x_t$的函数，$x_t$又是$net_t^{l-1}$的函数，因此，要求出E对$net_t^{l-1}$的导数，就需要使用全导数公式：<br>$$\begin{aligned}<br>\frac {\partial E}{\partial net_t^{l-1}}<br>&amp;=\frac {\partial E}{\partial net_{f,t}^l}\frac {\partial net_{f,t}^l}{\partial x_t^l}\frac {\partial x_t^l}{\partial net_t^{l-1}}+\frac {\partial E}{\partial net_{i,t}^l}\frac{\partial net_{i,t}^l}{\partial x_t^l}\frac {\partial x_t^l}{\partial net_{i,t}^{l-1}}+\frac {\partial E}{\partial net_{\hat{c},t}^l}\frac{\partial net_{\hat{c},t}^l}{\partial x_t^l}\frac {\partial x_t^l}{\partial net_t^{l-1}}+\frac{\partial E}{\partial net_{o,t}^l} \frac{\partial net_{o,t}^l}{\partial x_t^l}\frac{\partial x_t^l}{\partial net_{o,t}^{l-1}}\\\\<br>&amp;=\delta_{f,t}^TW_{fx}\bigodot f^{\prime}(net_t^{l-1})+\delta_{i,t}^TW_{ix}\bigodot f^{\prime}(net_t^{l-1})+\delta_{\hat{c},t}^TW_{cx}\bigodot f^{\prime}(net_t^{l-1})+\delta_{o,t}^TW_{ox}\bigodot f^{\prime}(net_t^{l-1})\\\\&amp;=<br>(\delta_{f,t}^TW_{fx}+\delta_{i,t}^TW_{ix}+\delta_{\hat{c},t}^TW_{cx}+\delta_{o,t}^TW_{ox})\bigodot f^{\prime}(net_l^{l-1})<br>\end{aligned}(公式14)$$</p>
+<p>公式14就是将误差传递到上一层的公式。</p>
+<h3 id="权重梯度计算"><a href="#权重梯度计算" class="headerlink" title="权重梯度计算"></a>权重梯度计算</h3><p>对度$W_{fh}、W_{ih}、W_{ch}、W_{oh}$的权重梯度，我们知道我们知道它的梯度是各个时刻梯度之和，我们首先求出它们在t时刻的梯度，然后再求出他们最终的梯度。我们已经求得误差项$\delta_{o,t}、\delta_{f,t}、\delta_{i,t}、\delta_{\hat{c},t}$很容易求出t时刻$W_{fh}、W_{ih}、W_{ch}、W_{oh}$的梯度。$$<br>\begin{aligned}<br>   &amp;\frac{\partial E}{\partial W_{oh,t}}=\frac{\partial E}{\partial net_{o,t}}\frac{\partial net_{o,t}}{\partial W_{oh,t}}=\delta_{o,t}h_{t-1}^T\\\\<br>   &amp;\frac{\partial E}{\partial W_{fh,t}}=\frac{\partial E}{\partial net_{f,t}}\frac{\partial net_{f,t}}{\partial W_{fh,t}}=\delta_{f,t}h_{t-1}^T\\\\<br>   &amp;\frac{\partial E}{\partial W_{ih,t}}=\frac{\partial E}{\partial net_{i,t}}\frac{\partial net_{i,t}}{\partial W_{ih,t}}=\delta_{i,t}h_{t-1}^T\\\\<br>   &amp;\frac{\partial E}{\partial W_{ch,t}}=\frac{\partial E}{\partial net_{\hat{c},t}}\frac{\partial net_{\hat{c},t}}{\partial W_{ch,t}}=\delta_{\hat{c},t}h_{t-1}^T<br>\end{aligned}<br>$$<br>将各个时刻的梯度加在一起，就能得到最终的梯度：$$<br>\begin{aligned}<br>&amp;\frac{\partial E}{\partial W_{oh}}=\sum_{j=1}^t\delta_{o,j}h_{j-1}^T\\\\<br>&amp;\frac{\partial E}{\partial W_{fh}}=\sum_{j=1}^t\delta_{f,j}h_{j-1}^T\\\\<br>&amp;\frac{\partial E}{\partial W_{ih}}=\sum_{j=1}^t\delta_{i,j}h_{j-1}^T\\\\<br>&amp;\frac{\partial E}{\partial W_{ch}}=\sum_{j=1}^t\delta_{\hat{c},j}h_{j-1}^T\\\\<br>\end{aligned}<br>$$<br>对于偏置项$b_f、b_i、b_c、b_o$的梯度，也是将各个时刻的梯度加在一起，下面是各个时刻的偏置梯度:<br>$$\begin{aligned}<br>&amp;\frac{\partial E}{\partial b_{o,t}}=\frac {\partial E}{\partial net_{o,t}}\frac{\partial net_{o,t}}{\partial b_{o,t}}=\delta_{o,t}\\\\<br>&amp;\frac{\partial E}{\partial b_{f,t}}=\frac {\partial E}{\partial net_{f,t}}\frac{\partial net_{f,t}}{\partial b_{f,t}}=\delta_{f,t}\\\\<br>&amp;\frac{\partial E}{\partial b_{i,t}}=\frac {\partial E}{\partial net_{i,t}}\frac{\partial net_{i,t}}{\partial b_{i,t}}=\delta_{i,t}\\\\<br>&amp;\frac{\partial E}{\partial b_{c,t}}=\frac {\partial E}{\partial net_{\hat{c},t}}\frac{\partial net_{\hat{c},t}}{\partial b_{c,t}}=\delta_{\hat{c},t}<br>\end{aligned}<br>$$<br>下面是最终的偏置项的梯度，即将各个时刻的偏置项梯度加在一起：<br>$$<br>\begin{aligned}<br>&amp;\frac {\partial E}{\partial b_o}=\sum_{j=1}^t\delta_{o,j}\\\\<br>&amp;\frac {\partial E}{\partial b_i}=\sum_{j=1}^t\delta_{i,j}\\\\<br>&amp;\frac {\partial E}{\partial b_f}=\sum_{j=1}^t\delta_{f,j}\\\\<br>&amp;\frac {\partial E}{\partial b_c}=\sum_{j=1}^t\delta_{\hat{c},j}<br>\end{aligned}<br>$$<br>对于$W_{fx}、W_{ix}、W_{cx}、W_{ox}$的权重梯度，只需要根据相应的误差项直接计算即可:<br>$$\begin{aligned}<br>&amp;\frac {\partial E}{\partial W_{ox}}=\frac{\partial E}{\partial net_{o,t}}\frac{\partial net_{o,t}}{\partial W_{ox}}=\delta_{o,t}x_t^T\\\\<br>&amp;\frac {\partial E}{\partial W_{fx}}=\frac{\partial E}{\partial net_{f,t}}\frac{\partial net_{f,t}}{\partial W_{fx}}=\delta_{f,t}x_t^T\\\\<br>&amp;\frac {\partial E}{\partial W_{ix}}=\frac{\partial E}{\partial net_{i,t}}\frac{\partial net_{i,t}}{\partial W_{ix}}=\delta_{i,t}x_t^T\\\\<br>&amp;\frac {\partial E}{\partial W_{cx}}=\frac{\partial E}{\partial net_{\hat{c},t}}\frac{\partial net_{\hat{c},t}}{\partial W_{cx}}=\delta_{\hat{c},t}x_t^T\\\\<br>\end{aligned}<br>$$</p>
+<p>&lt;–end–&gt;</p>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/17/CNN学习的相关博客/" itemprop="url">
-              
-                <span itemprop="name">CNN学习的相关资料</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-17T19:48:20+08:00"
-              content="2017-12-17" >
-          12-17
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/16/CS231n课程笔记-第9课-ConvNet-notes/" itemprop="url">
-              
-                <span itemprop="name">CS231n课程笔记(9)  ConvNet notes</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-16T22:17:23+08:00"
-              content="2017-12-16" >
-          12-16
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/13/CS231n课程笔记-第8课-Neural-Nets-Notes-3/" itemprop="url">
-              
-                <span itemprop="name">CS231n课程笔记(8)  Neural Nets Notes 3</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-13T22:17:23+08:00"
-              content="2017-12-13" >
-          12-13
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/12/CS231n课程笔记-第7课-Neural-Nets-Notes-2/" itemprop="url">
-              
-                <span itemprop="name">CS231n课程笔记(7)  Neural Nets Notes 2</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-12T22:17:23+08:00"
-              content="2017-12-12" >
-          12-12
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作!</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="luerwei 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpeg" alt="luerwei 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/DeepLearning/" rel="tag"># DeepLearning</a>
+          
+            <a href="/tags/GRU/" rel="tag"># GRU</a>
+          
+            <a href="/tags/LSTM/" rel="tag"># LSTM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/31/理解LSTM/" rel="next" title="理解LSTM">
+                <i class="fa fa-chevron-left"></i> 理解LSTM
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/20/GRU神经网络/" rel="prev" title="GRU神经网络">
+                GRU神经网络 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><a class="extend next" rel="next" href="/archives/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -710,6 +573,20 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -730,8 +607,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -838,6 +724,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#LSTM前向计算"><span class="nav-number">1.</span> <span class="nav-text">LSTM前向计算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LSTM反向传播"><span class="nav-number">2.</span> <span class="nav-text">LSTM反向传播</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#误差项沿时间反向传递"><span class="nav-number">2.1.</span> <span class="nav-text">误差项沿时间反向传递</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将误差传递到上一层"><span class="nav-number">2.2.</span> <span class="nav-text">将误差传递到上一层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#权重梯度计算"><span class="nav-number">2.3.</span> <span class="nav-text">权重梯度计算</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -975,6 +877,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
 
   
 
@@ -992,6 +898,18 @@
       <script id="dsq-count-scr" src="https://author.disqus.com/count.js" async></script>
     
 
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://ilewseu.github.io/2018/01/06/LSTM参数更新推导/';
+          this.page.identifier = '2018/01/06/LSTM参数更新推导/';
+          this.page.title = 'LSTM参数更新推导';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://author.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
     
 
   
