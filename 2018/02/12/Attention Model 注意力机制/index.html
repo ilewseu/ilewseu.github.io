@@ -104,7 +104,7 @@
 <meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/180212/JL6JJK2g25.png?imageslim">
 <meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/180212/fbb3Gee98c.png?imageslim">
 <meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/180212/cHmIh83088.png?imageslim">
-<meta property="og:updated_time" content="2018-02-12T15:31:22.283Z">
+<meta property="og:updated_time" content="2018-02-13T15:12:11.778Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Attention Model 注意力机制">
 <meta name="twitter:description" content="本文是对:https://blog.heuritech.com/2016/01/20/attention-mechanism/ 的翻译。这篇文章对Attention Model原理进行了一个比较清晰的阐述，所以记录一下。由于本人英语能力有限，翻译不周的地方，还请见谅。">
@@ -463,10 +463,8 @@
 <p>然后，网络计算$m_1,…,m_n$通过一个tanh层。这意味着我们计算$y_i$和c的一个”聚合”。重要的一点是，每个$m_i$的计算都是在不考虑其他$y_j,j \neq i$的情况下计算出来的。它们是独立计算出来的。</p>
 <p><img src="http://of6h3n8h0.bkt.clouddn.com/blog/180212/fejdk9cA73.png?imageslim" alt="mark"></p>
 <p>$$m_i = tanh(W_{cm}c+W_{ym}y_i)$$</p>
-<p>然后，我们计算每个weight使用softmax。softmax，就像他的名字一样，它的行为和argmax比较像，但是稍有不同。$argmax(x_1,…,x_n)=(0,..,0,1,0,..,0)$,在输出中只有一个1，告诉我们那个是最大值。但是，softmax的定义为：$softmax(x_1,…,x_n)=(\frac {e^{x_i}}{\sum_j e^{x_j}})_i$。如果其中有一个$x_i$比其他的都大，$softmax(x_1,…,x_n)将会非常接近argmax(x_1,…,x_n)$。</p>
-<p><img src="http://of6h3n8h0.bkt.clouddn.com/blog/180212/g3JgH62d65.png?imageslim" alt="mark"></p>
-<p>$$s_i \propto exp(<w_m, m_i="">)$$</w_m,></p>
-<p>$$ \sum_i s_i=1$$<br>这里的$s_i$是通过softmax进行归一化后的值。因此，softmax可以被认为是“相关性”最大值的变量，根据上下文。<br>输出$z$是所有$y_i$的算术平均，每个权重值表示$y_i,..,y_n$和上下文c的相关性。</p>
+<p>然后，我们计算每个weight使用softmax。softmax，就像他的名字一样，它的行为和argmax比较像，但是稍有不同。$argmax(x_1,…,x_n)=(0,..,0,1,0,..,0)$,在输出中只有一个1，告诉我们那个是最大值。但是，softmax的定义为：$softmax(x_1,…,x_n)=(\frac {e^{x_i}}{\sum_j e^{x_j}})_i$。如果其中有一个$x_i$比其他的都大，$softmax(x_1,…,x_n)将会非常接近argmax(x_1,…,x_n)$。<br><img src="http://of6h3n8h0.bkt.clouddn.com/blog/180212/g3JgH62d65.png?imageslim" alt="mark"></p>
+<p>$$s_i 正比于 exp(w_m, m_i)\\\ \sum_i s_i=1$$<br>这里的$s_i$是通过softmax进行归一化后的值。因此，softmax可以被认为是“相关性”最大值的变量，根据上下文。<br>输出$z$是所有$y_i$的算术平均，每个权重值表示$y_i,..,y_n$和上下文c的相关性。</p>
 <p><img src="http://of6h3n8h0.bkt.clouddn.com/blog/180212/43eLlm4gDb.png?imageslim" alt="mark"></p>
 <p>$$z = \sum_i s_iy_i$$</p>
 <h2 id="An-other-computation-of-“relevance”"><a href="#An-other-computation-of-“relevance”" class="headerlink" title="An other computation of “relevance”"></a>An other computation of “relevance”</h2><p>上面介绍的attention model是可以进行修改的。首先，tanh层可以被其他网络或函数代替。重要的是这个网络或函数可以综合c和$y_i$。比如可以只使用点乘操作计算c和$y_i$的内积，如下图所示：</p>
