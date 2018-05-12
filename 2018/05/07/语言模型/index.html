@@ -91,7 +91,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/180505/d6ljdKdckd.jpg?imageslim">
 <meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/180505/EG0fA48HjC.jpg?imageslim">
-<meta property="og:updated_time" content="2018-05-12T15:21:45.432Z">
+<meta property="og:updated_time" content="2018-05-12T15:29:18.900Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="统计语言模型">
 <meta name="twitter:description" content="语言模型概述语言模型(Language Model)，就是用来计算一个句子概率的模型。从统计的角度看，自然语言中的一个句子可以由任何词串构成。不过P(s)有大有小。比如：">
@@ -518,7 +518,7 @@
 <p><strong>如何计算$d_r$?</strong></p>
 <ul>
 <li>如果$r&gt;k$，不折扣，即$d_r=1$(Katz提出k=5)</li>
-<li>如果$0&lt;r \leq k$，按照和Good-Turing估计同样的方式折扣，即按照$\frac {r^<em>}{r}$进行折扣。严格说，要求$d_r$满足，$1-d_r=u(1-\frac {r^\</em>}{r})$</li>
+<li>如果$0&lt;r \leq k$，按照和Good-Turing估计同样的方式折扣，即按照$\frac {r^{*}}{r}$进行折扣。严格说，要求$d_r$满足，$1-d_r=u(1-\frac {r^{*}}{r})$</li>
 <li>根据Good-Turing估计，未出现的n元组估计出现频次是$n_1$，$\sum_{r=1}^k n_r(1-d_r)r=n$</li>
 <li>具体而言，若$0&lt;r \leq k$，有$$<br>d_r = \frac {\frac {r^*}{r} - \frac {(k+1)n_{k+1}}{n_1}} {1 - \frac {(k+1)n_{k+1}}{n!}}<br>$$</li>
 </ul>
