@@ -91,7 +91,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/180505/d6ljdKdckd.jpg?imageslim">
 <meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/180505/EG0fA48HjC.jpg?imageslim">
-<meta property="og:updated_time" content="2018-05-12T15:11:35.246Z">
+<meta property="og:updated_time" content="2018-05-12T15:21:45.432Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="统计语言模型">
 <meta name="twitter:description" content="语言模型概述语言模型(Language Model)，就是用来计算一个句子概率的模型。从统计的角度看，自然语言中的一个句子可以由任何词串构成。不过P(s)有大有小。比如：">
@@ -518,7 +518,7 @@
 <p><strong>如何计算$d_r$?</strong></p>
 <ul>
 <li>如果$r&gt;k$，不折扣，即$d_r=1$(Katz提出k=5)</li>
-<li>如果$0&lt;r \leq k$，按照和Good-Turing估计同样的方式折扣，即按照$\frac {r^<em>}{r}$进行折扣。严格说，要求$d_r$满足，$1-d_r=u(1-\frac {r^</em>}{r})$</li>
+<li>如果$0&lt;r \leq k$，按照和Good-Turing估计同样的方式折扣，即按照$\frac {r^<em>}{r}$进行折扣。严格说，要求$d_r$满足，$1-d_r=u(1-\frac {r^\</em>}{r})$</li>
 <li>根据Good-Turing估计，未出现的n元组估计出现频次是$n_1$，$\sum_{r=1}^k n_r(1-d_r)r=n$</li>
 <li>具体而言，若$0&lt;r \leq k$，有$$<br>d_r = \frac {\frac {r^*}{r} - \frac {(k+1)n_{k+1}}{n_1}} {1 - \frac {(k+1)n_{k+1}}{n!}}<br>$$</li>
 </ul>
@@ -545,7 +545,9 @@
 <li>多义性；</li>
 <li>同义性；如 “鸡肉”和“狗肉”属于同一类词，p(肉|鸡)应当等于p(肉|狗)，而在训练集中学习到的概率可能相差悬殊；</li>
 </ul>
-<h2 id="语言模型应用"><a href="#语言模型应用" class="headerlink" title="语言模型应用"></a>语言模型应用</h2><h3 id="n-gram距离"><a href="#n-gram距离" class="headerlink" title="n-gram距离"></a>n-gram距离</h3><p>假设有一个字符串s，那么该字符串的n-gram就表示按长度n切分原词得到的词段，也就是s中长度为n的子串。假设有两个字符串，然后分别求它们的n-gram，那么就可以从它们的共有子串的数量这个角度定义两个字符串间的n-gram距离。但是仅仅是简单地对共有子串进行计数显然也存在不足，这种方案忽略了两个字符长度的差异，可能导致的问题。比如，字符串girl和girlfriend，二者拥有的公共子串数量显然与girl和其自身所拥有的公共子串数量相等，但是不能认为girl和girlfriend是两个等同的匹配。为解决该问题，有学者便提出以非重复的n-gram分词为基础来定义n-gram距离这一概念，可以用下面的公式来表述：<br>$$|G_N(s)|+|G_N(t)|-2<em>|G_N(s)\cap G_N(t)|$$<br>例如，字符串s=”ABC”，t=”AB”，分别在字符串首尾加上begin和end，采用二元语言模型，字符串s产生的bi-gram为：(begin,A),(A,B),(B,C),(C,end)；字符串t产生的bi-gram为：(begin,A),(A,B),(B,end)。<br>采用上面公式定义:4+3 - 2</em>2 = 3<br>显然，字符串之间的距离越小，它们就越接近。当两个字符串完全相等的时候，它们之间的距离就是0。</p>
+<h2 id="语言模型应用"><a href="#语言模型应用" class="headerlink" title="语言模型应用"></a>语言模型应用</h2><h3 id="n-gram距离"><a href="#n-gram距离" class="headerlink" title="n-gram距离"></a>n-gram距离</h3><p>假设有一个字符串s，那么该字符串的n-gram就表示按长度n切分原词得到的词段，也就是s中长度为n的子串。假设有两个字符串，然后分别求它们的n-gram，那么就可以从它们的共有子串的数量这个角度定义两个字符串间的n-gram距离。但是仅仅是简单地对共有子串进行计数显然也存在不足，这种方案忽略了两个字符长度的差异，可能导致的问题。比如，字符串girl和girlfriend，二者拥有的公共子串数量显然与girl和其自身所拥有的公共子串数量相等，但是不能认为girl和girlfriend是两个等同的匹配。为解决该问题，有学者便提出以非重复的n-gram分词为基础来定义n-gram距离这一概念，可以用下面的公式来表述：</p>
+<p>$$|G_N(s)|+|G_N(t)|-2*|G_N(s)\cap G_N(t)|$$</p>
+<p>例如，字符串s=”ABC”，t=”AB”，分别在字符串首尾加上begin和end，采用二元语言模型，字符串s产生的bi-gram为：(begin,A),(A,B),(B,C),(C,end)；字符串t产生的bi-gram为：(begin,A),(A,B),(B,end)。<br>采用上面公式定义:4+3 - 2*2 = 3<br>显然，字符串之间的距离越小，它们就越接近。当两个字符串完全相等的时候，它们之间的距离就是0。</p>
 <h3 id="分词"><a href="#分词" class="headerlink" title="分词"></a>分词</h3><p>分词是NLP中一项比较基础且重要的任务。对于X=”我爱中国”这样一句话，有多种切分方案，对于$y_i$这种分词方案，如,$Y_0=(“我”，“爱”，“中国”),Y_1=(“我”，“爱中”，“国”)$，利用贝叶斯公式可以计算出每种切分的概率:$$<br>P(Y_i|X)=\frac {P(X|Y_i)P(Y_i)}{P(X)}\propto P(X|Y_i)P(Y_i),i=1,2,3,…<br>$$<br>无论在哪种$Y_i$下，最终都能生成句子X，因此$P(X|Y_i)=1$，所以$P(Y_i|S)\propto P(Y_i),i=1,2,3…$。所以，只需要最大化$P(Y_i)即可$。例如，根据bi-gram语言模型，$P(Y_0|X)\propto P(Y_0)=P(我)P(爱|我)P(中国|爱)$，$P(Y_1|X)\propto P(Y_1)=P(我)P(爱中|我)P(国|爱中)$，然后利用计算出的概率，选择最大的作为分词方案。</p>
 <h3 id="词性标注"><a href="#词性标注" class="headerlink" title="词性标注"></a>词性标注</h3><p>词性标注（POS tagging）是一个典型的多分类问题，将每个词标注为名词、动词、形容词、副词、代词等。例如，在“我/爱/中国”句话中，“爱”有很多词性，比如，名词、动词。最简单的标注其语义的方案就是，看语料库中“爱”出现的次数，以及其词性，即：<br>$$<br>P(POS_i|爱)=\frac {c(“爱”作为POS_i )}{c(爱),i=1,2,…,k，k为词性总数}<br>$$<br>但是，这种简单的词性标注的方案依赖人工，且未考虑上下文。考虑到在一个句子中当前词的词性和前面一两个词关系比较大。因此，可以借用n-gram模型的思路进行求解。比如，在考虑“爱”的词性时，以前面一个词的词性作为参考，即“我”的词性，则，当前这个“爱”的词性概率分布为:<br>$$P(POS_i|我，爱)=P(POS_i|Pron.,爱)=\frac {前面被“副词”修饰的“爱”的POS_i}{c(前面被“副词”修饰的“爱”)},i=1,2,…,k,k为词性总数$$</p>
 <p>计算这个概率需要对语料库进行统计。但是，前提是先判断好“我”的词性。因为，采用的是bi-gram模型，由于“我”已经是第一个词，在二元模型中主需要级简的方案判断即可。</p>
