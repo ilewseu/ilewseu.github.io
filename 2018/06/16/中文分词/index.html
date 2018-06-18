@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="NLP," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="记录思考" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="中文分词问题介绍词是自然语言中能够独立运用的最小单位，是信息处理的基本单位。自然语言处理的对象是一个个的句子，拿到句子之后一般要对句子进行分词。分词就是利用计算机识别出文本中词的过程。大部分的印欧语言，词与词之间有空格之类的显示标志指示词的边界。因此，利用很容易切分出句子中的词。而与大部分的印欧语言不同，中文语句中词与词之间没有空格标志指示，所以，需要专门的方法去实现中文分词。分词是文本挖掘的基础">
+<meta name="keywords" content="NLP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自然语言处理基础-中文分词">
+<meta property="og:url" content="https://ilewseu.github.io/2018/06/16/中文分词/index.html">
+<meta property="og:site_name" content="记录思考">
+<meta property="og:description" content="中文分词问题介绍词是自然语言中能够独立运用的最小单位，是信息处理的基本单位。自然语言处理的对象是一个个的句子，拿到句子之后一般要对句子进行分词。分词就是利用计算机识别出文本中词的过程。大部分的印欧语言，词与词之间有空格之类的显示标志指示词的边界。因此，利用很容易切分出句子中的词。而与大部分的印欧语言不同，中文语句中词与词之间没有空格标志指示，所以，需要专门的方法去实现中文分词。分词是文本挖掘的基础">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/180616/dlcc2jcgAd.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/180616/6JLiabm6eH.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/180616/1g3aBAd38j.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/180617/Lf8f5AimlK.jpg?imageslim">
+<meta property="og:updated_time" content="2018-06-18T14:14:45.282Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自然语言处理基础-中文分词">
+<meta name="twitter:description" content="中文分词问题介绍词是自然语言中能够独立运用的最小单位，是信息处理的基本单位。自然语言处理的对象是一个个的句子，拿到句子之后一般要对句子进行分词。分词就是利用计算机识别出文本中词的过程。大部分的印欧语言，词与词之间有空格之类的显示标志指示词的边界。因此，利用很容易切分出句子中的词。而与大部分的印欧语言不同，中文语句中词与词之间没有空格标志指示，所以，需要专门的方法去实现中文分词。分词是文本挖掘的基础">
+<meta name="twitter:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/180616/dlcc2jcgAd.jpg?imageslim">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ilewseu.github.io/2018/06/16/中文分词/"/>
+
+
+
+
+
+  <title>自然语言处理基础-中文分词 | 记录思考</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7d771b3a7c8a49da8ba4db85e1e6ead7";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">记录思考</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">ML、DL、NLP</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ilewseu.github.io/2018/06/16/中文分词/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="luerwei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="记录思考">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">自然语言处理基础-中文分词</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-16T16:48:20+08:00">
+                2018-06-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/16/中文分词/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/06/16/中文分词/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/06/16/中文分词/" class="leancloud_visitors" data-flag-title="自然语言处理基础-中文分词">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="中文分词问题介绍"><a href="#中文分词问题介绍" class="headerlink" title="中文分词问题介绍"></a>中文分词问题介绍</h2><p>词是自然语言中能够独立运用的最小单位，是信息处理的基本单位。自然语言处理的对象是一个个的句子，拿到句子之后一般要对句子进行分词。分词就是利用计算机识别出文本中词的过程。大部分的印欧语言，词与词之间有空格之类的显示标志指示词的边界。因此，利用很容易切分出句子中的词。而与大部分的印欧语言不同，中文语句中词与词之间没有空格标志指示，所以，需要专门的方法去实现中文分词。分词是文本挖掘的基础，通常用于自然语言处理、搜索引擎、推荐等领域。<br><a id="more"></a><br><strong>中文分词的难点主要有</strong>：</p>
+<ul>
+<li><strong>歧义无处不在</strong></li>
+<li><strong>新词层出不穷</strong></li>
+<li><strong>需求多种多样</strong></li>
+</ul>
+<p><strong>(1) 歧义无处不在</strong></p>
+<p>分词的歧义主要包括如下几个方面：</p>
+<ul>
+<li><p><strong>交集型歧义</strong>，例如：</p>
+<p>  研究/生命/的/起源</p>
+<p>  研究生/命/的/起源</p>
+</li>
+<li><p><strong>组合型歧义</strong>，例如：</p>
+<p>  门/把/手/弄/坏/了</p>
+<p>  门/把手/弄/坏/了</p>
+</li>
+<li><p><strong>真歧义</strong>，例如：</p>
+<p>  乒乓球/拍/卖/完了</p>
+<p>  乒乓球/拍卖/完了</p>
+</li>
+</ul>
+<p><strong>(2) 新词层出不穷</strong></p>
+<ul>
+<li>人名、地名、机构名</li>
+<li>网名</li>
+<li>公司名、产品名</li>
+</ul>
+<p><strong>(3) 需求多种多样</strong></p>
+<ul>
+<li>切分速度:搜索引擎vs单集版语音合成</li>
+<li>结果呈现：<ul>
+<li>切分粒度的要求不同；</li>
+<li>分词重点要求不同；</li>
+<li>唯一结果vs多结果；</li>
+<li>新词敏感程度不同；</li>
+</ul>
+</li>
+<li>处理对象：书面文本(规范/非规范)vs口语文本</li>
+<li>硬件平台：嵌入式vs单机版vs服务器版</li>
+</ul>
+<p>本文只介绍分词相关的基本算法原理及思想，其他的暂时不介绍。</p>
+<h2 id="中文分词算法"><a href="#中文分词算法" class="headerlink" title="中文分词算法"></a>中文分词算法</h2><p>目前，中文分词技术已经非常成熟，学者们研究出了很多的分词方法，这些方法大致可以分为三类。第一类是基于字符串匹配的，即扫描字符串，如果发现字符串的子串和词典中的词相同，就算匹配，比如机械分词方法。这类分词方法通常会加入一些启发式规则，例如，正向最大匹配、反向最大匹配、长词优先等。第二类时基于统计的分词方法，它们基于人工标注的词性和统计特征，对中文进行建模，即根据观测到的数据（标注好的语料）对模型参数进行训练，在分词阶段再通过模型计算各种分词出现的概率，将概率最大的分词结果作为最终结果。常见的序列标注模型有HMM和CRF。这类分词算法能够很好的处理歧义和未登录词问题，效果要比前一类效果好，但是需要大量的人工标注数据，且分词速度较慢。第三类是理解分词，通过让计算机模拟人对句子的理解，达到识别词的效果。由于汉语语义的复杂性，难以将各种语言信息组织成机器能够识别的形式，目前这种分词系统还处于试验阶段。</p>
+<h3 id="基于字符串匹配的方法"><a href="#基于字符串匹配的方法" class="headerlink" title="基于字符串匹配的方法"></a>基于字符串匹配的方法</h3><p>这一类方法也叫基于词表的分词方法，基本思路是首先存在一份字典，对于要分词的文本从左至右或从右至左扫描一遍，遇到字典里有最长的词就标识出来，遇到不认识的字串就分割成单字词。常见的方法有：</p>
+<ul>
+<li>正向最大匹配法(forward maximum matching method,FMM)</li>
+<li>逆向最大匹配法(backward maximum matching method, BMM)</li>
+<li>N-最短路径方法</li>
+</ul>
+<p><strong>正向最大匹配法</strong>指从左到右对一个字符串进行匹配，所匹配的词越长越好，比如“中国科学院计算机研究所”，按照词典中最长匹配的切分原则切分的结果是：“中国科学院/计算研究所”，而不是”中国/科学院/计算/研究所”。但是，正向匹配会存在一些bad case，常见的例子如：”他从东经过我家”，使用正向最大匹配会得到错误的结果：”他/从/东经/过/我/家”</p>
+<p><strong>逆向最大匹配法</strong>是从右向左倒着匹配，如果能够匹配到更长的词，则优先选择，上面的”他从东经过我家”逆向最大匹配能够得到正确的结果，”他/从/东/经过/我/家”。但是，逆向最大匹配同样也存在bad case：“他们昨日本应该回来”，逆向匹配会得到错误的结果”他们/昨/日本/应该/回来”</p>
+<p>针对正向逆向匹配的问题，将双向切分的结果进行比较，选择切分词语数量最少的结果。但是最少切分结果同样有bad case，比如：”他将来上海”，正确的切分结果是”他/将/来/上海”，有4个词，而最少切分结果“他/将来/中国”只有3个词。</p>
+<p>基于字符串匹配的方法的优点如下：</p>
+<ul>
+<li>程序简单易行，开发周期短；</li>
+<li>没有任何复杂计算，分词速度快；</li>
+</ul>
+<p><strong>不足</strong>：</p>
+<ul>
+<li>不能处理歧义；</li>
+<li>不能识别新词；</li>
+<li>分词准确率不高，不能满足实际的需要；</li>
+</ul>
+<p><strong>N-最短路径方法</strong>的基本思想是：设待分字串$S=c_1c_2…c_n$，其中$c_i(i=1,2,…,n)$为单个字，n为串的长度，$n \geq 1$。建立一个结点数为n+1的切分有向无环图G，各结点编号依次为$V_0,V_1,V_2,…,V_n$。如下图所示：<br><img src="http://of6h3n8h0.bkt.clouddn.com/blog/180616/dlcc2jcgAd.jpg?imageslim" alt="mark"></p>
+<p>其算法如下：</p>
+<p>（1） 相邻结点$v_{k-1},v_k$之间建立有向边$<v_{k-1},v_k>$，边对应的词默认为$c_k(k=1,2,..,n)$</v_{k-1},v_k></p>
+<p>（2） 如果$w=c_ic_{i+1}…c_j(0 &lt; i <j \leq="" n)$是一个词，则结点$v_{i-1},v_j$之间建立有向边，$<v_{i-1},v_j="">$，边对应的词为w。</j></p>
+<p><img src="http://of6h3n8h0.bkt.clouddn.com/blog/180616/6JLiabm6eH.jpg?imageslim" alt="mark"></p>
+<p>（3） 重复上述步骤(2)，直到没有新的路径（词序列）产生。</p>
+<p>（4） 从产生的所有路径中，选择路径最短的（词数最少的）作为最终的分词结果。</p>
+<p>例如：输入的字串：他只会诊断一般的疾病。</p>
+<p>可能的输出： </p>
+<ul>
+<li>他/只会/诊断/一般/的/疾病。</li>
+<li>他/只/会诊/断/一般/的/疾病。</li>
+</ul>
+<p>最终的分词结果为：他/只会/诊断/一般/的/疾病。</p>
+<p>N-最短路径方法，采用的原则（切分出来的次数最少）符合汉语自身的规律；同时，需要的语言资源（词表）也不多。但是，它对许多歧义字段难以区分，最短路径有多条时，选择最终的输出结果缺乏应有的标准。当字符串长度较大和选取的最短路径数增大时，长度相同的路径数急剧增加，选择最终正确的结果困难越来越大。</p>
+<h3 id="基于N-gram语言模型的分词方法"><a href="#基于N-gram语言模型的分词方法" class="headerlink" title="基于N-gram语言模型的分词方法"></a>基于N-gram语言模型的分词方法</h3><p>基于N-gram语言模型的方法是一个典型的生成式模型，早期很多统计分词均是以它为基本模型，然后配合其他未登录词识别模块进行扩展。其基本思想是：首先根据词典对句子进行简单匹配，找出所有可能的词典词，然后将它们和所有单个字作为结点，构造n元切分词图，图中的结点表示可能的此候选，边表示路径，边上的n元概率表示代价，最后利用相关搜索算法从中找到代价最小的路径作为最后的分词结果。</p>
+<p>假设随机变量S为一个汉字序列，W是S上所有可能切分路径，对于分词，实际上就是求解使条件概率$P(W|S)$最大的切分路径$\hat W$，即:<br>$$\hat W=arg max_W P(W|s)$$<br>根据贝叶斯公式：<br>$$\hat W =arg max_W \frac {P(W)P(S|W)}{P(S)} $$<br>由于P(S)为归一化因子，P(S|W)恒为1，因此只需要求解P(W)。P(W)使用N-gram语言模型建模，定义如下(以Bi-gram为例)：<br>$$P(W) = P(w_1w_2…w_T)=P(w_1)P(w_2|w_1)…P(w_T|w_{T-1})$$<br>这样，各种切分路径的好坏程度(条件概率P(W|S))可以求解。简单的，可以根据DAG枚举全路径，暴力求解最优路径；也可以使用动态规划的方法的求解，jieba分词中不带HMM新词发现的分词，就是DAG+Uni-gram语言模型+后向动态规划的方式进行求解的。</p>
+<p>基于N-gram语言模型的分词方法的优点如下：</p>
+<ul>
+<li>减少了很多手工标注知识库（语义词典、规则等）的工作；</li>
+<li>在训练语料规模足够大和覆盖领域足够多的情况下，可以获得较高的切分正确率；</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>训练语料的规模和覆盖领域不好把握；</li>
+<li>计算量较大；</li>
+<li>很难进行分词发现；</li>
+</ul>
+<h3 id="基于序列标注的分词方法"><a href="#基于序列标注的分词方法" class="headerlink" title="基于序列标注的分词方法"></a>基于序列标注的分词方法</h3><p>针对基于词典的机械分词所面对的问题，尤其是未登录词识别问题，使用基于统计模型的分词方式能够取得更好的结果。基于统计模型的分词方法，简单来说就是一个序列标注问题。在一句文本中，可以将每个字按照它们在词中的位置进行标注，常用的标记有如下四种：</p>
+<ul>
+<li>B：表示词开始的字；</li>
+<li>M：表示词中间的字；</li>
+<li>E：表示词结尾的字；</li>
+<li>S：表示单字成词</li>
+</ul>
+<p>分词的过程就是序列标注的过程，将一句文本输入，然后得到相应的标记序列，然后根据标记序列进行分词。举例来说“他只会诊断一般的疾病”，经过模型后得到的理想标注序列是：“SBEBEBESBE”，最终还原分词结果是“他/只会/诊断/一般/的/疾病”。<br>在NLP领域中，解决序列标注问题的常见模型主要有HMM模型和CRF模型。</p>
+<h4 id="基于HMM模型分词"><a href="#基于HMM模型分词" class="headerlink" title="基于HMM模型分词"></a>基于HMM模型分词</h4><p>一般而言，一个HMM模型可以用一个5元组表示$\mu=(Q,V,A,B,\pi)$，其中：</p>
+<ul>
+<li>Q：所有可能的状态集合；</li>
+<li>V：所有可能的观测集合；</li>
+<li>A：状态转移矩阵；</li>
+<li>B：发射概率；</li>
+<li>$\pi$：初始概率分布；</li>
+</ul>
+<p>HMM模型的三个基本问题：</p>
+<ul>
+<li><strong>概率计算问题</strong>：给定一个观察序列$O=O_1,O_2,…,O_t$和模型$\mu=(A,B,\pi)$，计算观察序列O的概率；</li>
+<li><strong>学习问题</strong>：给定一个观察序列$O=O_1,O_2,…,O_t$，估计模型$\mu=(A,B,\pi)$参数，使得在该模型下观测序列概率$P(O|\mu)$最大，即用极大似然估计方法估计参数；</li>
+<li><strong>预测问题</strong>：也称为解码问题。已知模型$\mu=(A,B,\pi)$和观测序列$O=O_1,O_2,…,O_t$，求出对于给定观测序列条件概率$P(I|O)$最大的状态序列$I={i_1,i_2,…,i_t}$，即给定观察序列，求最有可能对应的状态序列。</li>
+</ul>
+<p>HMM模型概率计算问题可以通过前向、后向的动态规划算法来求解；学习问题可以通过EM算法求解；预测问题可以通过viterbi算法求解。通过足够的语料数据，可以方便快速地学习HMM模型。</p>
+<p>利用HMM模型求解分词的基本思路是根据观测值（词序列）找到真正的隐藏状态值序列。在分词中，一句文本的每个字符可以看做是一个观测值，而这个字符的标记可以看做是隐藏状态。使用HMM分词，通过对标注语料进行统计，可以得到模型的：初始概率分布、转移概率矩阵、发射概率矩阵、观察值集合、状态值集合。在概率矩阵中，起始概率矩阵表示序列的第一个状态值的概率，在中文分词中，理论上M和E的概率为0,。转移概率矩阵表示状态间的概率，比如B-&gt;M的概率，E-&gt;S的概率等等。而发射概率是一个条件概率，表示当前这个状态下，出现某个字的概率，比如P(人|B)表示在状态为B的情况下”人”字的概率。</p>
+<p>HMM模型的参数从标注数据学习好之后，HMM问题最终转化成求解隐藏状态序列最大值的问题，求解这个问题使用的是Viterbi算法。具体可以参照<a href="http://www.52nlp.cn/itenyh%E7%89%88-%E7%94%A8hmm%E5%81%9A%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E4%B8%80%EF%BC%9A%E6%A8%A1%E5%9E%8B%E5%87%86%E5%A4%87" target="_blank" rel="external">Itenyh版-用HMM做中文分词</a>。</p>
+<h4 id="基于CRF模型分词"><a href="#基于CRF模型分词" class="headerlink" title="基于CRF模型分词"></a>基于CRF模型分词</h4><p>CRF也是求解序列标注问题的一种比较常用的模型，和HMM模型不同，CRF是一种判别式模型，CRF模型通过定义条件概率$P(Y|X)$来描述模型。基于CRF的分词方法与传统的分类模型求解很相似，即给定feature（字级别的各种信息）输出label。具体的CRF的基本原理就不具体介绍了。分词所使用的是Linear-CRF，它由一组特征函数组成，包括权重$\lambda$和特征函数$f$，特征函数$f$的输入是整个句子S、当前位置i、前一个字的标记$y_{i-1}$和当前字的标记$y_i$。对于分词这个任务，同样是使用BMES来标记一句话，X表示观测到句子，通过利用CRF模型的解码来，来求出最大的$P(Y|X)$，Y即是BMES组成的序列，然后用Y序列得到实际的分词结果。与HMM模型相比，CRF存在以下优点：</p>
+<ul>
+<li>CRF可以使用输入文本的全局特征，而HMM只能看到输入文本在当前位置的局部特征；</li>
+<li>CRF是判别式模型，直接对序列标注建模，HMM则引入了不必要的先验信息。</li>
+</ul>
+<p><strong>采用HMM模型的分词方法，属于生成式分词，其优点如下</strong>：</p>
+<ul>
+<li>在训练语料规模足够大和覆盖领域足够多的情况下，可以获得较高的切分正确率；</li>
+</ul>
+<p><strong>不足：</strong></p>
+<ul>
+<li>需要很大的训练语料；</li>
+<li>新词识别能力弱；</li>
+<li>解码速度相对较慢；</li>
+</ul>
+<p><strong>基于CRF的分词方法，属于判别式的分词，其优点如下</strong>：</p>
+<ul>
+<li>解码速度快；</li>
+<li>分词精度高；</li>
+<li>新词识别能力强；</li>
+<li>所需学习样本少；</li>
+</ul>
+<p><strong>不足：</strong></p>
+<ul>
+<li>训练速度慢；</li>
+<li>需要高配置的机器训练；</li>
+</ul>
+<h3 id="基于深度学习端到端的分词方法"><a href="#基于深度学习端到端的分词方法" class="headerlink" title="基于深度学习端到端的分词方法"></a>基于深度学习端到端的分词方法</h3><p>基于深度神经网络的序列标注算法在词性标注、命名实体识别问题上取得了不错的结果。词性标注、命名实体识别都属于序列标注问题，这些端到端的方法可以迁移到分词问题上，免去CRF的特征模板配置问题。但与所有深度学习的方法一样，它需要较大的训练语料才能体现优势。</p>
+<p><img src="http://of6h3n8h0.bkt.clouddn.com/blog/180616/1g3aBAd38j.jpg?imageslim" alt="mark"></p>
+<p>BiLSTM-CRF的网络结构如上图所示，输入层是一个embedding层，经过双向LSTM网络编码，输出层是一个CRF层。下图是BiLSTM-CRF各层的物理含义，可以看见经过双向LSTM网络输出的实际上是当前位置对于各词性的得分，CRF层的意义是对词性得分加上前一位置的词性概率转移的约束，其好处是引入一些语法规则的先验信息。利用此网络结构可以完成序列标注问题，同样分词任务也可以尝试这个思路。</p>
+<p><strong>总结一下：</strong></p>
+<p><img src="http://of6h3n8h0.bkt.clouddn.com/blog/180617/Lf8f5AimlK.jpg?imageslim" alt="mark"></p>
+<h2 id="中文分词工具"><a href="#中文分词工具" class="headerlink" title="中文分词工具"></a>中文分词工具</h2><p>目前，存在多种中文分词工具供使用。比较具有代表性的有jieba分词、SnowNLP、THULAC、NLPIR和LTP，这些分词工具均提供Python库，可以很方便的使用。</p>
+<h3 id="jieba分词"><a href="#jieba分词" class="headerlink" title="jieba分词"></a>jieba分词</h3><p>结巴分词是我比较常用的分词工具，Github库为：<a href="https://github.com/fxsjy/jieba" target="_blank" rel="external">https://github.com/fxsjy/jieba</a>，分词效果较好。它支持三种分词模式：</p>
+<ul>
+<li><strong>精确模式</strong>：试图将句子最精确地切开，适合文本分析；</li>
+<li><strong>全模式</strong>：将句子中所有的可能成词的词语都扫描出来，速度非常快，但是不能解决歧义问题；</li>
+<li><strong>搜索引擎模式</strong>：在精确模式的基础之上，对长词再次切分，提高召回率，适用于搜索引擎分词；</li>
+</ul>
+<p>另外，jieba分词还支持繁体分词，支持用户自定义词典。其使用的算法是基于统计的分词方法，主要有如下几种：</p>
+<ul>
+<li>基于前缀词典实现高效的词图扫描，生成句子中所有可能成词情况构成有向无环图(DAG);</li>
+<li>采用了动态规划查找最大概率路径，找出基于词频的最大切分组合；</li>
+<li>对于未登录词，采用了基于汉字成词能力的HMM模型，使用了Viterbi算法；</li>
+</ul>
+<p>其使用方法如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># encoding=utf-8</span></div><div class="line"><span class="keyword">import</span> jieba</div><div class="line"></div><div class="line">seg_list = jieba.cut(<span class="string">"我来到北京清华大学"</span>, cut_all=<span class="keyword">True</span>)</div><div class="line">print(<span class="string">"Full Mode: "</span> + <span class="string">"/ "</span>.join(seg_list))  <span class="comment"># 全模式</span></div><div class="line"></div><div class="line">seg_list = jieba.cut(<span class="string">"我来到北京清华大学"</span>, cut_all=<span class="keyword">False</span>)</div><div class="line">print(<span class="string">"Default Mode: "</span> + <span class="string">"/ "</span>.join(seg_list))  <span class="comment"># 精确模式</span></div><div class="line"></div><div class="line">seg_list = jieba.cut(<span class="string">"他来到了网易杭研大厦"</span>)  <span class="comment"># 默认是精确模式</span></div><div class="line">print(<span class="string">", "</span>.join(seg_list))</div><div class="line"></div><div class="line">seg_list = jieba.cut_for_search(<span class="string">"小明硕士毕业于中国科学院计算所，后在日本京都大学深造"</span>)  <span class="comment"># 搜索引擎模式</span></div><div class="line">print(<span class="string">", "</span>.join(seg_list))</div></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">【全模式】: 我/ 来到/ 北京/ 清华/ 清华大学/ 华大/ 大学</div><div class="line"></div><div class="line">【精确模式】: 我/ 来到/ 北京/ 清华大学</div><div class="line"></div><div class="line">【新词识别】：他, 来到, 了, 网易, 杭研, 大厦    (此处，“杭研”并没有在词典中，但是也被Viterbi算法识别出来了)</div><div class="line"></div><div class="line">【搜索引擎模式】： 小明, 硕士, 毕业, 于, 中国, 科学, 学院, 科学院, 中国科学院, 计算, 计算所, 后, 在, 日本, 京都, 大学, 日本京都大学, 深造</div></pre></td></tr></table></figure>
+<p>除了基本的分词功能，jieba分词还提供了关键词抽取、词性标注等功能，具体的使用参照github上的文档。<a href="https://blog.csdn.net/rav009/article/details/12196623" target="_blank" rel="external">Python中文分词模块结巴分词算法过程的理解和分析</a>对于jieba分词的源码进行了解析，有兴趣的可以看一下。</p>
+<h3 id="SnowNLP"><a href="#SnowNLP" class="headerlink" title="SnowNLP"></a>SnowNLP</h3><p>SnowNLP:Simplified Chinese Text Processing，可以方便的处理中文文本内容，是受到TextBlob的启发而写的，由于大部分的自然语言处理库基本上是针对英文的，于是写了一个方便处理中文的类库，并且和TextBlob不同的是，这里没有用NLTK，所有的算法都是自己实现，并且自带了一些训练好的词典。GitHub地址为：<a href="https://github.com/isnowfy/snownlp" target="_blank" rel="external">https://github.com/isnowfy/snownlp</a>。SnowNLP的分词是基于Character-Based Generative Model 来实现的，论文地址：<a href="http://aclweb.org/anthology//Y/Y09/Y09-2047.pdf" target="_blank" rel="external">http://aclweb.org/anthology//Y/Y09/Y09-2047.pdf</a></p>
+<h3 id="THULAC"><a href="#THULAC" class="headerlink" title="THULAC"></a>THULAC</h3><p>THULAC(THU Lexical Analyzer for Chinese)是由清华大学自然语言与社会人文计算实验室推出的一套中文分词工具包。Github的地址为：<a href="https://github.com/thunlp/THULAC-Python" target="_blank" rel="external">https://github.com/thunlp/THULAC-Python</a>，具有中文分词和词性标注功能。THULAC具有如下几个特点：</p>
+<ul>
+<li><strong>能力强</strong>:利用集成的目前世界上规模最大的人工分词和词性标注中文语料（约含5800万字）训练而成，模型标注能力强大；</li>
+<li><strong>准确率高</strong>:该工具包在标准数据集Chinese Treebank（CTB5）上分词的F1值可达97.3％，词性标注的F1值可达到92.9％，与该数据集上最好方法效果相当；</li>
+<li><strong>速度较快</strong>:同时进行分词和词性标注速度为300KB/s，每秒可处理约15万字。只进行分词速度可达到1.3MB/s；</li>
+</ul>
+<h3 id="NLPIR"><a href="#NLPIR" class="headerlink" title="NLPIR"></a>NLPIR</h3><p>NLPIR 分词系统，前身为2000年发布的 ICTCLAS 词法分析系统，Github地址：<a href="https://github.com/NLPIR-team/NLPIR" target="_blank" rel="external">https://github.com/NLPIR-team/NLPIR</a>，是由北京理工大学张华平博士研发的中文分词系统，经过十余年的不断完善，拥有丰富的功能和强大的性能。NLPIR是一整套对原始文本集进行处理和加工的软件，提供了中间件处理效果的可视化展示，也可以作为小规模数据的处理加工工具。主要功能包括：中文分词，词性标注，命名实体识别，用户词典、新词发现与关键词提取等功能。另外对于分词功能，它有 Python 实现的版本，Github地址为：<a href="https://github.com/tsroten/pynlpir" target="_blank" rel="external">https://github.com/tsroten/pynlpir</a>。</p>
+<h3 id="LTP"><a href="#LTP" class="headerlink" title="LTP"></a>LTP</h3><p>语言技术平台（Language Technology Platform，LTP）是哈工大社会计算与信息检索研究中心历时十年开发的一整套中文语言处理系统。LTP制定了基于XML的语言处理结果表示，并在此基础上提供了一整套自底向上的丰富而且高效的中文语言处理模块（包括词法、句法、语义等6项中文处理核心技术），以及基于动态链接库（Dynamic Link Library, DLL）的应用程序接口、可视化工具，并且能够以网络服务（Web Service）的形式进行使用。<br>LTP 有 Python 版本，GitHub地址：<a href="https://github.com/HIT-SCIR/pyltp" target="_blank" rel="external">https://github.com/HIT-SCIR/pyltp</a>，另外运行的时候需要下载模型，模型还比较大，下载地址：<a href="">http://ltp.ai/download.html</a>。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>目前，分词算法已经非常成熟，并且存在很多的分词工具。虽然，不用我们自己去实现各种分词算法，但是还是有必要去了解各种分词算法的原理的。从最初的基于字符串匹配的分词方法到把分词任务转化为序列标注问题，以及将深度学习用于分词等，这些基本的研究方法可以为自然语言处理的其他任务的解决提供了思路，值的我们去学习和思考。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li>中文分词一席谈；</li>
+<li><a href="https://zhuanlan.zhihu.com/p/33261835" target="_blank" rel="external">https://zhuanlan.zhihu.com/p/33261835</a></li>
+<li><a href="http://www.cnblogs.com/sxron/articles/6391926.html" target="_blank" rel="external">http://www.cnblogs.com/sxron/articles/6391926.html</a></li>
+<li>统计自然语言处理-宗庆成</li>
+<li>Lample G, Ballesteros M, Subramanian S, et al. Neural Architectures for Named Entity Recognition[J]. 2016:260-270.</li>
+<li><a href="http://www.52nlp.cn/itenyh%E7%89%88-%E7%94%A8hmm%E5%81%9A%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E4%B8%80%EF%BC%9A%E6%A8%A1%E5%9E%8B%E5%87%86%E5%A4%87" target="_blank" rel="external">Itenyh版-用HMM做中文分词</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作!</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="luerwei 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpeg" alt="luerwei 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/NLP/" rel="tag"># NLP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/21/CRF学习笔记/" rel="next" title="自然语言处理基础-条件随机场(Conditional Random Fields,CRFs)学习笔记">
+                <i class="fa fa-chevron-left"></i> 自然语言处理基础-条件随机场(Conditional Random Fields,CRFs)学习笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="luerwei" />
+            
+              <p class="site-author-name" itemprop="name">luerwei</p>
+              <p class="site-description motion-element" itemprop="description">Stay hungry. Stay foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/ilewseu" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:18801628065@163.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://www.zhihu.com/people/erweilu" target="_blank" title="zhihu">
+                    
+                      <i class="fa fa-fw fa-globe"></i>zhihu</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://chengjin.li" title="MJ's Learning Notes" target="_blank">MJ's Learning Notes</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#中文分词问题介绍"><span class="nav-number">1.</span> <span class="nav-text">中文分词问题介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#中文分词算法"><span class="nav-number">2.</span> <span class="nav-text">中文分词算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基于字符串匹配的方法"><span class="nav-number">2.1.</span> <span class="nav-text">基于字符串匹配的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于N-gram语言模型的分词方法"><span class="nav-number">2.2.</span> <span class="nav-text">基于N-gram语言模型的分词方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于序列标注的分词方法"><span class="nav-number">2.3.</span> <span class="nav-text">基于序列标注的分词方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于HMM模型分词"><span class="nav-number">2.3.1.</span> <span class="nav-text">基于HMM模型分词</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于CRF模型分词"><span class="nav-number">2.3.2.</span> <span class="nav-text">基于CRF模型分词</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于深度学习端到端的分词方法"><span class="nav-number">2.4.</span> <span class="nav-text">基于深度学习端到端的分词方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#中文分词工具"><span class="nav-number">3.</span> <span class="nav-text">中文分词工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#jieba分词"><span class="nav-number">3.1.</span> <span class="nav-text">jieba分词</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SnowNLP"><span class="nav-number">3.2.</span> <span class="nav-text">SnowNLP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#THULAC"><span class="nav-number">3.3.</span> <span class="nav-text">THULAC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NLPIR"><span class="nav-number">3.4.</span> <span class="nav-text">NLPIR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LTP"><span class="nav-number">3.5.</span> <span class="nav-text">LTP</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">5.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">luerwei</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访问人数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://author.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://ilewseu.github.io/2018/06/16/中文分词/';
+          this.page.identifier = '2018/06/16/中文分词/';
+          this.page.title = '自然语言处理基础-中文分词';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://author.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("mlAQjx22Lupo4XTQgrjDqowe-gzGzoHsz", "gUyOWXuoKewzNnKp2uFpEz0V");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

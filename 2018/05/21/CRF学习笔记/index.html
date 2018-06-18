@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="NLP," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="记录思考" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="本篇笔记来自李航老师的《统计学习方法》一书  条件随机场最早由Lafferty等人2001年提出，其模型思想的主要来源是最大熵模型，模型的三个基本问题的解决用到了HMMs模型中的方法如forward-backward和Viterbi。我们可以把条件随机场看成是一个无向图模型或马尔科夫随机场，它是一种用来标记和切分序列化数据的统计模型。">
+<meta name="keywords" content="NLP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自然语言处理基础-条件随机场(Conditional Random Fields,CRFs)学习笔记">
+<meta property="og:url" content="https://ilewseu.github.io/2018/05/21/CRF学习笔记/index.html">
+<meta property="og:site_name" content="记录思考">
+<meta property="og:description" content="本篇笔记来自李航老师的《统计学习方法》一书  条件随机场最早由Lafferty等人2001年提出，其模型思想的主要来源是最大熵模型，模型的三个基本问题的解决用到了HMMs模型中的方法如forward-backward和Viterbi。我们可以把条件随机场看成是一个无向图模型或马尔科夫随机场，它是一种用来标记和切分序列化数据的统计模型。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/180527/Chi3EKLL2B.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/180527/22mb282if1.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/180527/B76cDHL286.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/180527/bLF9b1Bl8m.jpg?imageslim">
+<meta property="og:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/180527/9eFHIE0ha7.jpg?imageslim">
+<meta property="og:updated_time" content="2018-06-18T15:05:17.120Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自然语言处理基础-条件随机场(Conditional Random Fields,CRFs)学习笔记">
+<meta name="twitter:description" content="本篇笔记来自李航老师的《统计学习方法》一书  条件随机场最早由Lafferty等人2001年提出，其模型思想的主要来源是最大熵模型，模型的三个基本问题的解决用到了HMMs模型中的方法如forward-backward和Viterbi。我们可以把条件随机场看成是一个无向图模型或马尔科夫随机场，它是一种用来标记和切分序列化数据的统计模型。">
+<meta name="twitter:image" content="http://of6h3n8h0.bkt.clouddn.com/blog/180527/Chi3EKLL2B.jpg?imageslim">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ilewseu.github.io/2018/05/21/CRF学习笔记/"/>
+
+
+
+
+
+  <title>自然语言处理基础-条件随机场(Conditional Random Fields,CRFs)学习笔记 | 记录思考</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7d771b3a7c8a49da8ba4db85e1e6ead7";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">记录思考</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">ML、DL、NLP</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ilewseu.github.io/2018/05/21/CRF学习笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="luerwei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="记录思考">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">自然语言处理基础-条件随机场(Conditional Random Fields,CRFs)学习笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-21T20:57:20+08:00">
+                2018-05-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/21/CRF学习笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/05/21/CRF学习笔记/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/05/21/CRF学习笔记/" class="leancloud_visitors" data-flag-title="自然语言处理基础-条件随机场(Conditional Random Fields,CRFs)学习笔记">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本篇笔记来自李航老师的《统计学习方法》一书</p>
+</blockquote>
+<p>条件随机场最早由Lafferty等人2001年提出，其模型思想的主要来源是最大熵模型，模型的三个基本问题的解决用到了HMMs模型中的方法如forward-backward和Viterbi。我们可以把条件随机场看成是一个无向图模型或马尔科夫随机场，它是一种用来标记和切分序列化数据的统计模型。<a id="more"></a>该模型在给定需要标记观察序列的条件下，计算整个标记序列的联合概率，而不是在给定当前状态条件下，定义一个状态的分布。标记序列的分布条件属性，可以让CRFs很好的拟合现实数据，而在这些数据中，标记序列的条件概率依赖于观察序列中非独立的、相互作用的特征，并通过赋予特征不同权值来表示特征的重要程度。</p>
+<h2 id="概率无向图模型"><a href="#概率无向图模型" class="headerlink" title="概率无向图模型"></a>概率无向图模型</h2><h3 id="概率图模型-Graphical-Models"><a href="#概率图模型-Graphical-Models" class="headerlink" title="概率图模型(Graphical Models)"></a>概率图模型(Graphical Models)</h3><p>概率图模型是一类用图的形式表示随机变量之间条件依赖关系的概率模型，是概率论与图论的集合。图中的节点表示随机变量，缺少边表示条件独立假设。根据图中边有无方向，分为有向图和无向图。<strong>概率无向图</strong>，又称为马尔科夫随机场，是一个可以由无向图表示的联合概率分布。</p>
+<p>图是由节点以及连接节点的边组成的集合。节点和边分别记作为v和e，节点和边的集合分别记作V和E，图记作G=(V,E)。无向图是指边没有方向的图。概率图模型是由图表示的概率分布。设有联合概率分布$P(Y),Y \in \cal Y$是一组随机变量。由无向图G=(V,E)表示概率分布P(Y)，即在图G中，结点$v\in V$表示一个随机变量$Y_v，Y=(Y_v)_{v\in V}$；边$e\in E$表示随机变量之间的概率依赖关系。</p>
+<p>给定一个联合概率分布P(Y)和表示它的无向图G。首先定义无向图表示的随机变量之间存在的成对马尔科夫性(pairwise Markov property)、局部马尔科夫性(local Markov property)和全局马尔可夫性(global Markov property)。</p>
+<p><strong>成对马尔科夫性</strong></p>
+<p>设u和v是无向图G中任意两个没有边连接的结点，结点u和v分别对应随机变量$Y_u$和$Y_v$。其他所有结点为O,对应的随机变量组是$Y_O$，成对马尔科夫性是指给定随机变量组$Y_O$的条件下随机变量$Y_u$和$Y_v$是条件独立的，即：<br>$$<br>P(Y_u,Y_v|Y_O)=P(Y_u|Y_O)P(Y_v|Y_O)<br>$$</p>
+<p><strong>局部马尔科夫性</strong></p>
+<p>设$v\in V$是无向图G中任意一个结点，W是与v有边连接的所有结点，O是v，W以外的其他所有结点。v表示的随机变量是$Y_v$，W表示的随机变量是$Y_W$，O表示的随机变量组是$Y_O$。局部马尔科夫性是指在给定的随机变量组$Y_W$的条件下随机变量$Y_v$与随机变量组$Y_O$是独立的，即：</p>
+<div align="center"><br>    <img src="http://of6h3n8h0.bkt.clouddn.com/blog/180527/Chi3EKLL2B.jpg?imageslim" alt="mark"><br></div><br>(注：图引自:<a href="http://www.cnblogs.com/Determined22/p/6915730.html" target="_blank" rel="external">http://www.cnblogs.com/Determined22/p/6915730.html</a>)<br><br>$$P(Y_v,Y_O|Y_W)=P(Y_v|Y_w)P(Y_O|Y_W)$$<br>在$P(Y_O|Y_W)&gt;0$时，等价地：$P(Y_v|Y_W)=P(Y_v|Y_W,Y_O)$<br><br><strong>全局马尔科夫性</strong><br><br>设结点集合A、B是在无向图G中被结点集合C分开的任意结点集合，全局马尔科夫性指：在给定$Y_C$的条件下，$Y_A$和$Y_B$条件独立，即:<br><div><img src="http://of6h3n8h0.bkt.clouddn.com/blog/180527/22mb282if1.jpg?imageslim" alt="mark"></div><br>$$P(Y_A,Y_B|Y_C) = P(Y_A|Y_C)P(Y_B|Y_C)$$<br><br>上述成对的、局部的、全局的马尔科夫性定义是等价的。<br><div></div>
+
+<h2 id="概率无向图模型定义"><a href="#概率无向图模型定义" class="headerlink" title="概率无向图模型定义"></a>概率无向图模型定义</h2><p>设有联合概率分布P(Y)，由无向图G(V,E)表示，在图G中，结点表示随机变量，边表示随机变量之间的依赖关系。如果联合概率分布P(Y)满足成对、局部和全局马尔科夫性，就称此联合概率分布为概率无向图模型或马尔科夫随机场。<br>以上是<strong>概率无向图模型的定义</strong>，实际上，我们更关心如何求其联合概率分布。对于给定的概率无向图模型，我们希望将整体的联合概率写成若干子联合概率乘积的形式，也就是将联合概率进行因子分解，这样便于模型的学习与计算。事实上，概率无向图模型的最大特点就是易于因子分解，下面介绍这一知识点。</p>
+<p>首先给出无向图中的团和最大团的定义：<br>无向图G中任何两个结点，均有边连接的结点子集称为团(clique)。若C是无向图G的一个团，并且不能再加进任何一个G的结点使其成为一个更大的团，则称此C为最大团(maximal clique)。<br>例如，下图表示由4个结点组成的无向图。图中的2个结点组成的团有5个：${Y_1,Y_2},{Y_2,Y_3},{Y_3,Y_4},{Y_4,Y_2},{Y_1,Y_3}$。有2个最大团：${Y_1,Y_2,Y_3},{Y_2,Y_3,Y_4}$。而${Y_1,Y_2,Y_3,Y_4}$不是一个团，因为$Y_1$和$Y_4$没有边连接</p>
+<div align="center"><br>     <img src="http://of6h3n8h0.bkt.clouddn.com/blog/180527/B76cDHL286.jpg?imageslim" alt="mark"><br></div><br>将概率无向图模型的联合概率分布表示为其最大团上的随机变量的函数的乘积形式的操作，称为概率无向图模型的因子分解(factorization)。给定概率无向图模型，设其无向图为G，C为G上的最大团，$Y_C$表示C对应的随机变量。那么概率无向图的联合概率分布$P(Y)$可以写作图中的所有最大团C上的函数$\Psi_C(Y_C)$的乘积形式，即:<br>$$<br>P(Y) = \frac {1}{Z} \prod_C \Psi_C(Y_C)<br>$$<br>其中，Z是规范化因子(normalization factror)，由公式：<br>$$<br>Z = \sum_Y \prod_C \Psi_C(Y_C)<br>$$<br>计算得出。规范化因子保证P(Y)构成一个概率分布。函数$\Psi_C(Y_C)$称为势函数(potential function)。这里要求势函数$\Psi_C(Y_C)$是严格正的，通常定义为指数函数：$$<br>\Psi_C(Y_C) = exp{-E(Y_C)}<br>$$<br>概率无向图模型的因子分解是由下述定理来保证的。<br><strong>(Hammersley-Clifford 定理)</strong>:概率无向图模型的联合概率分布P(Y)可以表示为如下形式：<br>$$<br>P(Y)=\frac {1}{Z}\prod_C \Psi_C(Y_C) \\<br>Z=\sum_Y \prod_C \Psi_C(Y_C)<br>$$<br>其中，C是无向图的最大团，$Y_C$是C的结点对应的随机变量，$\Psi_C(Y_C)$是C上定义的严格正函数，乘积是在无向图所有的最大团上进行的。<br><div></div>
+
+<h2 id="条件随机场定义"><a href="#条件随机场定义" class="headerlink" title="条件随机场定义"></a>条件随机场定义</h2><p>条件随机场(conditional random field)是在给定随机变量X条件下，随机变量Y的马尔科夫随机场。这里主要介绍定义在线性链上的特殊的条件随机场，称为线性链条件随机场(linear chain conditional random field)。线性链条件随机场可以用于标注等问题。这时，在条件概率模型P(Y|X)中，Y是输出变量，表示标记序列，X是输入变量，表示需要标注的观测序列。也把标记序列称为状态序列。学习时，利用训练数据集通过极大似然估计或正则化的极大似然估计得到条件概率模型$\hat P(Y|X)$;预测时，对于给定的输入序列x，求出条件概率$\hat P(y|x)$最大的输出序列$\hat y$。</p>
+<p>首先定义一般的条件随机场，然后定义线性链条件随机场。</p>
+<p>(<strong>条件随机场</strong>)，设X与Y是随机变量，P(Y|X)是在给定X的条件下Y的条件概率分布。若随机变量Y构成一个由无向图G=(V,E)表示的马尔科夫随机场，即：<br>$$P(Y_v|X, w\neq v)=P(Y_v|X,Y_w, w \sim v)$$<br>对任意结点v成立，则称条件概率分布P(Y|X)为条件随机场。式中$w \sim v$表示在图G=(V,E)中与结点v有结点v有边连接的所有结点w，$w \neq v$结点v以外的所有结点，$Y_v,Y_u与Y_w$为结点v,u与w对应的随机变量。</p>
+<p>在定义中没有要求X和Y具有相同的结构。现实中，一般假设X和Y有相同的图结构。本书主要考虑无向图为下图所示的线性链的情况，即：<br>$$G=(V={1,2,…,n},E={(i,i+1)}), i=1,2,…, n-1$$<br>在此情况下，$X=(X_1,X_2,…,X_n)，Y=(Y_1,Y_2,…,Y_n)$，<strong>最大团是相邻两个结点的集合</strong>。</p>
+<div align="center"><br>    <img src="http://of6h3n8h0.bkt.clouddn.com/blog/180527/bLF9b1Bl8m.jpg?imageslim" alt="mark"><br></div>
+
+<p><strong>线性链条件随机场有下面的定义</strong>：</p>
+<p>设$X=(X_1,X_2,…,X_n)，Y=(Y_1,Y_2,…,Y_n)$均为线性链表示的随机变量序列，若下给定随机变量序列X的条件下，随机变量序列Y的条件概率分布P(Y|X)构成条件随机场，即满足马尔科夫性：<br>$$<br>P(Y_i|X,Y_1,..,Y_{i-1},…,Y_n)= P(Y_i|X, Y_{i-1},Y_{i+1})\\<br>i=1,2,…,n(在i=1和n时只考虑单边)<br>$$<br>则称P(Y|X)为线性链条件随机场。在标注问题中，X表示输入观测序列，Y表示对应的输出标记序列或状态序列。</p>
+<h3 id="参数化形式"><a href="#参数化形式" class="headerlink" title="参数化形式"></a>参数化形式</h3><p>根据Hammersley-Clifford定理,可以给出线性链条件随机场P(Y|X)的因子分解式，各因子是定义在相邻两个结点上的函数。<br><strong>定理(线性链条件随机场的参数化形式)</strong> 设P(Y|X)为线性链条件随机场，则在随机变量X取值为x的条件下，随机变量Y取值为y的条件概率具有如下形式：<br>$$<br>p(y|x)= \frac {1}{Z(x)} exp {\sum_{i,k}\lambda_kt_k(y_{i-1},y_i,x,i)+\sum_{i,l}\mu_{l}s_l(y_i, x,i)}<br>$$<br>其中，<br>$$<br>Z(x)=\sum_y exp ({\sum_{i,k}\lambda_kt_k(y_{i-1},y_i,x,i)+\sum_{i,l}\mu_{l}s_l(y_i, x,i)})<br>$$<br>式中，$t_k和s_l$是特征函数，$\lambda_k和\mu_l$是对应的权值。$Z(x)$是规范化因子，求和是在所有可能的输出序列上进行的。</p>
+<p>上面的两个式子是线性链条件随机场模型的基本形式，表示给定输入序列x，对输出序列y预测的条件概率。$t_k$是定义在边上的特征函数，称为转移特征，依赖于当前和前一个位置，$s_l$是定义在结点上的特征函数，称为状态特征，依赖于当前位置。$t_k和s_l$都依赖于位置，是局部特征函数。通常，特征函数$t_k和s_l$取值为1或0;当满足特征条件时取值为1，否则为0。条件随机场完全由特征函数$t_k,s_l$和对应的权值$\lambda_k,\mu_l$确定。<br>线性链条件随机场也是对数线性模型(log linear model)。</p>
+<h3 id="简化形式"><a href="#简化形式" class="headerlink" title="简化形式"></a>简化形式</h3><p>条件随机场还可以由简化形式表示。注意到条件随机场式中同一特征在各个位置都有定义，可以对同一个特征在各个位置求和，将局部特征函数转化为一个全局特征函数，这样就可以将条件随机场写成权值向量和特征向量的内积形式，即条件随机场的简化形式。</p>
+<p>为简便起见，首先将转移特征和状态特征及其权值用统一的符号表示。设有$K_1$个转移特征，$K_2$个状态特征，$K=K_1+K_2$，记：<br>$$<br>f_k(y_{i-1},y_i, x,i) = \begin{cases}<br>t_k(y_{i-1},y_i, x, i)&amp; k=1,2,…,K_1\\<br>s_l(y_i, x, i)&amp; k=K_1+l; l=1,2,…,K_2<br>\end{cases}<br>$$<br>然后，对转移与状态特征在各个位置i求和，记作：<br>$$f_k(y,x) = \sum_{i=1}^n f_k(y_{i-1}, y_i, x,i), k=1,2,..,K$$<br>用$w_k$表示特征$f_k(y,x)$的权值，即：<br>$$<br>w_k = \begin{cases}<br>   \lambda_k, &amp; k=1,2,…,K_1\\<br>   \mu_l, &amp; k=K_1+l; l=1,2,…,K_2<br>\end{cases}<br>$$<br>于是，条件随机场可以表示为：<br>$$<br>P(y|x) = \frac {1}{Z(x)}exp \sum_{k=1}^K w_kf_k(y,x)\\<br>Z(x) = \sum_y exp \sum_{k=1}^K w_kf_k(y,x)<br>$$<br>若以w表示权值向量，即：<br>$$w = (w_1,w_2,…,w_K)^T$$<br>以F(y,x)表示全局特征向量，即：<br>$$F(y,x) = (f_1(y,x),f_2(y,x),…,f_k(y,x))^T$$<br>则条件随机场可以写成向量w与F(y,x)的内积形式：<br>$$<br>P_w(y|x) = \frac {exp(w\cdot F(y,x))}{Z_w(x)}<br>$$<br>其中，<br>$$Z_w(x) = \sum_y exp(w\cdot F(y,x))$$</p>
+<h3 id="矩阵形式"><a href="#矩阵形式" class="headerlink" title="矩阵形式"></a>矩阵形式</h3><p>条件随机场还可以由矩阵表示。假设$P_w(y|x)$是由内积形式给出的线性链条件随机场，表示对给定观测序列x，相应的标记序列y的条件概率。引进特殊的起点和终点状态标记$y_0=start,y_{n+1}=stop$，这时$P_w(y|x)$可以通过矩阵的形式表示。</p>
+<p>对观察序列x的每个位置i=1,2,…,n+1，定义一个m阶矩阵(m是标记$y_i$取值个数)<br>$$<br>M_i(x) = [M_i(y_{i-1},y_i|x)]\\<br>M_i(y_{i-1},y_i|x)=exp(W_i(y_{i-1},y_i|x))\\<br>W_i(y_{i-1},y_i|x) = \sum_{i=1}^K w_kf_k(y_{i-1},y_i,x,i)<br>$$</p>
+<p>这样，给定观测序列x，标记序列y的非规范化概率可以通过n+1个矩阵的乘积$\prod_{i=1}^{n+1}M_i(y_{i-1},y_i|x)$表示，于是，条件概率$P_w(y|x)$是:<br>$$<br>P_w(y|x)=\frac {1}{Z_w(x)}\prod_{i=1}^{n+1}M_i(y_{i-1},y_i|x)<br>$$<br>其中，$Z_w(x)$为规范化因子，是n+1个矩阵的乘积(start,stop)元素：<br>$$<br>Z_w(x)= (M_1(x)M_2(x)…M_{n+1}(x))_{start,stop}<br>$$<br>注意，$y_0=start与y_{n+1}=stop$表示开始状态与终止状态，规范化因子$Z_w(x)$是以start为起点stop为终点通过状态的所有路径$y_1y_2,…,y_m$的非规范化概率$\prod_{i=1}^{n+1}M_i(y_{i-1},y_i|x)$之和。</p>
+<p>这个M矩阵和一阶HMM中的转移概率矩阵，因为链式CRF中只有相邻两个结点之间才有连接边。</p>
+<h2 id="三个问题"><a href="#三个问题" class="headerlink" title="三个问题"></a>三个问题</h2><h3 id="概率计算问题"><a href="#概率计算问题" class="headerlink" title="概率计算问题"></a>概率计算问题</h3><p>条件随机场的概率计算问题是给定条件随机场P(Y|X)，输入序列x和输出序列y，计算条件概率$<br>P(Y_i=y_i|x),P(Y_{i-1}=y_{i-1},Y_i=y_i|x)$以及相应的数学期望问题。为了方便起见，像隐马尔科夫模型那样，引进前向-后向向量，递归地计算以上概率及期望值。像这样的算法称为前向-后向算法。</p>
+<p><strong>前向-后向算法</strong><br>对每个指标$i=0,1,…,n+1$，定义前向向量$\alpha_i(x)$:<br>$$<br>\alpha_0(y|x)=\begin{cases}<br>   1, &amp; y=start \\<br>   0, &amp; 否则<br>\end{cases}<br>$$<br>递推公式为：<br>$$<br>\alpha_i^T(y_i|x)=\alpha_{i-1}^T(y_{i-1}|x)M_i(y_{i-1},y_i|x),i=1,2,…,n+1<br>$$<br>又可以表示为：<br>$$<br>\alpha_i^T(x) = \alpha_{i-1}^T(x)M_i(x)<br>$$<br>$\alpha_i(y_i|x)$表示在位置i的标记是$y_i$并且到位置i的前面部分标记序列的非规范化概率，$y_i$可取的值有m个，所以$\alpha_i(x)$是m维列向量。</p>
+<p>同样，对于每个位置$i=0,1,…,n+1$，定义后向向量$\beta_i(x)$:<br>$$<br>\beta_{n+1}(y_{n+1}|x)=\begin{cases}<br>   1, &amp; y=stop \\<br>   0, &amp; 否则<br>\end{cases}\\<br>\beta_i(y_i|x)=M_{i+1}(y_i,y_{i+1}|x)\beta_{i+1}(y_{i+1}|x),i=1,2,…,n+1<br>$$<br>又可以表示为：<br>$$<br>\beta_i(y_i|x)=M_{i+1}(x)\beta_{i+1}(x)<br>$$<br>$\beta_i(y_i|x)$表示在位置i的标记$y_i$并且从i+1到n的后面标记序列的非规范化概率。</p>
+<p>由前向-后向向量定义不难得到：<br>$$<br>Z(x) = \alpha_n^T(x)\cdot 1 = 1^T \cdot \beta_1(x)<br>$$<br>这里的1是元素均为1的m维列向量。</p>
+<p><strong>概率计算</strong></p>
+<p>按照前向-后向向量的定义，很容易计算标记序列在为位置i是标记$y_i$的条件概率和在位置$i-1$与i的标记$y_{i-1}和y_i$的条件概率。<br>$$<br>\begin{align}<br>&amp;P(Y_i=y_i|x) =\frac {\alpha_i^T(y_i|x)\beta_i(y_i|x)}{Z(x)}\\<br>&amp;P(Y_{i-1}=y_{i-1},Y_i=y_i|x)=\frac {\alpha_{i-1}^T(y_{i-1}|x)M_i(y_{i-1},y_i|x)\beta_i(y_i,|x)}{Z(x)}\\&amp;其中，Z(x)=\alpha_n^T(x)\cdot 1<br>\end{align}<br>$$</p>
+<p><strong>期望计算</strong></p>
+<p>利用前向-后向向量，可以计算特征函数关于联合分布P(X,Y)和条件分布P(Y|X)的数学期望。</p>
+<p>特征函数$f_k$关于条件分布P(Y|X)的数学期望是：<br>$$<br>\begin{align}E_{P(Y|X)}[f_k]<br>&amp;= \sum_y P(y|x)f_k(y,x)\\<br>&amp;=\sum_{i=1}^{n+1} \sum_{y_{i-1},y_i}f_k(y_{i-1},y_i,x,i)\frac {\alpha_{i-1}^T(y_{i-1}|x)M_i(y_{i-1},y_i|x)\beta_i(y_i,|x)}{Z(x)}\\<br>&amp; k=1,2,…,K<br>\end{align}$$<br>其中，<br>$$<br>Z(x) = \alpha_n^T(x)\cdot 1<br>$$</p>
+<p>假设经验分布$\widetilde P(X)$，特征函数$f_k$关于联合分布P(X,Y)的数学期望是:<br>$$<br>\begin{align}E_{P(X,Y)}[f_k]<br>&amp;=\sum_{x,y}P(x,y)\sum_{i=1}^{n+1}f_k(y_{i-1},y_i,x,i)\\<br>&amp;=\sum_x \widetilde P(x)\sum_y P(y|x)\sum_{i=1}^{n+1}f_k(y_{i-1},y_i,x,i)\\<br>&amp;=\sum_x \widetilde p(x)\sum_{i=1}^{n+1}\sum_{y_{i-1}y_i}f_k(y_{i-1},y_i,x,i)\frac {\alpha_{i-1}^T(y_{i-1}|x)M_i(y_{i-1},y_i|x)\beta_i(y_i|x)}{Z(x)}\\k=1,2,…,K<br>\end{align}<br>$$<br>其中，<br>$$<br>Z(x)=\alpha_n^T(x) \cdot 1<br>$$<br>对于转移特征$t_k(y_{i-1},y_i,x,i),k=1,2,…,K_1$，可以将式中的$f_k$替换成$t_k$；对于状态特征，可以将式中的$f_k$替换为$s_i$，表示为$s_l(y_i,x,u),k=K_1+l,l=1,2,…,K_2$。</p>
+<p>有了上面的公式，对于给定的观测序列x与标记序列y，可以通过一次前向扫描计算$\alpha_i及Z(x)$，通过一次后向扫描计算$\beta_i$，从而计算所有的概率和特征的期望。</p>
+<h3 id="学习方法"><a href="#学习方法" class="headerlink" title="学习方法"></a>学习方法</h3><p>条件随机场在时序数据上的对数线性模型，使用MLE或带正则的MLE来训练。类似于最大熵模型，可以采用改进的迭代尺度法(IIS)和拟牛顿法(如BFGS算法)来训练。</p>
+<p>训练数据${(x^{j},y^{j})}_{j=1}^N$的对数似然函数为：<br>$$<br>\begin{align}<br>L(w) &amp;= L_{\widetilde P}(P_w)\\<br>&amp;=ln \prod_{j=1}^N P_w(Y=y^{(j)}|x^{(j)})\\<br>&amp;=\sum_{j=1}^N ln P_w(Y=y^{(j)}| x^{(j)})\\<br>&amp;=\sum_{j=1}^N ln \frac {exp \sum_{k=1}^K w_kf_k(y^{(j)},x^{(j)}) }{Z_w(x^{(j)})}\\<br>&amp;=\sum_{j=1}^N (\sum_{k=1}^K w_kf_k(y^{(j)},x^{(j)}) - ln Z_w(x^{(j)}) )<br>\end{align}<br>$$</p>
+<p>或者可以写成这样：<br>$$<br>\begin{aligned}L(\textbf w)=L_{\widetilde P}(P_\textbf w)&amp;=\ln\prod_{x,y}P_{\textbf w}(Y=y|x)^{\widetilde P(x,y)}\\&amp;=\sum_{x,y}\widetilde P(x,y)\ln P_{\textbf w}(Y=y|x)\\&amp;=\sum_{x,y}\widetilde P(x,y)\ln \frac{\exp\sum_{k=1}^Kw_kf_k(y,x)}{Z_{\textbf w}(x)}\\&amp;=\sum_{x,y}\widetilde P(x,y)\sum_{k=1}^Kw_kf_k(y,x)-\sum_{x,y}\widetilde P(x,y)\ln Z_{\textbf w}(x)\\&amp;=\sum_{x,y}\widetilde P(x,y)\sum_{k=1}^Kw_kf_k(y,x)-\sum_{x}\widetilde P(x)\ln Z_{\textbf w}(x)\end{aligned}<br>$$</p>
+<p>最后一个等号是因为$\sum_y P(Y=y|x)=1$。顺便求个导：<br>$$<br>\begin{aligned}\frac{\partial L(\textbf w)}{\partial w_i}&amp;=\sum_{x,y}\widetilde P(x,y)f_i(x,y)-\sum_{x,y}\widetilde P(x)P_{\textbf w}(Y=y|x)f_i(x,y)\\&amp;=\mathbb E_{\widetilde P(X,Y)}[f_i]-\sum_{x,y}\widetilde P(x)P_{\textbf w}(Y=y|x)f_i(x,y)\end{aligned}<br>$$<br>似然函数中的$ln Z_w(x)$项是一个指数函数的和的对数的形式。</p>
+<h3 id="预测算法"><a href="#预测算法" class="headerlink" title="预测算法"></a>预测算法</h3><p>条件随机场的预测问题是给定条件随机场P(Y|X)和输入序列（观测序列）x,求条件概率最大的输出序列（标记序列）$y^*$，即对观测序列进行标注。条件随机场预测算法是采用维特比算法。</p>
+<p>由$P_w(y|x)=\frac {exp(w\cdot F(y,x))}{Z_w(x)}$可得：</p>
+<p>$$\begin{align}<br>y^{*}&amp;=arg max_yP_w(y|x)\\<br>&amp;=arg max_y \frac {exp(w \cdot F(y,x))}{Z_w(x)}\\<br>&amp;=arg max_y exp(w \cdot F(y,x))\\<br>&amp;=arg max_y(w \cdot F(y,x))<br>\end{align}$$</p>
+<p>于是，条件随机场预测问题就成为求非规范化概率最大的最优路径问题：<br>$$<br>max_y(w \cdot F(y,x))<br>$$<br>这里，路径表示标记序列，其中，<br>$$\begin{align}<br>&amp;w = (w_1,w_2,…,w_K)^T\\<br>&amp;F(y,x) = (f_1(y,x),f_2(y,x),…,f_K(y,x))^T\\<br>&amp;f_k(y,x)=\sum_{i=1}^n f_k(y_{i-1},y_i, x,i), k=1,2,…,K<br>\end{align}$$</p>
+<p>注意，这时只需计算非规范化概率，而不必计算概率，可以大大提高效率。为了求解路径，将$max_y(w \cdot F(y,x))$写成如下形式：<br>$$max_y \sum_{i=1}^n w\cdot F_i(y_{i-1,y_i,x})$$<br>其中，<br>$$<br>F_i(y_{i-1},y_i,x) = (f_1(y_{i-1},y_i,x,i), f_2(y_{i-1}, y_i, x,i), … , f_K(y_{i-1},y_i,x,i))^T<br>$$<br>是局部特征向量。<br>下面叙述维特比算法，首先求出位置1的各个标记j=1,2,…,m的非规范化概率：<br>$$<br>\delta_1(j) = w \cdot F_1(y_0=start, y_1=j,x), j=1,2,…,m<br>$$<br>一般地，由地推公式，求出到位置i的各个标记l=1,2,..,m的非规范化概率的最大值，同时记录非规范化概率最大值的路径：<br>$$<br>\delta_i(l) = max_{1\le j \le m} {\delta_{i-1}(j)+w \cdot F_i(y_{i-1}=j, y_i=l,x)},l=1,2,…,m\\<br>\Psi_i(l)  = arg max_{1 \le j \le m} { \delta_{i-1}(j) + w \cdot F_i(y_{i-1}=j, y_i=l,x)}, l =1,2,…,,m<br>$$<br>直到i=n时终止。这时求得非规范化概率的最大值为：<br>$$<br>max_y (w \cdot F(y,x)) = max_{1 \le j \le m}\delta_n(j)<br>$$<br>及最优的终点：<br>$$<br>y_n^<em> = \Psi_{i+1}(y_{i+1}^</em>),i = n-1,n-2,…,1<br>$$<br>求得最优路径$y^<em> = (y_1^</em>, y_2^<em>, …, y_n^</em>)^T$<br>维特比算法如下：<br><img src="http://of6h3n8h0.bkt.clouddn.com/blog/180527/9eFHIE0ha7.jpg?imageslim" alt="mark"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作!</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="luerwei 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpeg" alt="luerwei 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/NLP/" rel="tag"># NLP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/13/最大熵模型/" rel="next" title="自然语言处理基础-最大熵模型">
+                <i class="fa fa-chevron-left"></i> 自然语言处理基础-最大熵模型
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/16/中文分词/" rel="prev" title="自然语言处理基础-中文分词">
+                自然语言处理基础-中文分词 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="luerwei" />
+            
+              <p class="site-author-name" itemprop="name">luerwei</p>
+              <p class="site-description motion-element" itemprop="description">Stay hungry. Stay foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/ilewseu" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:18801628065@163.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://www.zhihu.com/people/erweilu" target="_blank" title="zhihu">
+                    
+                      <i class="fa fa-fw fa-globe"></i>zhihu</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://chengjin.li" title="MJ's Learning Notes" target="_blank">MJ's Learning Notes</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概率无向图模型"><span class="nav-number">1.</span> <span class="nav-text">概率无向图模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概率图模型-Graphical-Models"><span class="nav-number">1.1.</span> <span class="nav-text">概率图模型(Graphical Models)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#概率无向图模型定义"><span class="nav-number">2.</span> <span class="nav-text">概率无向图模型定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条件随机场定义"><span class="nav-number">3.</span> <span class="nav-text">条件随机场定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参数化形式"><span class="nav-number">3.1.</span> <span class="nav-text">参数化形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简化形式"><span class="nav-number">3.2.</span> <span class="nav-text">简化形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#矩阵形式"><span class="nav-number">3.3.</span> <span class="nav-text">矩阵形式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三个问题"><span class="nav-number">4.</span> <span class="nav-text">三个问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概率计算问题"><span class="nav-number">4.1.</span> <span class="nav-text">概率计算问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#学习方法"><span class="nav-number">4.2.</span> <span class="nav-text">学习方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预测算法"><span class="nav-number">4.3.</span> <span class="nav-text">预测算法</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">luerwei</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访问人数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://author.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://ilewseu.github.io/2018/05/21/CRF学习笔记/';
+          this.page.identifier = '2018/05/21/CRF学习笔记/';
+          this.page.title = '自然语言处理基础-条件随机场(Conditional Random Fields,CRFs)学习笔记';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://author.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("mlAQjx22Lupo4XTQgrjDqowe-gzGzoHsz", "gUyOWXuoKewzNnKp2uFpEz0V");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
